@@ -150,22 +150,33 @@ void d(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto,Uint32 in
 	*/
 
 	//sprite(inicioGetTick);
-	if(dRectGatoJoe->y > 400 && *chegouTeto != 1){ 
+	if(dRectGatoJoe->y > 400 && *chegouTeto != 1){ //200(400)
 
 		if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && dRectGatoJoe->y <= 492 && LEFTBLOCK != 1){
-			dRectGatoJoe->y -= (100 / SPRITEFPS) % inicioGetTick;
-			
+			/*INÍCIO*/
+			//Para fazer um efeito de pulo mais convincente!!!
+			if(dRectGatoJoe->y <= 456){
+				dRectGatoJoe->y -= (100 / 40) % inicioGetTick;
+				
+			}
+			else {
+				dRectGatoJoe->y -= (100 / SPRITEFPS) % inicioGetTick;
+				
+			}
+			/*FIM*/
 			GATOUP = 1;
-			if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;
+			if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;//350(440)
 
 		}else if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && LEFTBLOCK != 0){
 			
 			//if(CONT > 1)
-				dRectGatoJoe->y += (100 / 40) % inicioGetTick;
+				//dRectGatoJoe->y += (100 / 40) % inicioGetTick;
+				
 			//else
-				//dRectGatoJoe->y += (100 / SPRITEFPS) % inicioGetTick;
-			printf("GETtICK %d\n",inicioGetTick);
+				dRectGatoJoe->y += (100 / SPRITEFPS) % inicioGetTick;
+			
 			if(dRectGatoJoe->y >= 492){
+				dRectGatoJoe->y = 492;
 				LEFTBLOCK = 0;
 				*chegouTeto = 1;	
 				//CONT = 0;
