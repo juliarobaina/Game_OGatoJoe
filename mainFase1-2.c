@@ -157,16 +157,36 @@ int main(){
 
 				int bigBloco1 = 480;
 
+				
+
 				while(fechar != 1){
 					
 					inicioGetTick = SDL_GetTicks();//tempo em milisegundos
 
 					movimentoBlocoNoAr(&obstaculosPosicao[1].loadRect, &chegouFlutua);
+					
+					//continuarMovimentoCatJoe(&catJoePosicao.loadRect, &catPosicao.loadRect, &chegouTetoBlocoLeft);
+					if(GATOUP == 1){
 
+						//sprite(inicioGetTick);
+						d(&catJoePosicao.loadRect, &catPosicao.loadRect, &chegouTetoBlocoLeft,inicioGetTick);
+					}
 
 					while(SDL_PollEvent(&event) != 0){ //Eventos de Teclado e Mouse
 
 						encerrarJogo(event, &fechar);
+
+						if(event.type == SDL_KEYDOWN){
+						
+							if(state[SDL_SCANCODE_UP]){
+								chegouTetoBlocoLeft = 0;
+								//CONT++;
+								//printf("cont = %d\n",CONT);
+								//pular(&catPosicao.loadRect,&catJoePosicao.loadRect,&blocosPosicaoLeft[0].loadRect,limiteChao);
+								//teclaUP(&catJoePosicao.loadRect,&catPosicao.loadRect,&chegouTetoBlocoLeft);
+								d(&catJoePosicao.loadRect, &catPosicao.loadRect, &chegouTetoBlocoLeft,inicioGetTick);
+							}
+						}
 
 					}
 
