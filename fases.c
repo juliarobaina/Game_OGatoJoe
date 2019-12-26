@@ -31,72 +31,72 @@ void sprite(Uint32 inicioGetTick){
 	}
 }
 
-void continuarMovimentoCatJoe(SDL_Rect* catJoePosicao, SDL_Rect* catPosicao, int* chegouTetoBlocoLeft){
+void continuarMovimentoCatJoe(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto){
 	//Quando o usuário soltar a tecla de pulo ele continua o movimento do estado final do personagem
 	//avalia as variáveis globais GATODOWN e GATOJUMPRIGHT->se V então cai para a direita
 
 	if(GATODOWN == 1){
-						
-		if(catJoePosicao->y > 400 && *(chegouTetoBlocoLeft) != 1){
+		
+		if(dRectGatoJoe->y > 400 && *chegouTeto != 1){
 			
 
-			if(catJoePosicao->y <= 425){
-				catJoePosicao->y -= 2;	
+			if(dRectGatoJoe->y <= 445){
+				dRectGatoJoe->y -= 2;	
 				if(GATOJUMPRIGHT == 1){
-					catJoePosicao->x += 1;
+					dRectGatoJoe->x += 1;
 				}							
 			}else{
 				if(BIGBLOCO1AR == 1){
-					catJoePosicao->y += 3;
+					dRectGatoJoe->y += 3;
 				}else{
-					catJoePosicao->y -= 3;
-					if((catJoePosicao->x >= 0 && catJoePosicao->x <= 332) && catJoePosicao->y <= 480){
-						
+					dRectGatoJoe->y -= 3;
+					if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && dRectGatoJoe->y <= 440){
+						printf("AJHDK\n");
 						BIGBLOCO1AR = 1;
 					
 					}
 				}
 
-				catPosicao->y = 292;
-				catPosicao->x += 100;
-				if(catPosicao->x >= 200){
-					catPosicao->x = 100;
+				sRectGatoJoe->y = 292;
+				sRectGatoJoe->x += 100;
+				if(sRectGatoJoe->x >= 200){
+					sRectGatoJoe->x = 100;
 				}
 
 				if(GATOJUMPRIGHT == 1){
-					if((catJoePosicao->x >= 536 && catJoePosicao->x <= 572) && catJoePosicao->y > 530){
-						catJoePosicao->x -= 20;
+					if((dRectGatoJoe->x >= 536 && dRectGatoJoe->x <= 572) && dRectGatoJoe->y > 492){
+						dRectGatoJoe->x -= 20;
 						GATOJUMPRIGHT = 0;
 					}
-					catJoePosicao->x += 1;
+					dRectGatoJoe->x += 1;
 				}
 			}
 
 		}else{
-			if((catJoePosicao->x >= 570 && catJoePosicao->x <= 682) && catJoePosicao->y >= 530){
-				catJoePosicao->y = 530;
+			if((dRectGatoJoe->x >= 570 && dRectGatoJoe->x <= 682) && dRectGatoJoe->y >= 492){
+				dRectGatoJoe->y = 530;
 					if(GATOJUMPRIGHT == 1){
 						GATOJUMPRIGHT = 0;
 					}
-					catPosicao->y = 0;
-					catPosicao->x = 100;
+					sRectGatoJoe->y = 0;
+					sRectGatoJoe->x = 100;
 				}else{
 
-					catJoePosicao->y += 3;
-					*(chegouTetoBlocoLeft) = 1;
+					dRectGatoJoe->y += 3;
+					*chegouTeto = 1;
 					if(GATOJUMPRIGHT == 1){
-						catJoePosicao->x += 1;
+						dRectGatoJoe->x += 1;
 					}
 				}
 		
 		}
 		
-		if(catJoePosicao->y >= 617){
-			catJoePosicao->y = 617;
+		if(dRectGatoJoe->y >= 492){
+			dRectGatoJoe->y = 492;
 			GATODOWN = 0;
-			*(chegouTetoBlocoLeft) = 0;
-			catPosicao->y = 0;
-			catPosicao->x = 100;
+			*chegouTeto = 0;
+			sRectGatoJoe->y = 0;
+			sRectGatoJoe->x = 100;
 			if(GATOJUMPRIGHT == 1){
 				GATOJUMPRIGHT = 0;
 			}	
@@ -104,99 +104,187 @@ void continuarMovimentoCatJoe(SDL_Rect* catJoePosicao, SDL_Rect* catPosicao, int
 			BIGBLOCO1AR = 0;
 			
 		}
-		
 	}
 
 
 
 }
 
-void teclaUP(SDL_Rect* catJoePosicao, SDL_Rect* catPosicao, int* chegouTetoBlocoLeft){
+void pular(SDL_Rect* catImg,SDL_Rect* catJoe,SDL_Rect* limiteTop,int limiteChao){
 
-	if(catJoePosicao->y > 400 && *(chegouTetoBlocoLeft) != 1){
-		if(catJoePosicao->y <= 425){
-			catJoePosicao->y -= 4;
-			if(GATOJUMPRIGHT == 1){
-				catJoePosicao->x += 1;
-			}
-		}else{
-			if(BIGBLOCO1AR == 0){
-				catJoePosicao->y -= 6;
-			}
-			if((catJoePosicao->x >= 0 && catJoePosicao->x <= 332) && catJoePosicao->y <= 480){
-				
-				BIGBLOCO1AR = 1;
-				GATODOWN = 1;
-			}
-			if(GATOJUMPRIGHT == 1){
-				if((catJoePosicao->x >= 536 && catJoePosicao->x <= 572) && catJoePosicao->y > 530){
-					catJoePosicao->x -= 20;
-					GATOJUMPRIGHT = 0;
-				}
-				catJoePosicao->x += 1;
-			}
-			if(catJoePosicao->y <= 607){
-				catPosicao->x = 100;
-				catPosicao->y = 292;
-			}else{
-				catPosicao->x = 0;
-			}
-		}
+	int chegou = 0;
 
-	}else{
-		catJoePosicao->y += 6;
-		if((catJoePosicao->x >= 570 && catJoePosicao->x <= 682) && catJoePosicao->y >= 530){
-			catJoePosicao->y = 530;
-			GATOJUMPRIGHT = 0;
-			
-		}
-		*(chegouTetoBlocoLeft) = 1;
-		if(GATOJUMPRIGHT == 1){
-			if((catJoePosicao->x >= 536 && catJoePosicao->x <= 572) && catJoePosicao->y > 530){
-				catJoePosicao->x -= 20;
-				GATOJUMPRIGHT = 0;
+	
+	if(catJoe->x >= 0 && catJoe->x <= 240){
+		printf("limiteTop %d\n",limiteTop->y);
+		printf("catJ %d\n",catJoe->y);
+		
+		if(catJoe->y <= 380+60){
+			catJoe->y += 4;
+			if(catJoe->y >= 380+60){
+				catJoe->y -= 4;
 			}
-				catJoePosicao->x += 1;
-										
-		}
-	}
-
-	if((catJoePosicao->x >= 570 && catJoePosicao->x <= 682) && catJoePosicao->y >= 530){
-		*(chegouTetoBlocoLeft) = 0;
-		if(catJoePosicao->y > 300 && *(chegouTetoBlocoLeft) != 1){
-			if(catJoePosicao->y <= 325){
-				catJoePosicao->y -= 4;
-				if(GATOJUMPRIGHT == 1){
-					catJoePosicao->x += 1;
-				}
-			}else{
-				catJoePosicao->y -= 6;
-				if(GATOJUMPRIGHT == 1){
-					catJoePosicao->x += 1;
-				}
-			}
-		}else{
-			catJoePosicao->y += 6;
-			if((catJoePosicao->x >= 570 && catJoePosicao->x <= 682) && catJoePosicao->y >= 530){
-				catJoePosicao->y = 530;
-				GATOJUMPRIGHT = 0;
-			}
-			*(chegouTetoBlocoLeft) = 1;
-			if(GATOJUMPRIGHT == 1){
-				catJoePosicao->x += 1;
-			}
-			//colisao left
-		}
-	}
-
-	if(catJoePosicao->y >= 617){
-		catJoePosicao->y = 617;
-		*(chegouTetoBlocoLeft) = 0;
-		if(GATOJUMPRIGHT == 1){
-			GATOJUMPRIGHT = 0;
+			printf("Entrei :|\n");
 		}
 		
-	}	
+	}
+	
+	//if(catJoe->y >= limiteTop->y){
+	//	catJoe->y -= 3;
+	//}
+}
+
+void d(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto,Uint32 inicioGetTick){
+
+	/*
+		400 é o limite que o gato pode alcançar no pulo, chegou teto é para saber se o gato já chegou no chão (rsrs).
+		(dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) isso serve para se o gato estiver somente embaixo desse bloco.
+		dRectGatoJoe->y <= 492 do chão pra cima, LEFTBLOCK variável global para saber se já bateu a cabeça no bloco.
+		GATOUP variável global para saber se o gato já pulou e está no ar.
+		if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1; condição para: o gato já bateu a cabeça no bloco? LEFTBLOCK recebe 1
+		para não entrar mais no IF.
+
+		(dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && LEFTBLOCK != 0 já bati a cabeça no bloco, posso descer.
+		if(dRectGatoJoe->y >= 492) se chegou no chão ou passou, LEFTBLOCK recebe 0 para não entrar mais na condição
+		e chegouTeto recebe 1 para parar de pular.
+	*/
+
+	//sprite(inicioGetTick);
+	if(dRectGatoJoe->y > 400 && *chegouTeto != 1){ 
+
+		if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && dRectGatoJoe->y <= 492 && LEFTBLOCK != 1){
+			dRectGatoJoe->y -= (100 / SPRITEFPS) % inicioGetTick;
+			
+			GATOUP = 1;
+			if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;
+
+		}else if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && LEFTBLOCK != 0){
+			
+			//if(CONT > 1)
+				dRectGatoJoe->y += (100 / 40) % inicioGetTick;
+			//else
+				//dRectGatoJoe->y += (100 / SPRITEFPS) % inicioGetTick;
+			printf("GETtICK %d\n",inicioGetTick);
+			if(dRectGatoJoe->y >= 492){
+				LEFTBLOCK = 0;
+				*chegouTeto = 1;	
+				//CONT = 0;
+			} 
+		}
+
+	}
+
+}
+
+void teclaUP(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto){//chegouTetoBlocoLeft
+
+	if(dRectGatoJoe->y > 400 && *chegouTeto != 1){
+								printf("Entrei aqui 1\n");
+								if(dRectGatoJoe->y <= 425){
+									printf("Entrei aqui 2\n");
+									dRectGatoJoe->y -= 4;
+									if(GATOJUMPRIGHT == 1){
+										printf("Entrei aqui 3\n");
+										dRectGatoJoe->x += 1;
+									}
+								}else{
+									printf("Entrei aqui 4\n");
+									if(BIGBLOCO1AR == 0){
+										printf("Entrei aqui 5\n");
+										dRectGatoJoe->y -= 6;
+									}
+									if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && dRectGatoJoe->y <= 440){
+										printf("Entrei aqui 6\n");
+										BIGBLOCO1AR = 1;
+										GATODOWN = 1;
+									}
+									if(GATOJUMPRIGHT == 1){
+										printf("Entrei aqui 7\n");
+										if((dRectGatoJoe->x >= 536 && dRectGatoJoe->x <= 572) && dRectGatoJoe->y > 492){
+											printf("Entrei aqui 8\n");
+											dRectGatoJoe->x -= 20;
+											GATOJUMPRIGHT = 0;
+										}
+										dRectGatoJoe->x += 1;
+									}
+									if(dRectGatoJoe->y <= 492){
+										printf("Entrei aqui 9\n");
+										sRectGatoJoe->x = 100;
+										sRectGatoJoe->y = 292;
+									}else{
+										printf("Entrei aqui 10\n");
+										sRectGatoJoe->x = 0;
+									}
+								}
+
+							}else{
+									printf("Entrei aqui 11\n");
+								dRectGatoJoe->y += 6;
+								if((dRectGatoJoe->x >= 570 && dRectGatoJoe->x <= 682) && dRectGatoJoe->y >= 492){
+									dRectGatoJoe->y = 492;
+									GATOJUMPRIGHT = 0;
+										printf("Entrei aqui 12\n");
+								}
+								*chegouTeto = 1;
+								if(GATOJUMPRIGHT == 1){
+										printf("Entrei aqui 13\n");
+									if((dRectGatoJoe->x >= 536 && dRectGatoJoe->x <= 572) && dRectGatoJoe->y > 492){
+										dRectGatoJoe->x -= 20;
+										GATOJUMPRIGHT = 0;
+										printf("Entrei aqui 14\n");
+									}
+										dRectGatoJoe->x += 1;
+																
+								}
+							}
+
+							if((dRectGatoJoe->x >= 570 && dRectGatoJoe->x <= 682) && dRectGatoJoe->y >= 492){
+									printf("Entrei aqui 15\n");
+								*chegouTeto = 0;
+								if(dRectGatoJoe->y > 300 && *chegouTeto != 1){
+										printf("Entrei aqui 16\n");
+									if(dRectGatoJoe->y <= 325){
+											printf("Entrei aqui 17\n");
+										dRectGatoJoe->y -= 4;
+										if(GATOJUMPRIGHT == 1){
+												printf("Entrei aqui 18\n");
+											dRectGatoJoe->x += 1;
+										}
+									}else{
+											printf("Entrei aqui 19\n");
+										dRectGatoJoe->y -= 6;
+										if(GATOJUMPRIGHT == 1){
+												printf("Entrei aqui 20\n");
+											dRectGatoJoe->x += 1;
+										}
+									}
+								}else{
+										printf("Entrei aqui 21\n");
+									dRectGatoJoe->y += 6;
+									if((dRectGatoJoe->x >= 570 && dRectGatoJoe->x <= 682) && dRectGatoJoe->y >= 492){
+										dRectGatoJoe->y = 530;
+										GATOJUMPRIGHT = 0;
+											printf("Entrei aqui 22\n");
+									}
+									*chegouTeto = 1;
+									if(GATOJUMPRIGHT == 1){
+											printf("Entrei aqui 23\n");
+										dRectGatoJoe->x += 1;
+									}
+									//colisao left
+								}
+							}
+
+							if(dRectGatoJoe->y >= 617){
+									printf("Entrei aqui 24\n");
+								dRectGatoJoe->y = 617;
+								*chegouTeto = 0;
+								if(GATOJUMPRIGHT == 1){
+										printf("Entrei aqui 25\n");
+									GATOJUMPRIGHT = 0;
+								}
+								
+							}	
 }
 
 void teclaRight_DontUP(SDL_Rect* catJoePosicao, SDL_Rect* catPosicao,int* bloco1X){
