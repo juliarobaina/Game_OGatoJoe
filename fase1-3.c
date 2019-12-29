@@ -152,7 +152,7 @@ int main(){
 
 				catJoePosicao.loadRect.w = 100;
 				catJoePosicao.loadRect.h = 100;
-				catJoePosicao.loadRect.x = 300;		
+				catJoePosicao.loadRect.x = 10;		
 				catJoePosicao.loadRect.y = 492;
 				//ALTURA_JANELA - catPosicao.loadRect.h - 28;
 				//380-72
@@ -187,19 +187,122 @@ int main(){
 				int blocoH = 538;
 
 				int bigBloco1 = 480;
+				/*CRIANDO AS CAIXAS DE COLISÃO*/
+				PosicaoBloco caixaBlocoLeft;
+				caixaBlocoLeft.loadRect.x = 0;
+				caixaBlocoLeft.loadRect.y = 380;
+				caixaBlocoLeft.loadRect.w = 240;
+				caixaBlocoLeft.loadRect.h = 60;
 
+				PosicaoBloco caixaBlocoChao;
+				caixaBlocoChao.loadRect.x = 500;
+				caixaBlocoChao.loadRect.y = 520;
+				caixaBlocoChao.loadRect.w = 60;
+				caixaBlocoChao.loadRect.h = 60;
+
+				PosicaoBloco caixaBlocoLeft2;
+				caixaBlocoLeft2.loadRect.x = 300;
+				caixaBlocoLeft2.loadRect.y = 415;
+				caixaBlocoLeft2.loadRect.w = 116;
+				caixaBlocoLeft2.loadRect.h = 60;
+
+				PosicaoBloco caixaBlocoRight2;
+				caixaBlocoRight2.loadRect.x = 610;
+				caixaBlocoRight2.loadRect.y = 415;
+				caixaBlocoRight2.loadRect.w = 120;
+				caixaBlocoRight2.loadRect.h = 60;
+
+				PosicaoBloco caixaBlocoRight;
+				caixaBlocoRight.loadRect.x = 760;
+				caixaBlocoRight.loadRect.y = 180;
+				caixaBlocoRight.loadRect.w = 240;
+				caixaBlocoRight.loadRect.h = 60;
+
+				PosicaoBloco caixaBlocoMovel1;
+				caixaBlocoMovel1.loadRect.x = 256;
+				caixaBlocoMovel1.loadRect.y = 155;
+				caixaBlocoMovel1.loadRect.w = 150;
+				caixaBlocoMovel1.loadRect.h = 60;
+
+				PosicaoBloco caixaBlocoMovel2;
+				caixaBlocoMovel2.loadRect.x = 464;
+				caixaBlocoMovel2.loadRect.y = 155;
+				caixaBlocoMovel2.loadRect.w = 140;
+				caixaBlocoMovel2.loadRect.h = 60;
+				/*CRIANDO AS CAIXAS DE COLISÃO*/
+				
+				/*
+					do lazy foo
+
+				*/
+				//The dimensions of the dot
+				 //The X and Y offsets of the dot
+		        int mPosX, mPosY;
+
+		        //The velocity of the dot
+		        int mVelX, mVelY;
+		        
+		        //Dot's collision box
+		        SDL_Rect mCollider;
+		        int DOT_WIDTH = 20;
+		        int DOT_HEIGHT = 20;
+
+		        //Maximum axis velocity of the dot
+		        int DOT_VEL = 10;
+
+				mPosX = 0;
+			    mPosY = 0;
+
+			    //Set collision box dimension
+			    mCollider.w = DOT_WIDTH;
+			    mCollider.h = DOT_HEIGHT;
+
+			    //Initialize the velocity
+			    mVelX = 0;
+			    mVelY = 0;
 
 				while(fechar != 1){
 					
 					inicioGetTick = SDL_GetTicks();//tempo em milisegundos
 
-					
+					/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect))
+						printf("Colisão caixaBlocoLeft\n");
+					else
+						printf("Not Function caixaBlocoLeft\n");
+					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoChao.loadRect))
+						printf("Colisão caixaBlocoChao\n");
+					else
+						printf("Not Function caixaBlocoChao\n");
+					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft2.loadRect))
+						printf("Colisão caixaBlocoLeft2\n");
+					else
+						printf("Not Function caixaBlocoLeft2\n");
+					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRight2.loadRect))
+						printf("Colisão caixaBlocoRight2\n");
+					else
+						printf("Not Function caixaBlocoRight2\n");
+					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRight.loadRect))
+						printf("Colisão caixaBlocoRight\n");
+					else
+						printf("Not Function caixaBlocoRight\n");
+					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoMovel1.loadRect))
+						printf("Colisão caixaBlocoMovel1\n");
+					else
+						printf("Not Function caixaBlocoMovel1\n");
+					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoMovel2.loadRect))
+						printf("Colisão caixaBlocoMovel2\n");
+					else
+						printf("Not Function caixaBlocoMovel2\n");*/
+					//mover(catJoePosicao.loadRect, caixaBlocoLeft.loadRect,&catJoePosicao.loadRect.x,&catJoePosicao.loadRect.y,&mVelX,&mVelY,DOT_WIDTH, DOT_HEIGHT,mCollider);
+					//mover2(catJoePosicao.loadRect,caixaBlocoLeft.loadRect,&catJoePosicao.loadRect,&caixaBlocoLeft.loadRect);
 					if(GATOUP == 1){
-						puloFase3(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
+						//puloFase3(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
+						//diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
 						//d(&catJoePosicao.loadRect, &catPosicao.loadRect, &chegouTetoBlocoLeft,inicioGetTick);
 						//diferente(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft,&bigBlocoMovel.loadRect,&chegouFlutua);
 						
 					}
+					
 					
 					while(SDL_PollEvent(&event) != 0){ //Eventos de Teclado e Mouse
 
@@ -208,21 +311,130 @@ int main(){
 						if(event.type == SDL_KEYDOWN){
 						
 							if(state[SDL_SCANCODE_UP]){
-								chegouTetoBlocoLeft = 0;
+
+								if(catJoePosicao.loadRect.y > caixaBlocoLeft.loadRect.y){
+								
+									if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL != 1){
+										BATEU_BL = 1;
+									}else if(!(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect)) && BATEU_BL != 1){
+										catJoePosicao.loadRect.y -= 3;
+									}else if(BATEU_BL != 0){
+										
+										if(catJoePosicao.loadRect.y >= 492){
+											catJoePosicao.loadRect.y = 492;
+											BATEU_BL = 0;
+										}else{
+											catJoePosicao.loadRect.y += 3;
+										}
+									}
+								}else if(catJoePosicao.loadRect.y < caixaBlocoLeft.loadRect.y){
+									
+									/*catJoePosicao.loadRect.y -= 3;
+									if(catJoePosicao.loadRect.y <= 178){
+										printf("Menor que 178\n");
+										BATEU_BL2 = 1;
+									}
+									if(BATEU_BL2 != 0 && !(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect)){
+
+									}*/
+
+									if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL2 != 1){
+										BATEU_BL2 = 1;
+									}else if(!(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect)) && BATEU_BL2 != 1){
+										catJoePosicao.loadRect.y += 3;
+									}else if(BATEU_BL2 != 0){
+										catJoePosicao.loadRect.y -= 3;
+
+										if(catJoePosicao.loadRect.y <= 178){
+											BATEU_BL2 = 0;
+										}
+									}
+									/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL2 == 0){
+										catJoePosicao.loadRect.y = 290;
+										BATEU_BL2 = 1;
+										if(catJoePosicao.loadRect.y <= 178){
+											//printf("Menor que 178\n");
+											BATEU_BL2 = 1;
+										}else{
+											catJoePosicao.loadRect.y -= 3;
+										}
+									}else if(!lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect)){
+										if(catJoePosicao.loadRect.y <= 178){
+											//printf("Menor que 178\n");
+											BATEU_BL2 = 1;
+										}else{
+											catJoePosicao.loadRect.y -= 3;
+										}
+									}else if(!lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL2 == 1){
+										if(catJoePosicao.loadRect.y <= 178){
+											//printf("Menor que 178\n");
+											BATEU_BL2 = 2;
+										}else{
+											catJoePosicao.loadRect.y += 3;
+										}
+
+									}else if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL2 == 2){
+										catJoePosicao.loadRect.y = 290;
+										BATEU_BL2 = 0;
+									}
+									/*else if(!(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect)) && BATEU_BL != 1){
+										catJoePosicao.loadRect.y += 3;
+
+									}else if(BATEU_BL != 0){
+										printf("entrei\n");
+										if(catJoePosicao.loadRect.y >= 290){
+											catJoePosicao.loadRect.y = 290;
+											BATEU_BL = 0;
+										}else{
+											catJoePosicao.loadRect.y -= 3;
+										}
+									}*/
+								}
+
+								
+								/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && catJoePosicao.loadRect.y < 400 && catJoePosicao.loadRect.y >= 290){
+									printf("LAAAZYYY FOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
+								}*/
+								/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL2 != 1){
+									BATEU_BL2 = 1;
+								}else if(!(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect)) && BATEU_BL2 != 1){
+									catJoePosicao.loadRect.y -= 3;
+								}*/
+
+								
+								
+								//chegouTetoBlocoLeft = 0;
+								//catJoePosicao.loadRect.y -= 3;
 								//diferente(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft,&bigBlocoMovel.loadRect,&chegouFlutua);
-								puloFase3(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
+								//puloFase3(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
 								//d(&catJoePosicao.loadRect, &catPosicao.loadRect, &chegouTetoBlocoLeft,inicioGetTick);
+								/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) == 1 && LEFTBLOCK != 1){
+									//catJoePosicao.loadRect.y = 492;
+									printf("left %d\n",LEFTBLOCK);
+									sa(&catJoePosicao.loadRect,inicioGetTick, 2);
+								}else{
+									sa(&catJoePosicao.loadRect,inicioGetTick, 1);
+								}*/
+								
+
 							}
 							if(state[SDL_SCANCODE_RIGHT] && !(state[SDL_SCANCODE_UP])){
 								catJoePosicao.loadRect.x += 2;
 
-								diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect);
+								//diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
 							}
 							
 							if(state[SDL_SCANCODE_LEFT] && !(state[SDL_SCANCODE_UP])){
 								catJoePosicao.loadRect.x -= 2;
 
 								//diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect);
+							}
+							if(state[SDL_SCANCODE_UP] && state[SDL_SCANCODE_RIGHT]){
+								GATOJUMPRIGHT = 1;
+							}if(state[SDL_SCANCODE_DOWN]){
+								//if(!lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect))
+									catJoePosicao.loadRect.y += 3;
+							
 							}
 						}
 
