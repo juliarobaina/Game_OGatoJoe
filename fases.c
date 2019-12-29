@@ -110,6 +110,14 @@ void continuarMovimentoCatJoe(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, in
 
 }
 
+int minimo(int a, int b){
+
+	if(a > b)
+		return a;
+	else 
+		return b;
+}
+
 void pular(SDL_Rect* catImg,SDL_Rect* catJoe,SDL_Rect* limiteTop,int limiteChao){
 
 	int chegou = 0;
@@ -133,7 +141,724 @@ void pular(SDL_Rect* catImg,SDL_Rect* catJoe,SDL_Rect* limiteTop,int limiteChao)
 	//	catJoe->y -= 3;
 	//}
 }
+/*void colisao(Caixa* box,SDL_Rect* dRectGatoJoe,int repeticao,Uint32 inicioGetTick,int* chegouTeto){
 
+	int tamTotal[repeticao];
+	 
+
+	for(int i = 0; i < repeticao; i++){
+
+		tamTotal[i] = box[i].x + (repeticao * box[i].w);
+
+		/*if(dRectGatoJoe->x >= box[i].x && dRectGatoJoe->x <= tamTotal[i]){
+			if(dRectGatoJoe->y < (box[i].y + box[i].h)){
+				dRectGatoJoe->y += 3;
+			}
+				dRectGatoJoe->y -= 3;
+		}
+	
+		
+			if((dRectGatoJoe->x >= box[i].x && dRectGatoJoe->x <= tamTotal[i]) && dRectGatoJoe->y <= 492 && LEFTBLOCK[] != 1){
+					printf("Entrei gato esta %d\n",dRectGatoJoe->x);
+					
+					//Para fazer um efeito de pulo mais convincente!!!
+
+					if(dRectGatoJoe->y <= 456){
+						dRectGatoJoe->y -= (100 / 40) % inicioGetTick;
+						
+					}
+					else {
+						dRectGatoJoe->y -= (100 / SPRITEFPS) % inicioGetTick;
+						
+					}
+					
+					GATOUP = 1;
+					if(dRectGatoJoe->y <= box[i].y+box[i].h) LEFTBLOCK[i] = 1;//350(440)
+
+				}else if((dRectGatoJoe->x >= box[i].x && dRectGatoJoe->x <= tamTotal[i]) && LEFTBLOCK[i] != 0){
+					
+					//if(CONT > 1)
+						//dRectGatoJoe->y += (100 / 40) % inicioGetTick;
+						
+					//else
+						dRectGatoJoe->y += (100 / SPRITEFPS) % inicioGetTick;
+					
+					if(dRectGatoJoe->y >= 492){
+						dRectGatoJoe->y = 492;
+						LEFTBLOCK = 0;
+						*chegouTeto = 1;	
+						//CONT = 0;
+					} 
+				}
+		}
+	
+
+}
+*/
+
+void diferenteRightUP(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
+	printf("Entrei\n");
+	if(*chegouTeto != 1){
+		
+		if(dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 216){
+			
+			if(dRectGatoJoe->y > 300 && LEFTBLOCK != 1){//ERA >=
+			
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 300 && LEFTBLOCK != 0){
+			
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 290 && LEFTBLOCK != 1){//ERA >=
+	
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 178) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 290 && LEFTBLOCK != 0){
+
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+
+				if(dRectGatoJoe->y >= 290){
+					dRectGatoJoe->y = 290;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+		}else if(dRectGatoJoe->x > 216 && dRectGatoJoe->x < 222){
+
+			if(dRectGatoJoe->y > 400 && LEFTBLOCK != 1){//ERA >=
+
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 400) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+
+				dRectGatoJoe->y += 3;
+				
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}else if(dRectGatoJoe->x > 229 && dRectGatoJoe->x <= 234){
+			if(dRectGatoJoe->y > 430 && LEFTBLOCK != 1){//ERA >=
+	
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 430) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}else if(dRectGatoJoe->x > 234 && dRectGatoJoe->x <= 394){
+			if(dRectGatoJoe->y > 473 && LEFTBLOCK != 1){//ERA >=
+
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 473) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+				if(dRectGatoJoe->y > 473 && dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 1){//ERA >=
+
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 213) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+				if(dRectGatoJoe->y >= 325){
+					dRectGatoJoe->y = 325;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+		}else if(dRectGatoJoe->x > 394 && dRectGatoJoe->x < 402){
+			if(dRectGatoJoe->y > 436 && LEFTBLOCK != 1){//ERA >=
+
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 436) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+			
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}
+		else if(dRectGatoJoe->x >= 542 && dRectGatoJoe->x < 547){
+			if(dRectGatoJoe->y > 436 && LEFTBLOCK != 1){//ERA >=
+			
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 436) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}
+		else if(dRectGatoJoe->x >= 547 && dRectGatoJoe->x < 704){
+			if(dRectGatoJoe->y > 473 && LEFTBLOCK != 1){//ERA >=
+			
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 473) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+			
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 1){//ERA >=
+			
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 213) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+				if(dRectGatoJoe->y >= 325){
+					dRectGatoJoe->y = 325;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+
+		}else if(dRectGatoJoe->x >= 704 && dRectGatoJoe->x < 714){
+			if(dRectGatoJoe->y > 436 && LEFTBLOCK != 1){//ERA >=
+				
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 436) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}else if(dRectGatoJoe->x >= 724 && dRectGatoJoe->x < 940){
+			
+			if(dRectGatoJoe->y > 2 && dRectGatoJoe->y <= 90 && LEFTBLOCK != 1){//ERA >=
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 22){
+			
+					LEFTBLOCK = 1;
+				} 
+			
+			}else if(dRectGatoJoe->y > 2 && dRectGatoJoe->y <= 90 && LEFTBLOCK != 0){
+		
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+				if(dRectGatoJoe->y >= 90){
+					dRectGatoJoe->y = 90;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+			if(dRectGatoJoe->y > 350 && LEFTBLOCK != 1){
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+				if(dRectGatoJoe->y <= 380) LEFTBLOCK = 1;
+		
+			}else if(dRectGatoJoe->y >= 373 && LEFTBLOCK != 0){
+				
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 1;
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+
+		}
+		else{
+			
+		
+			if(dRectGatoJoe->y > 350 && LEFTBLOCK != 1){
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+				if(dRectGatoJoe->y <= 380) LEFTBLOCK = 1;
+		
+			}else if(dRectGatoJoe->y >= 373 && LEFTBLOCK != 0){
+				
+				dRectGatoJoe->y += 3;
+				dRectGatoJoe->x += 50;
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}
+	}
+
+}
+void diferenteRight(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe){
+	if(dRectGatoJoe->x >= 428 && dRectGatoJoe->x <= 438 /*&& dRectGatoJoe->x <= 428+107 && dRectGatoJoe->y >= 492-60*/){
+		printf("Fuuiii\n");
+		dRectGatoJoe->x -= 3;
+		if(dRectGatoJoe->y >= 492){
+			dRectGatoJoe->y = 492;
+		}
+	}
+}
+void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
+	printf("Entrei %d \n",dRectGatoJoe->x);
+	if(*chegouTeto != 1){
+		
+		if(dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 216){
+			
+			if(dRectGatoJoe->y > 300 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 300 && LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 290 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 178) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 290 && LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 290){
+					dRectGatoJoe->y = 290;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+		}else if(dRectGatoJoe->x > 216 && dRectGatoJoe->x < 222){
+
+			if(dRectGatoJoe->y > 400 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 400) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}else if(dRectGatoJoe->x > 229 && dRectGatoJoe->x <= 234){
+			if(dRectGatoJoe->y > 430 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 430) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}else if(dRectGatoJoe->x > 234 && dRectGatoJoe->x <= 394){
+			if(dRectGatoJoe->y > 473 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 473) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y > 473 && dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 213) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 325){
+					dRectGatoJoe->y = 325;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+		}else if(dRectGatoJoe->x > 394 && dRectGatoJoe->x < 402){
+			if(dRectGatoJoe->y > 436 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 436) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}
+		else if(dRectGatoJoe->x >= 542 && dRectGatoJoe->x < 547){
+			if(dRectGatoJoe->y > 436 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 436) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}
+		else if(dRectGatoJoe->x >= 547 && dRectGatoJoe->x < 704){
+			if(dRectGatoJoe->y > 473 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 473) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 213) LEFTBLOCK = 1;
+			
+			}else if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 325 && LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 325){
+					dRectGatoJoe->y = 325;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+
+		}else if(dRectGatoJoe->x >= 704 && dRectGatoJoe->x < 714){
+			if(dRectGatoJoe->y > 436 && LEFTBLOCK != 1){//ERA >=
+				printf("333333333\n");
+				dRectGatoJoe->y -=3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 436) LEFTBLOCK = 1;
+			
+			}else if(LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+			
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}else if(dRectGatoJoe->x >= 724 && dRectGatoJoe->x < 940){
+			
+			if(dRectGatoJoe->y > 2 && dRectGatoJoe->y <= 90 && LEFTBLOCK != 1){//ERA >=
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+
+				if(dRectGatoJoe->y <= 22){
+					printf("Pera %d\n",dRectGatoJoe->y);
+					LEFTBLOCK = 1;
+				} 
+			
+			}else if(dRectGatoJoe->y > 2 && dRectGatoJoe->y <= 90 && LEFTBLOCK != 0){
+				printf("11111111\n");
+				dRectGatoJoe->y += 3;
+				
+				if(dRectGatoJoe->y >= 90){
+					dRectGatoJoe->y = 90;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+					
+				} 
+
+				
+			}
+			if(dRectGatoJoe->y > 350 && LEFTBLOCK != 1){
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+				if(dRectGatoJoe->y <= 380) LEFTBLOCK = 1;
+		
+			}else if(dRectGatoJoe->y >= 373 && LEFTBLOCK != 0){
+				
+				dRectGatoJoe->y += 3;
+
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+
+		}
+		else{
+			
+			printf("MICROCAMP %d leftblock %d\n",dRectGatoJoe->y,LEFTBLOCK);
+			if(dRectGatoJoe->y > 350 && LEFTBLOCK != 1){
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+				if(dRectGatoJoe->y <= 380) LEFTBLOCK = 1;
+		
+			}else if(dRectGatoJoe->y >= 373 && LEFTBLOCK != 0){
+				
+				dRectGatoJoe->y += 3;
+
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+		}
+	}
+
+
+}
+
+void diferente(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto,SDL_Rect* problem,int* chegouFlutua){
+	int c = 0;
+	if(*chegouTeto != 1){
+		//printf("GATOUP %d\n",GATOUP );
+	
+
+	if(dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 216){
+		printf("Entrei???\n");
+		if(dRectGatoJoe->y > 440 && LEFTBLOCK != 1){//ERA >=
+			printf("333333333\n");
+			dRectGatoJoe->y -=3;
+			GATOUP = 1;
+
+			if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;
+		
+		}else if(LEFTBLOCK != 0){
+			printf("11111111\n");
+			dRectGatoJoe->y += 3;
+		
+			if(dRectGatoJoe->y >= 492){
+				dRectGatoJoe->y = 492;
+				LEFTBLOCK = 0;
+				*chegouTeto = 1;
+			} 
+		}
+	}
+	else if(dRectGatoJoe->x + 70  >= problem->x && dRectGatoJoe->x <= problem->x + 134){
+		printf("2222222222\n");
+		if(dRectGatoJoe->y > 440 && LEFTBLOCK != 1){
+			printf("44444444444\n");
+			dRectGatoJoe->y -=3;
+			GATOUP = 1;
+			
+
+			if(dRectGatoJoe->y <= 440){
+				LEFTBLOCK = 1;
+			} 
+		
+		}else if(LEFTBLOCK != 0){
+			printf("55555555\n");
+			dRectGatoJoe->y += 3;
+		
+			if(dRectGatoJoe->y >= 492){
+				dRectGatoJoe->y = 492;
+				LEFTBLOCK = 0;
+				*chegouTeto = 1;
+			} 
+		}else if(dRectGatoJoe->y <= 440 && LEFTBLOCK != 1){
+			printf("FLASH ");
+			SDL_Rect* v;
+			v->x = 588;
+			if(dRectGatoJoe->x > problem->x){
+				*chegouFlutua = 1;
+				movimentoBlocoNoAr(v,chegouFlutua);
+				printf("maior o gato\n");
+			}
+			else if(dRectGatoJoe->x < problem->x){
+				*chegouFlutua = 0;
+			
+				printf("maior e o bloco\n");
+			}
+			else
+				printf("Sao iguais\n");
+			printf("v->x %d\n",v->x);
+			
+		}
+	}
+
+
+
+	else{
+		
+		printf("6666\n");
+		if(LEFTBLOCK != 1){
+			printf("88888\n");
+			dRectGatoJoe->y -= 3;
+			GATOUP = 1;
+			if(dRectGatoJoe->y <= 380) LEFTBLOCK = 1;
+	
+		}else if(LEFTBLOCK != 0){
+			printf("9999999\n");
+			dRectGatoJoe->y += 3;
+
+			if(dRectGatoJoe->y >= 492){
+				dRectGatoJoe->y = 492;
+				LEFTBLOCK = 0;
+				*chegouTeto = 1;
+			} 
+		}
+	}
+}
+}
 void d(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto,Uint32 inicioGetTick){
 
 	/*
@@ -150,9 +875,9 @@ void d(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto,Uint32 in
 	*/
 
 	//sprite(inicioGetTick);
-	if(dRectGatoJoe->y > 400 && *chegouTeto != 1){ //200(400)
-
-		if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && dRectGatoJoe->y <= 492 && LEFTBLOCK != 1){
+	if(dRectGatoJoe->y > 250 && *chegouTeto != 1){ //200(400)
+		printf("gatinho %d\n",dRectGatoJoe->x-36);
+		if((dRectGatoJoe->x-38 >= 0 && dRectGatoJoe->x-38 <= 180) && dRectGatoJoe->y <= 492 && LEFTBLOCK != 1){
 			/*INÍCIO*/
 			//Para fazer um efeito de pulo mais convincente!!!
 			if(dRectGatoJoe->y <= 456){
@@ -167,7 +892,7 @@ void d(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto,Uint32 in
 			GATOUP = 1;
 			if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;//350(440)
 
-		}else if((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 240) && LEFTBLOCK != 0){
+		}else if((dRectGatoJoe->x-38 >= 0 && dRectGatoJoe->x-38 <= 180) && LEFTBLOCK != 0){
 			
 			//if(CONT > 1)
 				//dRectGatoJoe->y += (100 / 40) % inicioGetTick;
@@ -181,7 +906,11 @@ void d(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe, int* chegouTeto,Uint32 in
 				*chegouTeto = 1;	
 				//CONT = 0;
 			} 
+		}else if(LEFTBLOCK != 1){
+			dRectGatoJoe -= 3;
 		}
+
+
 
 	}
 
@@ -326,6 +1055,7 @@ void teclaRight_DontUP(SDL_Rect* catJoePosicao, SDL_Rect* catPosicao,int* bloco1
 void movimentoBlocoNoAr(SDL_Rect* obstaculosPosicao, int* chegouFlutua){
 
 	//faz o 1º bloco que está no ar se mover
+	printf("Valor de chegouFlutua is %d\n",*chegouFlutua);
 	if(obstaculosPosicao->x <= 588 && *(chegouFlutua) != 1){
 
 		obstaculosPosicao->x += 1;
