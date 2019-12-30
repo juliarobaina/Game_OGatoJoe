@@ -477,14 +477,47 @@ void diferenteRightUP(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegou
 	}
 
 }
-void diferenteRight(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe){
-	if(dRectGatoJoe->x >= 428 && dRectGatoJoe->x <= 438 /*&& dRectGatoJoe->x <= 428+107 && dRectGatoJoe->y >= 492-60*/){
-		printf("Fuuiii\n");
+void diferenteRight(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
+		
+	/*if(dRectGatoJoe->x >= 428 && dRectGatoJoe->x <= 450 && dRectGatoJoe->y < 430 && dRectGatoJoe->x <= 428+107 && dRectGatoJoe->y >= 492-60){
+		printf("naruto\n");
 		dRectGatoJoe->x -= 3;
+		GATOUP = 1;
 		if(dRectGatoJoe->y >= 492){
 			dRectGatoJoe->y = 492;
+			GATOUP = 0;
 		}
 	}
+	/*if(dRectGatoJoe->x >= 431 && dRectGatoJoe->x <= 451 && dRectGatoJoe->x > 373 && dRectGatoJoe->x <= 430){
+		printf("Fuuiii\n");
+		dRectGatoJoe->y += 3;
+		dRectGatoJoe->x += 3;
+
+		GATOUP = 1;
+		if(dRectGatoJoe->y >= 430){
+			GATOUP = 0;
+			dRectGatoJoe->y = 430;
+			*chegouTeto = 1;
+			LEFTBLOCK = 0;
+		}
+	}*/
+
+	/*if(dRectGatoJoe->x > 450 && dRectGatoJoe->x <= 518){
+		if(dRectGatoJoe->y <= 430){
+			printf("É menooooorrrrrr\n");
+			dRectGatoJoe->y += 3;
+			GATOUP = 1;
+			if(dRectGatoJoe->y >= 430){				
+				dRectGatoJoe->y = 430;
+				*chegouTeto = 1;
+				LEFTBLOCK = 0;	
+			}
+		}
+	}
+	if(dRectGatoJoe->y > 430 && dRectGatoJoe->x >= 428 && dRectGatoJoe->x <= 450){
+			printf("É maiooooorrrrrrr\n");
+			dRectGatoJoe->x -= 38;
+	}*/
 }
 void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
 	printf("Entrei %d \n",dRectGatoJoe->x);
@@ -496,17 +529,23 @@ void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
 				printf("333333333\n");
 				dRectGatoJoe->y -=3;
 				GATOUP = 1;
+				if(GATOJUMPRIGHT != 0)
+					dRectGatoJoe->x += 3;
 
 				if(dRectGatoJoe->y <= 440) LEFTBLOCK = 1;
 			
 			}else if(dRectGatoJoe->y > 300 && LEFTBLOCK != 0){
 				printf("11111111\n");
 				dRectGatoJoe->y += 3;
+
+				if(GATOJUMPRIGHT != 0)
+					dRectGatoJoe->x += 3;
 			
 				if(dRectGatoJoe->y >= 492){
 					dRectGatoJoe->y = 492;
 					LEFTBLOCK = 0;
 					*chegouTeto = 1;
+					GATOJUMPRIGHT = 0;
 				} 
 			}
 			if(dRectGatoJoe->y > 110 && dRectGatoJoe->y <= 290 && LEFTBLOCK != 1){//ERA >=
@@ -706,6 +745,9 @@ void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
 				dRectGatoJoe->y -= 3;
 				GATOUP = 1;
 
+				if(GATOJUMPRIGHT != 0)
+					dRectGatoJoe->x += 3;
+
 				if(dRectGatoJoe->y <= 22){
 					printf("Pera %d\n",dRectGatoJoe->y);
 					LEFTBLOCK = 1;
@@ -715,11 +757,15 @@ void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
 				printf("11111111\n");
 				dRectGatoJoe->y += 3;
 				
+
+				if(GATOJUMPRIGHT != 0)
+					dRectGatoJoe->x += 3;
+
 				if(dRectGatoJoe->y >= 90){
 					dRectGatoJoe->y = 90;
 					LEFTBLOCK = 0;
 					*chegouTeto = 1;
-					
+					GATOJUMPRIGHT = 0;
 				} 
 
 				
@@ -741,6 +787,27 @@ void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
 				} 
 			}
 
+		}if(dRectGatoJoe->x > 450 && dRectGatoJoe->x <= 518){//bloco terrestre
+			
+			if(dRectGatoJoe->y > 300 && LEFTBLOCK != 1){
+				
+				dRectGatoJoe->y -= 3;
+				GATOUP = 1;
+				if(dRectGatoJoe->y <= 318) LEFTBLOCK = 1;
+		
+			}else if(dRectGatoJoe->y >= 311 && LEFTBLOCK != 0){
+				
+				dRectGatoJoe->y += 3;
+
+				if(dRectGatoJoe->y >= 430){
+					dRectGatoJoe->y = 430;
+					LEFTBLOCK = 0;
+					*chegouTeto = 1;
+				} 
+			}
+
+
+			
 		}
 		else{
 			
@@ -759,6 +826,7 @@ void puloFase3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,int* chegouTeto){
 					dRectGatoJoe->y = 492;
 					LEFTBLOCK = 0;
 					*chegouTeto = 1;
+					GATOJUMPRIGHT = 0;
 				} 
 			}
 		}
@@ -1091,3 +1159,341 @@ void renderCopySprites(SDL_Renderer* renderer, Bloco* bl, PosicaoBloco* pb, int 
 	}
 }
 //teclaUP(&catJoePosicao.loadRect,&catPosicao.loadRect,&chegouTetoBlocoLeft);
+
+int lazyFoo(SDL_Rect a, SDL_Rect b){
+
+	//The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = a.x + 20;
+    a.w = 72;
+    rightA = a.x + a.w;
+    topA = a.y;
+    a.h = 91;
+    bottomA = a.y + a.h;
+
+    //Calculate the sides of rect B
+    leftB = b.x;
+    rightB = b.x + b.w;
+    topB = b.y;
+    bottomB = b.y + b.h;
+
+    if( bottomA <= topB )
+    {
+        return 0;
+    }
+
+    if( topA >= bottomB )
+    {
+        return 0;
+    }
+
+    if( rightA <= leftB )
+    {
+        return 0;
+    }
+
+    if( leftA >= rightB )
+    {
+        return 0;
+    }
+
+    //If none of the sides from A are outside B
+    return 1;	
+}
+
+void sa(SDL_Rect* dRectGatoJoe, Uint32 inicioGetTick,int op){
+	LIMITD = dRectGatoJoe->y;
+
+	printf("SASUKE %d\n",LIMITD);
+		printf("dRectGatoJoe y %d\n",
+		dRectGatoJoe->y );
+
+	/*
+		op = 1 subindo
+		op = 2 descendo
+	*/
+
+	if(op == 1){
+
+		if(dRectGatoJoe->y <= 462 && LEFTBLOCK != 1){
+
+			dRectGatoJoe->y -= (100 / 40) % inicioGetTick;
+
+		}else{
+
+			dRectGatoJoe->y -= (100 / SPRITEFPS) % inicioGetTick;
+
+			if(dRectGatoJoe->y <= 462) LEFTBLOCK = 1; 
+		}
+
+	}else if(op == 2 && LEFTBLOCK != 0){
+
+		dRectGatoJoe->y -= (100 / SPRITEFPS) % inicioGetTick;	
+
+		if(dRectGatoJoe->y >= 492){
+			dRectGatoJoe->y = 492;
+			LEFTBLOCK = 0;
+			//*chegouTeto = 1;	
+		} 
+	}
+
+	
+}
+
+void mover(SDL_Rect a, SDL_Rect b,int* mPosX,int* mPosY,int* mVelX,int* mVelY,int DOT_WIDTH, int DOT_HEIGHT,SDL_Rect mCollider){
+	//Move the dot left or right
+    *mPosX += *mVelX;
+    a.x = *mPosX;
+
+    //If the dot collided or went too far to the left or right
+    if( ( *mPosX < 0 ) || ( *mPosX + DOT_WIDTH > LARGURA_JANELA ) || lazyFoo( a, b ) )
+    {
+    	        //Move back
+        *mPosX -= *mVelX;
+        a.x = *mPosX;
+    }
+
+    //Move the dot up or down
+    *mPosY += *mVelY;
+    a.y = *mPosY;
+
+    //If the dot collided or went too far up or down
+    if( /*(* mPosY < 0 ) || ( *mPosY + DOT_HEIGHT > ALTURA_JANELA ) || */lazyFoo( a, b ) )
+    {printf("julia\n");
+
+        //Move back
+        *mPosY -= *mVelY;
+        a.y = *mPosY;
+    }
+}
+
+void mover2(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,SDL_Rect a,SDL_Rect b){
+	/*
+		a é o gato
+		b é o meu obstáculo
+	*/
+	printf("dRectGatoJoe->x %d\n",dRectGatoJoe->x);
+	if(dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 218){
+		if(dRectGatoJoe->y > b.y){
+								
+			if(lazyFoo(a, b) && BATEU_BL != 1){
+				BATEU_BL = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL != 1){
+				dRectGatoJoe->y -= 3;
+			}else if(BATEU_BL != 0){
+				
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					BATEU_BL = 0;
+				}else{
+					dRectGatoJoe->y += 3;
+				}
+			}
+		}else if(dRectGatoJoe->y < b.y){
+
+			if(lazyFoo(a, b) && BATEU_BL2 != 1){
+				BATEU_BL2 = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+				dRectGatoJoe->y += 3;
+			}else if(BATEU_BL2 != 0){
+				dRectGatoJoe->y -= 3;
+
+				if(dRectGatoJoe->y <= 178){
+					BATEU_BL2 = 0;
+				}
+			}
+
+		}
+	}
+	if(dRectGatoJoe->x >= 230 && dRectGatoJoe->x <= 402){
+		if(dRectGatoJoe->y > b.y){
+								
+			if(lazyFoo(a, b) && BATEU_BL != 1){
+				BATEU_BL = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL != 1){
+				dRectGatoJoe->y -= 3;
+			}else if(BATEU_BL != 0){
+				
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					BATEU_BL = 0;
+				}else{
+					dRectGatoJoe->y += 3;
+				}
+			}
+		}else if(dRectGatoJoe->y < b.y){
+
+			if(lazyFoo(a, b) && BATEU_BL2 != 1){
+				BATEU_BL2 = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+				
+				dRectGatoJoe->y += 3;
+			}else if(BATEU_BL2 != 0){
+				dRectGatoJoe->y -= 3;
+
+				if(dRectGatoJoe->y <= 213){
+					
+					BATEU_BL2 = 0;
+				}
+			}
+
+		}
+	}
+	if(dRectGatoJoe->x >= 540 && dRectGatoJoe->x <= 708){
+		if(dRectGatoJoe->y > b.y){
+								
+			if(lazyFoo(a, b) && BATEU_BL != 1){
+				BATEU_BL = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL != 1){
+				dRectGatoJoe->y -= 3;
+			}else if(BATEU_BL != 0){
+				
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					BATEU_BL = 0;
+				}else{
+					dRectGatoJoe->y += 3;
+				}
+			}
+		}else if(dRectGatoJoe->y < b.y){
+
+			if(lazyFoo(a, b) && BATEU_BL2 != 1){
+				BATEU_BL2 = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+				dRectGatoJoe->y += 3;
+			}else if(BATEU_BL2 != 0){
+				dRectGatoJoe->y -= 3;
+
+				if(dRectGatoJoe->y <= 213){
+					BATEU_BL2 = 0;
+				}
+			}
+
+		}
+	}
+	
+	
+
+
+}
+void mover3(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,SDL_Rect a,SDL_Rect b){
+	/*if(dRectGatoJoe->x >= 230 && dRectGatoJoe->x <= 402){
+		if(dRectGatoJoe->y > b.y){
+								
+			if(lazyFoo(a, b) && BATEU_BL != 1){
+				BATEU_BL = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL != 1){
+				dRectGatoJoe->y -= 3;
+			}else if(BATEU_BL != 0){
+				
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					BATEU_BL = 0;
+				}else{
+					dRectGatoJoe->y += 3;
+				}
+			}
+		}else if(dRectGatoJoe->y < b.y){
+
+			if(lazyFoo(a, b) && BATEU_BL2 != 1){
+				BATEU_BL2 = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+				dRectGatoJoe->y += 3;
+			}else if(BATEU_BL2 != 0){
+				dRectGatoJoe->y -= 3;
+
+				if(dRectGatoJoe->y <= 213){
+					BATEU_BL2 = 0;
+				}
+			}
+
+		}
+	}
+	if(dRectGatoJoe->x >= 540 && dRectGatoJoe->x <= 708){
+		if(dRectGatoJoe->y > b.y){
+								
+			if(lazyFoo(a, b) && BATEU_BL != 1){
+				BATEU_BL = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL != 1){
+				dRectGatoJoe->y -= 3;
+			}else if(BATEU_BL != 0){
+				
+				if(dRectGatoJoe->y >= 492){
+					dRectGatoJoe->y = 492;
+					BATEU_BL = 0;
+				}else{
+					dRectGatoJoe->y += 3;
+				}
+			}
+		}else if(dRectGatoJoe->y < b.y){
+
+			if(lazyFoo(a, b) && BATEU_BL2 != 1){
+				BATEU_BL2 = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+				dRectGatoJoe->y += 3;
+			}else if(BATEU_BL2 != 0){
+				dRectGatoJoe->y -= 3;
+
+				if(dRectGatoJoe->y <= 213){
+					BATEU_BL2 = 0;
+				}
+			}
+
+		}
+	}*/
+
+	if(dRectGatoJoe->x >= 451 && dRectGatoJoe->x <= 517){
+		if(dRectGatoJoe->y < b.y){
+
+			if(lazyFoo(a, b) && BATEU_BL2 != 1){
+				BATEU_BL2 = 1;
+			}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+				dRectGatoJoe->y += 3;
+			}else if(BATEU_BL2 != 0){
+				dRectGatoJoe->y -= 3;
+
+				if(dRectGatoJoe->y <= 318){
+					BATEU_BL2 = 0;
+				}
+			}
+		}
+	}
+}
+
+void mover4(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,SDL_Rect a,SDL_Rect b){
+	//printf("Entr\n");
+	if(dRectGatoJoe->y < b.y-a.h+10){
+		if(lazyFoo(a, b) && BATEU_BL2 != 1){
+			BATEU_BL2 = 1;
+		}else if(!(lazyFoo(a, b)) && BATEU_BL2 != 1){
+			dRectGatoJoe->y += 3;
+		}else if(BATEU_BL2 != 0){
+			dRectGatoJoe->y -= 3;
+			
+			if(dRectGatoJoe->y <= 38){
+				BATEU_BL2 = 0;
+			}
+		}
+	}
+}
+
+void mover5(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe){
+
+	if(!((dRectGatoJoe->x >= 0 && dRectGatoJoe->x <= 218) || (dRectGatoJoe->x >= 230 && dRectGatoJoe->x <= 402) || 
+		(dRectGatoJoe->x >= 540 && dRectGatoJoe->x <= 708) || (dRectGatoJoe->x >= 451 && dRectGatoJoe->x <= 517) ))
+		dRectGatoJoe->y -= 3;
+}
+
+void mover6(SDL_Rect* dRectGatoJoe, SDL_Rect* sRectGatoJoe,SDL_Rect a,SDL_Rect b){
+	
+	if(lazyFoo(a, b) && dRectGatoJoe->y > b.y-a.h+10){
+		dRectGatoJoe->x -= 3;
+	}
+	else
+		dRectGatoJoe->x += 3;
+}
