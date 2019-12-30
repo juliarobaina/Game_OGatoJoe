@@ -152,8 +152,8 @@ int main(){
 
 				catJoePosicao.loadRect.w = 100;
 				catJoePosicao.loadRect.h = 100;
-				catJoePosicao.loadRect.x = 468;		
-				catJoePosicao.loadRect.y = 430;
+				catJoePosicao.loadRect.x = 545;		
+				catJoePosicao.loadRect.y = 350;
 				//ALTURA_JANELA - catPosicao.loadRect.h - 28;
 				//380-72
 				
@@ -264,10 +264,10 @@ int main(){
 				while(fechar != 1){
 					
 					inicioGetTick = SDL_GetTicks();//tempo em milisegundos
-					if(lazyFoo(catJoePosicao.loadRect, caixaBlocoChao.loadRect))
-						printf("Colisão caixaBlocoRight2 %d\n",catJoePosicao.loadRect.x);
-					else
-						printf("Not Function caixaBlocoRight2\n");
+					//if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRight2.loadRect))
+						//printf("Colisão caixaBlocoRight2 %d\n",catJoePosicao.loadRect.x);
+					//else
+						//printf("Not Function caixaBlocoRight2\n");
 					
 					/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft2.loadRect))
 						printf("Colisão caixaBlocoLeft2\n");
@@ -302,7 +302,8 @@ int main(){
 						//diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
 						//d(&catJoePosicao.loadRect, &catPosicao.loadRect, &chegouTetoBlocoLeft,inicioGetTick);
 						//diferente(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft,&bigBlocoMovel.loadRect,&chegouFlutua);
-						
+						//mover3(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
+
 					}
 					
 					
@@ -313,13 +314,13 @@ int main(){
 						if(event.type == SDL_KEYDOWN){
 						
 							if(state[SDL_SCANCODE_UP]){
-
+								printf("resposta %d\n",catJoePosicao.loadRect.x);
 								mover2(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
 								mover2(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft2.loadRect);
 								mover2(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
 								mover3(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
 								mover4(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight.loadRect);
-								mover5(&catJoePosicao.loadRect, &catPosicao.loadRect);
+								mover5(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight.loadRect);
 								/*if(catJoePosicao.loadRect.y > caixaBlocoLeft.loadRect.y){
 								
 									if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect) && BATEU_BL != 1){
@@ -358,12 +359,56 @@ int main(){
 							}
 							if(state[SDL_SCANCODE_RIGHT] && !(state[SDL_SCANCODE_UP])){
 								//catJoePosicao.loadRect.x += 2;
-								mover6(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
+								//mover6(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
+								//mover7(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft2.loadRect);
+								//mover8(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
+								//mover6(&catJoePosicao.loadRect, &catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight.loadRect);
 								//diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect,&chegouTetoBlocoLeft);
+								/*if(lazyFoo(catJoePosicao.loadRect,caixaBlocoChao.loadRect) || lazyFoo(catJoePosicao.loadRect,caixaBlocoLeft2.loadRect)
+									|| lazyFoo(catJoePosicao.loadRect,caixaBlocoRight2.loadRect) || lazyFoo(catJoePosicao.loadRect,caixaBlocoRight.loadRect)){
+									
+									catJoePosicao.loadRect.x = 218;
+									catJoePosicao.loadRect.x -= 6;
+									printf("ggggggggggggggg\n");
+								}else
+									catJoePosicao.loadRect.x += 3;
+								*/
+								if(lazyFoo(catJoePosicao.loadRect,caixaBlocoLeft2.loadRect)){
+									printf("DEU?\n");
+									catJoePosicao.loadRect.x = 230;
+									catJoePosicao.loadRect.x -= 6;
+									if(lazyFoo(catJoePosicao.loadRect,caixaBlocoLeft.loadRect)){
+										printf("DEU tambem? \n");
+										catJoePosicao.loadRect.x = 218;
+										catJoePosicao.loadRect.x += 6;
+									}
+								}else if(lazyFoo(catJoePosicao.loadRect,caixaBlocoChao.loadRect)){
+										
+											catJoePosicao.loadRect.x -= 6;
+											
+										
+									if(lazyFoo(catJoePosicao.loadRect,caixaBlocoLeft2.loadRect)){
+										
+										catJoePosicao.loadRect.x = 402;
+										catJoePosicao.loadRect.x += 6;
+									}
+
+								}else if(lazyFoo(catJoePosicao.loadRect,caixaBlocoRight2.loadRect)){
+									//catJoePosicao.loadRect.x = 545;
+									catJoePosicao.loadRect.x -= 6;
+
+
+								}else if(lazyFoo(catJoePosicao.loadRect,caixaBlocoRight.loadRect)){
+									//catJoePosicao.loadRect.x = 708;
+									catJoePosicao.loadRect.x -= 6;
+								}else{
+									catJoePosicao.loadRect.x += 3;
+								}
+
 							}
 							
 							if(state[SDL_SCANCODE_LEFT] && !(state[SDL_SCANCODE_UP])){
-								catJoePosicao.loadRect.x -= 2;
+								catJoePosicao.loadRect.x -= 3;
 
 								//diferenteRight(&catJoePosicao.loadRect, &catPosicao.loadRect);
 							}
