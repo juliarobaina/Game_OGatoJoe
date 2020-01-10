@@ -29,6 +29,15 @@ typedef struct posicaoHeroi{
 	SDL_Rect loadRect;
 }PosicaoHeroi;
 
+typedef struct caixa{
+	//int width;
+	//int height;
+	//int posIni, posFim;
+	//int posY;
+	//int posX;
+	//int tamImg;
+	int x,y,w,h;
+}Caixa;
 
 int GATODOWN = 0;
 int GATOUP = 0;
@@ -36,7 +45,15 @@ int LEFTBLOCK = 0;
 int GATOJUMPRIGHT = 0;
 int BIGBLOCO1AR = 0;
 int LIMITD;
-//int CONT = 0;
+int BATEU_BL = 0;
+int BATEU_BL2 = 0;
+int BATEU_BL3 = 0;
+int GATORIGHT = 0;
+int BATEU_BL4 = 0;
+
+int PODEDESCER = 0;
+int PODEANDAR = 0;
+int BLOQUEIA_CAT = 0;
 
 	SDL_Texture *carregarTextura(SDL_Renderer *render,char *pathImage);
 	void controlFrameRate(Uint32 inicioGetTick);
