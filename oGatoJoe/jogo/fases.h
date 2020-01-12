@@ -12,6 +12,10 @@
 #define FPS 60
 #define SPRITEFPS 30
 
+//isso e para bidu e teste3.c
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+
 typedef struct bloco{
 	SDL_Texture* loadBloco;
 	//struct listaB* prox;
@@ -54,6 +58,22 @@ int BATEU_BL4 = 0;
 int PODEDESCER = 0;
 int PODEANDAR = 0;
 int BLOQUEIA_CAT = 0;
+
+int GATOMORREU = 0;
+//isso e para bidu e teste3.c
+//SDL_Window *window = NULL;
+//SDL_Texture *backgroundTextura = NULL;
+//SDL_Renderer *renderer = NULL;
+//isso e para bidu e teste3.c
+//inicio do GetTicks
+//Uint32 inicioGetTick;
+//isso e para teste2.c
+//int FIM_FASE1 = 0;
+//int FIM_FASE2 = 0;
+//isso e para bidu e teste3.c
+
+//SDL_Event event;
+//e acabou aqui bidu.c e teste3.c
 
 	SDL_Texture *carregarTextura(SDL_Renderer *render,char *pathImage);
 	void controlFrameRate(Uint32 inicioGetTick);

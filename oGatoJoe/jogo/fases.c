@@ -493,3 +493,65 @@ void naoPassaDoLimiteDaJanela(SDL_Rect* dRectGatoJoe){
 		dRectGatoJoe->x += 6;
 
 }
+
+int movimentoInimigo(SDL_Rect* dRectDog,SDL_Rect* sRectDog,int* chegou,int vivo){
+	
+	//faz o 1º bloco que está no ar se mover
+	printf("Valor de chegouFlutua is %d\n",*chegou);
+
+    //...
+
+
+    
+
+	if(vivo){
+		
+		if(dRectDog->x <= 895 && *(chegou) != 1){//586 895
+
+			dRectDog->x += 1;
+			
+			moveSpriteCatRight(sRectDog);
+		}else{
+			
+			moveSpriteCatLeft(sRectDog);
+
+			if(dRectDog->x >= 895){
+				*(chegou) = 1;
+			}
+
+			if(dRectDog->x <= 586){
+				*(chegou) = 0;
+			}
+
+			dRectDog->x -= 1;
+		}
+
+
+	}else{
+		return 0;
+	}
+
+	return 1;
+
+}
+
+void gatoMorreu(SDL_Rect* dRectGatoJoe,SDL_Rect* dRectDog, SDL_Rect a,SDL_Rect b,SDL_Rect* sRectGatoJoe){
+
+
+	if(GATOMORREU == 0){
+		if(lazyFoo(a,b)){
+
+			sRectGatoJoe->y = 400;
+			sRectGatoJoe->x = 900;
+
+
+			
+
+			printf("GATO MORREU\n");
+			GATOMORREU = 1;
+		}
+	}
+
+
+
+}
