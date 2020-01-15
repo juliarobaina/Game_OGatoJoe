@@ -315,8 +315,8 @@ int main(){
 				SDL_Rect jogarRect2;
 				SDL_Rect jogarRect3;
 				SDL_Rect jogarRect4;
-				int contador = 60;
-				int c2 = 1;
+				int contador = 60;//contador recebe o total de segundos que eu quero que o timer faça; 60 = 1 min, 180 = 3min
+				int c2 = 1;//Auxilia o controle de quando vai haver o decremento de contador. Pra ficar no tempo certo :)
 				Uint32 start = SDL_GetTicks();
 				int min;
 				int seg;
@@ -339,9 +339,9 @@ int main(){
 						SDL_QueryTexture(jogarTexto,NULL,NULL,&jogarRect.w,&jogarRect.h);
 						SDL_FreeSurface(jogarSurface);
 						jogarSurface = NULL;*/
-
-				   		//para minutos
-				   		
+					
+				/* ---------------- INÍCIO DO TIMER -----------------------*/
+				   		//para minutos				   		
 				   		if(contador < 60){
 				   			min = 0;
 				   			seg = contador;
@@ -349,10 +349,11 @@ int main(){
 				   		}
 				   		else{
 				   			min = contador / 60;
-				   			seg =  contador % 60; //contador - (60 * (min - 1));contador - 60 
+				   			seg =  contador % 60;
 				   		}
 
-				   		sprintf(st,"%d",min);
+				   		sprintf(st,"%d",min);//sprintf-> converte inteiro, float,etc para string
+						//Tem que mudar o nome das variáveis. jogar...3 é para os minutos
 				   		jogarSurface3 = TTF_RenderUTF8_Solid(font,st,color);
 						jogarRect3.x = 210;
 						jogarRect3.y = 100;//- (jogarSurface->h/2);
@@ -363,6 +364,7 @@ int main(){
 						SDL_FreeSurface(jogarSurface3);
 						jogarSurface3 = NULL;
 
+						//jogar...4 separador
 						jogarSurface4 = TTF_RenderUTF8_Solid(font,":",color);
 						jogarRect4.x = 240;
 						jogarRect4.y = 100;//- (jogarSurface->h/2);
@@ -375,10 +377,11 @@ int main(){
 
 						sprintf(pokemon,"%d",seg);
 						printf("pokemon %s\n",pokemon );
-						if((c2 % 60) == 0)
+						if((c2 % 60) == 0)//Vai contar de forma decrescente
 							contador--;
 						c2++;
 						
+						//jogar...2 é para os segundos
 						jogarSurface2 = TTF_RenderUTF8_Solid(font,pokemon,color);
 						jogarRect2.x = 260;//230
 						jogarRect2.y = 100;//- (jogarSurface->h/2);
@@ -390,6 +393,7 @@ int main(){
 						jogarSurface2 = NULL;
 
 						if(seg < 10){
+							//pra inserir o '0' quando os segundos for menor que 10
 							jogarRect2.x = 280;
 							
 							jogarSurface = TTF_RenderUTF8_Solid(font,"0",color);
@@ -402,15 +406,18 @@ int main(){
 							SDL_FreeSurface(jogarSurface);
 							jogarSurface = NULL;
 						}else{
+							//remove o '0' da tela
 							jogarTexto = NULL;
 							
 						}
 						
 
-						if(contador < 0){
+						if(contador < 0){//Chegou a 0, terminou o jogo
 							printf("\n********** GAME OVER ************** \n");
 							fechar = 1;
 						}
+					
+					/* ---------------- FIM DO TIMER -----------------------*/
 				   // }
 				  	//else{
 				  		/*strncpy(st2, st, 2);
