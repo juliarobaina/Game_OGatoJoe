@@ -1,7 +1,4 @@
 
-
-#define LARGURA_JANELA2 1400
-#define ALTURA_JANELA2 820
 int fase3(){
 
 	
