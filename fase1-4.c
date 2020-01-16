@@ -1,7 +1,4 @@
 #include "fases.c"
-float tempo_de_jogo;
-float comecarjogo();
-float timer(); 
 
 int main(){
 
@@ -44,10 +41,6 @@ int main(){
 
 	//Controlar eventos
 	SDL_Event event;
-	SDL_Texture *jogarTexto = NULL;
-	SDL_Texture *jogarTexto2 = NULL;
-	SDL_Texture *jogarTexto3 = NULL;
-	SDL_Texture *jogarTexto4 = NULL;
 
 	
 
@@ -143,7 +136,7 @@ int main(){
 				obstaculosPosicao[3].loadRect.w = 150;
 				obstaculosPosicao[3].loadRect.h = 60;
 				obstaculosPosicao[3].loadRect.x = obstaculosPosicao[1].loadRect.x - 145;
-				obstaculosPosicao[3].loadRect.y = 150;
+				obstaculosPosicao[3].loadRect.y = 150;//150
 
 				
 
@@ -158,8 +151,8 @@ int main(){
 
 				catJoePosicao.loadRect.w = 100;
 				catJoePosicao.loadRect.h = 100;
-				catJoePosicao.loadRect.x = 700;		
-				catJoePosicao.loadRect.y = 405;
+				catJoePosicao.loadRect.x = 10;		
+				catJoePosicao.loadRect.y = 492;
 				//GATOMORREU = 1;
 				//ALTURA_JANELA - catPosicao.loadRect.h - 28;
 				//380-72
@@ -284,172 +277,21 @@ int main(){
 					do lazy foo
 
 				*/
-				//Inicando ttf para usar texto
-				if(TTF_Init() < 0){
-					printf("Error no TTF %s\n",TTF_GetError());
-				}
 				
-				//Carregando fonte
-				TTF_Font *font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",40);
-				//cor do mouse quando tem hover
-				SDL_Color color = {155,155,255,255};
-				//surface com codificacao utf-8 para aceitar acento
-				SDL_Surface *jogarSurface = NULL;
-				SDL_Surface *jogarSurface2 = NULL;
-				SDL_Surface *jogarSurface3 = NULL;
-				SDL_Surface *jogarSurface4 = NULL;
-				
-				
-
-				/*SDL_QueryTexture(jogarTexto,NULL,NULL,&jogarRect.w,&jogarRect.h);
-				SDL_FreeSurface(jogarSurface);
-				jogarSurface = NULL;*/
 				int dogVaiVolta = 0;
 				int vivo = 1;
-				int str;
-				char st[2];
-				char st2[3];
-				char pokemon[3];
-				char* hj;
-				SDL_Rect jogarRect;
-				SDL_Rect jogarRect2;
-				SDL_Rect jogarRect3;
-				SDL_Rect jogarRect4;
-				int contador = 60;
+				
 				int c2 = 1;
-				Uint32 start = SDL_GetTicks();
-				int min;
-				int seg;
 				while(fechar != 1){
-					
-					Uint32 num = SDL_GetTicks() - start;
-					
-				   //	sprintf(st,"%d",num);
-				   	
-				    //strncpy(st2, st, 2);
-				  	//printf("Tempo: %s |||||||||||||||||| mundo paralelo: %s\n",st,st2);
-				  	//if(num < 10000){
-				  		/*printf("Tempo: %s |||||||||||||||||| mundo paralelo: %s\n",st,"0");
-				  		jogarSurface = TTF_RenderUTF8_Solid(font,"0",color);
-						jogarRect.x = 200;
-						jogarRect.y = 100;//- (jogarSurface->h/2);
-						jogarRect.w = 500;
-						jogarRect.h = 500;
-						jogarTexto = SDL_CreateTextureFromSurface(renderer,jogarSurface);
-						SDL_QueryTexture(jogarTexto,NULL,NULL,&jogarRect.w,&jogarRect.h);
-						SDL_FreeSurface(jogarSurface);
-						jogarSurface = NULL;*/
 
-				   		//para minutos
-				   		
-				   		if(contador < 60){
-				   			min = 0;
-				   			seg = contador;
-				   			
-				   		}
-				   		else{
-				   			min = contador / 60;
-				   			seg =  contador % 60; //contador - (60 * (min - 1));contador - 60 
-				   		}
-
-				   		sprintf(st,"%d",min);
-				   		jogarSurface3 = TTF_RenderUTF8_Solid(font,st,color);
-						jogarRect3.x = 210;
-						jogarRect3.y = 100;//- (jogarSurface->h/2);
-						jogarRect3.w = 500;
-						jogarRect3.h = 500;
-						jogarTexto3 = SDL_CreateTextureFromSurface(renderer,jogarSurface3);
-						SDL_QueryTexture(jogarTexto3,NULL,NULL,&jogarRect3.w,&jogarRect3.h);
-						SDL_FreeSurface(jogarSurface3);
-						jogarSurface3 = NULL;
-
-						jogarSurface4 = TTF_RenderUTF8_Solid(font,":",color);
-						jogarRect4.x = 240;
-						jogarRect4.y = 100;//- (jogarSurface->h/2);
-						jogarRect4.w = 500;
-						jogarRect4.h = 500;
-						jogarTexto4 = SDL_CreateTextureFromSurface(renderer,jogarSurface4);
-						SDL_QueryTexture(jogarTexto4,NULL,NULL,&jogarRect4.w,&jogarRect4.h);
-						SDL_FreeSurface(jogarSurface4);
-						jogarSurface4 = NULL;
-
-						sprintf(pokemon,"%d",seg);
-						printf("pokemon %s\n",pokemon );
-						if((c2 % 60) == 0)
-							contador--;
-						c2++;
-						
-						jogarSurface2 = TTF_RenderUTF8_Solid(font,pokemon,color);
-						jogarRect2.x = 260;//230
-						jogarRect2.y = 100;//- (jogarSurface->h/2);
-						jogarRect2.w = 500;
-						jogarRect2.h = 500;
-						jogarTexto2 = SDL_CreateTextureFromSurface(renderer,jogarSurface2);
-						SDL_QueryTexture(jogarTexto2,NULL,NULL,&jogarRect2.w,&jogarRect2.h);
-						SDL_FreeSurface(jogarSurface2);
-						jogarSurface2 = NULL;
-
-						if(seg < 10){
-							jogarRect2.x = 280;
-							
-							jogarSurface = TTF_RenderUTF8_Solid(font,"0",color);
-							jogarRect.x = 255;
-							jogarRect.y = 100;//- (jogarSurface->h/2);
-							jogarRect.w = 500;
-							jogarRect.h = 500;
-							jogarTexto = SDL_CreateTextureFromSurface(renderer,jogarSurface);
-							SDL_QueryTexture(jogarTexto,NULL,NULL,&jogarRect.w,&jogarRect.h);
-							SDL_FreeSurface(jogarSurface);
-							jogarSurface = NULL;
-						}else{
-							jogarTexto = NULL;
-							
-						}
-						
-
-						if(contador < 0){
-							printf("\n********** GAME OVER ************** \n");
-							fechar = 1;
-						}
-				   // }
-				  	//else{
-				  		/*strncpy(st2, st, 2);
-				  		
-				      	printf("Tempo: %s |||||||||||||||||| mundo paralelo: %s\n",st,st2);
-				      	jogarSurface = TTF_RenderUTF8_Solid(font,st2,color);
-						jogarRect.x = 200;
-						jogarRect.y = 100;
-						jogarRect.w = 500;
-						jogarRect.h = 500;
-						jogarTexto = SDL_CreateTextureFromSurface(renderer,jogarSurface);
-						SDL_QueryTexture(jogarTexto,NULL,NULL,&jogarRect.w,&jogarRect.h);
-						SDL_FreeSurface(jogarSurface);
-						jogarSurface = NULL;*/
-
-				  	//}
-
-				      	
-
-				   /* if(num < 100000){
-				    	num = 100000;
-				    }
-				    	//printf("Valor %d\n",num);
-				    	SDL_Delay(1000);*/
-
-				   
-				  	
-
-						
-					
-			
 					printf("I'm here x= %d y= %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
 					//printf("BATEU_BL=%d -- BATEU_BL2=%d -- bateu_bl3=%d -- bateu_bl4=%d\n",BATEU_BL,BATEU_BL2,BATEU_BL3,BATEU_BL4);
 					//printf("gatoup = %d\n",GATOUP);
 					inicioGetTick = SDL_GetTicks();//tempo em milisegundos
-					
 					movimentoInimigo(&dRect_inimigoPos.loadRect,&sRect_inimigoPos.loadRect,&dogVaiVolta,vivo);
+					
 					caixaInimigo.loadRect.x = dRect_inimigoPos.loadRect.x;
-						caixaInimigo.loadRect.y = dRect_inimigoPos.loadRect.y;
+					caixaInimigo.loadRect.y = dRect_inimigoPos.loadRect.y;
 					gatoMorreu(&catJoePosicao.loadRect,&dRect_inimigoPos.loadRect, catJoePosicao.loadRect,dRect_inimigoPos.loadRect,&catPosicao.loadRect);
 		
 					
@@ -503,23 +345,28 @@ int main(){
 							cair(&catJoePosicao.loadRect);
 							arrow(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
 							felicity(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
+							turtle(&catJoePosicao.loadRect);
 						}else{
-							if(catJoePosicao.loadRect.x >= 449 && catJoePosicao.loadRect.x <= 526 && catJoePosicao.loadRect.y < 432){
-								catJoePosicao.loadRect.y += 3;
-								if(catPosicao.loadRect.y == 900)
-									catJoePosicao.loadRect.x -= 1;
+							if(!BLOQUEIA_CAT){
+								if(catJoePosicao.loadRect.x >= 449 && catJoePosicao.loadRect.x <= 526 && catJoePosicao.loadRect.y < 432){
+									
+									catJoePosicao.loadRect.y += 3;
+									if(catPosicao.loadRect.y == 900)
+										catJoePosicao.loadRect.x -= 1;
 
-								if(catJoePosicao.loadRect.y >= 432)
-									catJoePosicao.loadRect.y = 432;
-								
+									if(catJoePosicao.loadRect.y >= 432)
+										catJoePosicao.loadRect.y = 432;
+									
+								}
 							}
+							
 							henry(&catJoePosicao.loadRect);
 
 							neal(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,&caixaBlocoRacao2.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,caixaBlocoRacao2.loadRect,racao,&sinalR,&sinalR2,renderer);
 						}
 
 						if(PODEDESCER){
-							obstaculosPosicao[3].loadRect.y += 3;
+							//obstaculosPosicao[3].loadRect.y += 3;
 
 							if(obstaculosPosicao[3].loadRect.y >= 409){
 								obstaculosPosicao[3].loadRect.y = 409;
@@ -550,6 +397,61 @@ int main(){
 								BATEU_BL3 = 0;
 
 							}
+
+							if(racao[1].loadBloco == NULL){
+								
+								//obstaculosPosicao[3].loadRect.y -= 1;
+								if(catJoePosicao.loadRect.x >= 197 && catJoePosicao.loadRect.x <= 323){
+									
+									if(catJoePosicao.loadRect.y >= 327){
+										catJoePosicao.loadRect.y = 327;
+										BLOQUEIA_CAT = 1;
+
+									}else if(BLOQUEIA_CAT == 0){
+										catJoePosicao.loadRect.y += 3;
+									}
+								}
+								
+								if(BLOQUEIA_CAT){
+
+									if(obstaculosPosicao[3].loadRect.y > 175){
+										
+										obstaculosPosicao[3].loadRect.y -= 2;
+										catJoePosicao.loadRect.y -= 2;
+										if(obstaculosPosicao[3].loadRect.y <= 175){
+											obstaculosPosicao[3].loadRect.y = 175;
+											catJoePosicao.loadRect.y = 90;
+										}
+										
+										
+										//BLOQUEIA_CAT = 1;
+
+									}else if(obstaculosPosicao[3].loadRect.y == 175){
+
+										obstaculosPosicao[3].loadRect.x += 2;
+										catJoePosicao.loadRect.x += 2;
+										if(obstaculosPosicao[3].loadRect.x >= 616){
+											obstaculosPosicao[3].loadRect.x = 616;
+											///PODEANDAR = 0;
+											BLOQUEIA_CAT = 0;
+										}
+									}
+								}
+
+
+								//if(obstaculosPosicao[3].loadRect.y >= 372){
+									
+								//	obstaculosPosicao[3].loadRect.y = 372;
+								//	caixaBlocoMovel2.loadRect.y = 10;
+									//BLOQUEIA_CAT = 1;
+								//}
+								
+							}else{
+								if(obstaculosPosicao[3].loadRect.x == 235)
+									obstaculosPosicao[3].loadRect.y = 409;
+								else
+									obstaculosPosicao[3].loadRect.y += 3;
+							}
 						}
 
 						
@@ -562,7 +464,7 @@ int main(){
 							
 								if(state[SDL_SCANCODE_UP]){
 
-									if(GATOMORREU){
+									if(GATOMORREU || BLOQUEIA_CAT){
 
 									}else{
 										GATOUP = 1;
@@ -573,6 +475,7 @@ int main(){
 										cair(&catJoePosicao.loadRect);
 										arrow(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
 										felicity(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
+										turtle(&catJoePosicao.loadRect);
 
 									}
 									
@@ -627,6 +530,7 @@ int main(){
 									
 										soneca(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
 										
+										august_left(&catJoePosicao.loadRect,racao);
 
 										moveSpriteCatLeft(&catPosicao.loadRect);
 										
@@ -646,17 +550,13 @@ int main(){
 							}
 
 						}
-
 					
 
 					//Limpando tela
 					SDL_RenderClear(renderer);
 					//background
 					SDL_RenderCopy(renderer,backgroundTextura,NULL,NULL);
-					SDL_RenderCopy(renderer,jogarTexto,NULL,&jogarRect);
-					SDL_RenderCopy(renderer,jogarTexto2,NULL,&jogarRect2);
-					SDL_RenderCopy(renderer,jogarTexto3,NULL,&jogarRect3);
-					SDL_RenderCopy(renderer,jogarTexto4,NULL,&jogarRect4);
+					
 					//Blocos esquerdos
 					renderCopySprites(renderer, blocosLeft, blocosPosicaoLeft, 4);
 					//Blocos direitos
@@ -680,11 +580,8 @@ int main(){
 					SDL_RenderPresent(renderer);
 					//Frame Rate
 					controlFrameRate(inicioGetTick);
-					
-					/*if((SDL_GetTicks() - start) >= 60000){
-						printf("60s\n");
-						exit(1);
-					}*/
+
+
 				}
 
 			}//else da IMG
@@ -719,14 +616,7 @@ int main(){
 
 	SDL_DestroyTexture(inimigo.loadBloco);
 	inimigo.loadBloco = NULL;
-	SDL_DestroyTexture(jogarTexto);
-	jogarTexto = NULL;
-	SDL_DestroyTexture(jogarTexto2);
-	jogarTexto2 = NULL;
-	SDL_DestroyTexture(jogarTexto3);
-	jogarTexto3 = NULL;
-	SDL_DestroyTexture(jogarTexto4);
-	jogarTexto4 = NULL;
+
 
 	for(int i = 0;i < 8; i++){
 		SDL_DestroyTexture(chao[i].loadBloco);
@@ -753,21 +643,7 @@ int main(){
 	
 	IMG_Quit();
 	SDL_Quit();
-	TTF_Quit();
+
 
 	return 0;
 }
-
-
-	float comecarjogo(){
-		float start_timer;
-		tempo_de_jogo = 0;
-		start_timer = SDL_GetTicks();
-		return start_timer;
-	}
-
-	float timer(){
-
-		tempo_de_jogo = SDL_GetTicks() - comecarjogo();
-		return tempo_de_jogo;
-	}
