@@ -443,9 +443,9 @@ void august_left(SDL_Rect* dRectGatoJoe,Bloco* racaoB){
 		dRectGatoJoe->x += 6;
 }
 
-void neal(SDL_Rect* dRectGatoJoe,SDL_Rect* racaoRect,SDL_Rect* racaoRect2,SDL_Rect a,SDL_Rect b,SDL_Rect c,Bloco* racaoB,Bloco* sinalR,Bloco* sinalR2,SDL_Renderer* renderer){
+void neal(SDL_Rect* dRectGatoJoe,SDL_Rect* racaoRect,SDL_Rect* racaoRect2,SDL_Rect* racaoRect3,SDL_Rect a,SDL_Rect b,SDL_Rect c,SDL_Rect d,Bloco* racaoB,Bloco* sinalR,Bloco* sinalR2,SDL_Renderer* renderer){
 
-	if(lazyFoo(a,b)	&& dRectGatoJoe->x >= 575 && dRectGatoJoe->x <= 588){
+	if(lazyFoo(a,b)	&& dRectGatoJoe->x >= 575 && dRectGatoJoe->x <= 602){//575 && 588
 		racaoRect->x = 8000;
 		racaoRect->y = 8000;
 		racaoRect->w = 0;
@@ -467,10 +467,17 @@ void neal(SDL_Rect* dRectGatoJoe,SDL_Rect* racaoRect,SDL_Rect* racaoRect2,SDL_Re
 		racaoB[1].loadBloco = NULL;
 		sinalR2->loadBloco = NULL;
 		sinalR2->loadBloco = carregarTextura(renderer,"../img/sinalGreen.png");
-		//if(racaoB[1].loadBloco == NULL)
-		//	printf("String iguais\n");
-		//PODEDESCER = 1;
-		//BLOQUEIA_CAT = 1;
+	}
+
+	if(lazyFoo(a,d)){
+		
+
+		racaoRect3->x = 8000;
+		racaoRect3->y = 8000;
+		racaoRect3->w = 0;
+		racaoRect3->h = 0;
+
+		racaoB[2].loadBloco = NULL;
 	}
 }
 
@@ -612,6 +619,25 @@ void gatoMorreu(SDL_Rect* dRectGatoJoe,SDL_Rect* dRectDog, SDL_Rect a,SDL_Rect b
 		}
 	}
 
+
+
+}
+
+int venceu(SDL_Rect* dRectGatoJoe,SDL_Rect* leiteRect,SDL_Rect a,SDL_Rect b,Bloco* leiteB){
+
+	if(lazyFoo(a,b)){
+		leiteRect->x = 8000;
+		leiteRect->y = 8000;
+		leiteRect->w = 0;
+		leiteRect->h = 0;
+
+		leiteB->loadBloco = NULL;
+		printf("Voce ganhou, PARABÉNS!!!!!!!!!!!!\n");
+
+
+		return 6;
+
+	}
 
 
 }

@@ -36,8 +36,11 @@ int main(){
 	Bloco sinalR2;
 	PosicaoBloco sinalRPos2;
 
-	Bloco racao[2];
-	PosicaoBloco racaoPos[2];
+	Bloco racao[3];
+	PosicaoBloco racaoPos[3];
+
+	Bloco leite;
+	PosicaoBloco leitePos;
 
 	//Controlar eventos
 	SDL_Event event;
@@ -185,6 +188,15 @@ int main(){
 				racaoPos[1].loadRect.x = 100;
 				racaoPos[1].loadRect.y = 355;
 
+				racao[2].loadBloco = carregarTextura(renderer,"../img/racao.png");
+				
+				racaoPos[2].loadRect.w = 30;
+				racaoPos[2].loadRect.h = 30;
+				racaoPos[2].loadRect.x = 880;
+				racaoPos[2].loadRect.y = 400;
+
+				
+
 				inimigo.loadBloco = carregarTextura(renderer,"../img/dogOnly.png");
 
 				sRect_inimigoPos.loadRect.w = 100;
@@ -196,6 +208,12 @@ int main(){
 				dRect_inimigoPos.loadRect.h = 100;
 				dRect_inimigoPos.loadRect.x = 895;
 				dRect_inimigoPos.loadRect.y = 492;
+
+				leite.loadBloco = carregarTextura(renderer,"../img/leite.png");
+				leitePos.loadRect.w = 80;
+				leitePos.loadRect.h = 64;
+				leitePos.loadRect.y = 100;
+				leitePos.loadRect.x = 850;
 				
 
 				//int limiteChao = ALTURA_JANELA - catPosicao.loadRect.h - 28;//492
@@ -256,9 +274,9 @@ int main(){
 				caixaBlocoMovel2.loadRect.h = 60;
 
 				PosicaoBloco caixaBlocoRacao1;
-				caixaBlocoRacao1.loadRect.x = 605;
+				caixaBlocoRacao1.loadRect.x = 610;//605
 				caixaBlocoRacao1.loadRect.y = 392;
-				caixaBlocoRacao1.loadRect.w = 1;
+				caixaBlocoRacao1.loadRect.w = 30;//1
 				caixaBlocoRacao1.loadRect.h = 30;
 
 				PosicaoBloco caixaBlocoRacao2;
@@ -267,9 +285,22 @@ int main(){
 				caixaBlocoRacao2.loadRect.w = 1;
 				caixaBlocoRacao2.loadRect.h = 30;
 
+				PosicaoBloco caixaBlocoRacao3;
+				caixaBlocoRacao3.loadRect.x = 898;
+				caixaBlocoRacao3.loadRect.y = 400;
+				caixaBlocoRacao3.loadRect.w = 3;
+				caixaBlocoRacao3.loadRect.h = 30;
+
 				PosicaoBloco caixaInimigo;
 				caixaInimigo.loadRect.w = 100;
 				caixaInimigo.loadRect.h = 100;
+
+
+				PosicaoBloco caixaLeite;
+				caixaLeite.loadRect.x = 870;
+				caixaLeite.loadRect.y = 100;
+				caixaLeite.loadRect.w = 16;
+				caixaLeite.loadRect.h = 64;
 
 				/*CRIANDO AS CAIXAS DE COLISÃO*/
 				
@@ -280,8 +311,10 @@ int main(){
 				
 				int dogVaiVolta = 0;
 				int vivo = 1;
+				int rotornoVenceu = 0;
 				
 				int c2 = 1;
+				int venceuFase1 = 0;
 				while(fechar != 1){
 
 					printf("I'm here x= %d y= %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
@@ -298,7 +331,7 @@ int main(){
 
 
 						
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRacao2.loadRect))
+						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRacao3.loadRect))
 							printf("Colisão caixaBlocoRight2 %d\n",catJoePosicao.loadRect.x);
 						/*else
 							printf("Not Function caixaBlocoRight2\n");*/
@@ -346,6 +379,9 @@ int main(){
 							arrow(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
 							felicity(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
 							turtle(&catJoePosicao.loadRect);
+							neal(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,&caixaBlocoRacao2.loadRect,
+								&caixaBlocoRacao3.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,
+								caixaBlocoRacao2.loadRect,caixaBlocoRacao3.loadRect,racao,&sinalR,&sinalR2,renderer);
 						}else{
 							if(!BLOQUEIA_CAT){
 								if(catJoePosicao.loadRect.x >= 449 && catJoePosicao.loadRect.x <= 526 && catJoePosicao.loadRect.y < 432){
@@ -362,7 +398,13 @@ int main(){
 							
 							henry(&catJoePosicao.loadRect);
 
-							neal(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,&caixaBlocoRacao2.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,caixaBlocoRacao2.loadRect,racao,&sinalR,&sinalR2,renderer);
+							neal(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,&caixaBlocoRacao2.loadRect,
+								&caixaBlocoRacao3.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,
+								caixaBlocoRacao2.loadRect,caixaBlocoRacao3.loadRect,racao,&sinalR,&sinalR2,renderer);
+
+							venceuFase1 = venceu(&catJoePosicao.loadRect,&caixaLeite.loadRect,catJoePosicao.loadRect,caixaLeite.loadRect,&leite);
+							if(venceuFase1 == 6)
+								fechar = 1;
 						}
 
 						if(PODEDESCER){
@@ -437,6 +479,7 @@ int main(){
 										}
 									}
 								}
+
 
 
 								//if(obstaculosPosicao[3].loadRect.y >= 372){
@@ -568,13 +611,15 @@ int main(){
 	
 					renderCopySprites(renderer, &sinalR, &sinalRPos, 1);
 					renderCopySprites(renderer, &sinalR2, &sinalRPos2, 1);
-					renderCopySprites(renderer, racao, racaoPos, 2);
+					renderCopySprites(renderer, racao, racaoPos, 3);
 
 					//Gato Joe
 					SDL_RenderCopy(renderer,catJoe.loadBloco,&catPosicao.loadRect,&catJoePosicao.loadRect);
 
 					//Iniigo (Cachorro)
 					SDL_RenderCopy(renderer,inimigo.loadBloco,&sRect_inimigoPos.loadRect,&dRect_inimigoPos.loadRect);
+					renderCopySprites(renderer, &leite, &leitePos, 1);
+					
 
 					//Imprimindo na tela
 					SDL_RenderPresent(renderer);
@@ -613,9 +658,13 @@ int main(){
 	racao[0].loadBloco = NULL;
 	SDL_DestroyTexture(racao[1].loadBloco);
 	racao[1].loadBloco = NULL;
-
+	SDL_DestroyTexture(racao[2].loadBloco);
+	racao[2].loadBloco = NULL;
+	
 	SDL_DestroyTexture(inimigo.loadBloco);
 	inimigo.loadBloco = NULL;
+	SDL_DestroyTexture(leite.loadBloco);
+	leite.loadBloco = NULL;
 
 
 	for(int i = 0;i < 8; i++){
