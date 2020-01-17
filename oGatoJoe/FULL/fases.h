@@ -61,6 +61,7 @@ int BLOQUEIA_CAT = 0;
 
 int GATOMORREU = 0;
 int VIDASGATO = 3;
+int PONTUACAO = 0;
 //isso e para bidu e teste3.c
 SDL_Window *window = NULL;
 SDL_Texture *backgroundTextura = NULL;

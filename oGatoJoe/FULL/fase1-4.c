@@ -69,6 +69,15 @@ int main(){
 	SDL_Surface *vidaSurface = NULL;
 	SDL_Rect vidaRect;
 
+	Bloco coin[5];
+	PosicaoBloco dRectCoin[5];
+	PosicaoBloco sRectCoin[5];
+	Bloco coinImg;
+	PosicaoBloco coinImgPos;
+	SDL_Texture *coinTextura = NULL;
+	SDL_Surface *coinSurface = NULL;
+	SDL_Rect coinRect;
+
 	//Controlar eventos
 	//SDL_Event event;
 
@@ -118,6 +127,32 @@ int main(){
 					timerImgPos.loadRect.x = 800;
 					timerImgPos.loadRect.y = 10;
 
+					for(int i = 0; i < 5; i++){
+						coin[i].loadBloco = carregarTextura(renderer,"../img/coin.png");
+						dRectCoin[i].loadRect.w = 32;
+						dRectCoin[i].loadRect.h = 32;
+						sRectCoin[i].loadRect.w = 32;
+						sRectCoin[i].loadRect.h = 32;
+						sRectCoin[i].loadRect.x = 0;
+						sRectCoin[i].loadRect.y = 0;
+					}
+
+					dRectCoin[0].loadRect.x = 270;
+					dRectCoin[0].loadRect.y = 472;
+
+					dRectCoin[1].loadRect.x = 302;
+					dRectCoin[1].loadRect.y = 472;
+
+					dRectCoin[2].loadRect.x = 290;
+					dRectCoin[2].loadRect.y = 280;
+
+					dRectCoin[3].loadRect.x = 630;
+					dRectCoin[3].loadRect.y = 492;
+
+					dRectCoin[4].loadRect.x = 500;
+					dRectCoin[4].loadRect.y = 80;
+
+					
 					//int limiteChao = ALTURA_JANELA - catPosicao.loadRect.h - 28;//492
 
 					//Controla GameLoop
@@ -196,6 +231,34 @@ int main(){
 					caixaLeite.loadRect.w = 16;
 					caixaLeite.loadRect.h = 64;
 
+					PosicaoBloco caixaCoin[5];
+					caixaCoin[0].loadRect.x = 284;//tam+10, também tem +14
+					caixaCoin[0].loadRect.y = 472;
+					caixaCoin[0].loadRect.w = 6;//tam-22(10), também 6
+					caixaCoin[0].loadRect.h = 32;
+
+					caixaCoin[1].loadRect.x = 316;
+					caixaCoin[1].loadRect.y = 472;
+					caixaCoin[1].loadRect.w = 6;
+					caixaCoin[1].loadRect.h = 32;
+
+					caixaCoin[2].loadRect.x = 304;
+					caixaCoin[2].loadRect.y = 280;
+					caixaCoin[2].loadRect.w = 6;
+					caixaCoin[2].loadRect.h = 32;
+
+					caixaCoin[3].loadRect.x = 644;
+					caixaCoin[3].loadRect.y = 492;
+					caixaCoin[3].loadRect.w = 6;
+					caixaCoin[3].loadRect.h = 32;
+
+					caixaCoin[4].loadRect.x = 514;
+					caixaCoin[4].loadRect.y = 80;
+					caixaCoin[4].loadRect.w = 6;
+					caixaCoin[4].loadRect.h = 32;
+
+
+
 					/*CRIANDO AS CAIXAS DE COLISÃO*/
 					
 					int dogVaiVolta = 0;
@@ -219,11 +282,11 @@ int main(){
 					TTF_Font *font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",22);
 					TTF_Font *faseFont = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",30);
 					//cor do mouse quando tem hover
-					SDL_Color color = {155,155,255,255};
+					SDL_Color color = {00,36,220,255};//22,22,248,255-00,36,220,255
 
 					//Para exibir em que fase está
 					faseSurface = TTF_RenderUTF8_Solid(faseFont,"Fase 1",color);
-					faseRect.x = 500;
+					faseRect.x = 500 - 40;
 					faseRect.y = 6;
 					faseRect.w = 40;
 					faseRect.h = 40;
@@ -246,6 +309,23 @@ int main(){
 					vidaRect.w = 40;
 					vidaRect.h = 40;
 
+
+					//imagem da  contagem de moedas
+					coinImg.loadBloco = carregarTextura(renderer,"../img/coinPoint.png");
+					coinImgPos.loadRect.w = 42;//42
+					coinImgPos.loadRect.h = 39;
+					coinImgPos.loadRect.x = 200;
+					coinImgPos.loadRect.y = 6;
+
+					//indicação de quantas vidas há
+					char moeda[2];
+					coinRect.x = 248;
+					coinRect.y = 6;
+					coinRect.w = 40;
+					coinRect.h = 40;
+					int frameTime = 0;
+					
+
 					while(fechar != 1){
 						if(VIDASGATO > 0){
 
@@ -255,6 +335,12 @@ int main(){
 							SDL_QueryTexture(vidaTextura,NULL,NULL,&vidaRect.w,&vidaRect.h);
 							SDL_FreeSurface(vidaSurface);
 							vidaSurface = NULL;
+							sprintf(moeda,"%d",PONTUACAO);
+							coinSurface = TTF_RenderUTF8_Solid(faseFont,moeda,color);
+							coinTextura = SDL_CreateTextureFromSurface(renderer,coinSurface);
+							SDL_QueryTexture(coinTextura,NULL,NULL,&coinRect.w,&coinRect.h);
+							SDL_FreeSurface(coinSurface);
+							coinSurface = NULL;
 
 
 
@@ -335,20 +421,49 @@ int main(){
 
 						/* FIM DO CONTADOR */
 
+						frameTime++;
+						if(FPS / frameTime == 6){
+							frameTime = 0;
+							for(int i = 0;i < 5; i++){
+							
+								sRectCoin[i].loadRect.x += 32;
+								if(sRectCoin[i].loadRect.x > 164)
+									sRectCoin[i].loadRect.x = 0;
+							}
+						}
+						pegarMoeda(caixaCoin,coin,catJoePosicao.loadRect,caixaCoin,5);
+						
+						//moveInimigoRight(&frameTimeDog,&sRect_inimigoPos.loadRect);
+						/*if(FPS / frameTimeDog == 10){
+							frameTimeDog = 0;
+							sRect_inimigoPos.loadRect.x += 100;
+							if(sRect_inimigoPos.loadRect.x >= 1000)
+								sRect_inimigoPos.loadRect.x = 0;
+						}*/
+						/*if((SDL_GetTicks() - inicioGetTick)  < ((1000 / 60) - (SDL_GetTicks() - inicioGetTick) ) ){
+							printf("%d - %d\n",(SDL_GetTicks() - inicioGetTick),SDL_GetTicks());
+							sRectCoin.loadRect.x += 32;
+							if(sRectCoin.loadRect.x > 164)
+								sRectCoin.loadRect.x = 0;
+						}*/
+
 						printf("I'm here x= %d y= %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
 						
 						inicioGetTick = SDL_GetTicks();//tempo em milisegundos
 						
-
+						//dRect_inimigoPos.loadRect.x += 300.0 * (SDL_GetTicks() - inicioGetTick);
 						movimentoInimigo(&dRect_inimigoPos.loadRect,&sRect_inimigoPos.loadRect,&dogVaiVolta,vivo);
 						
 						caixaInimigo.loadRect.x = dRect_inimigoPos.loadRect.x;
 						caixaInimigo.loadRect.y = dRect_inimigoPos.loadRect.y;
 						gatoMorreu(&catJoePosicao.loadRect,&dRect_inimigoPos.loadRect, catJoePosicao.loadRect,dRect_inimigoPos.loadRect,
-							&catPosicao.loadRect,obstaculosPosicao,&caixaBlocoMovel2,&sinalR,racao,&caixaBlocoRacao1);
+							&catPosicao.loadRect,obstaculosPosicao,&caixaBlocoMovel2,&sinalR,racao,&caixaBlocoRacao1,&caixaBlocoRacao3,caixaCoin,coin);
 			
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRacao3.loadRect))
-							printf("Colisão caixaBlocoRight2 %d\n",catJoePosicao.loadRect.x);
+						for(int i = 0; i < 5;i++){
+							if(lazyFoo(catJoePosicao.loadRect, caixaCoin[i].loadRect))
+								printf("Colisão moeda DINDIN %d\n",catJoePosicao.loadRect.x);
+						
+						}
 						
 						
 						naoPassaDoLimiteDaJanela(&catJoePosicao.loadRect);
@@ -614,6 +729,12 @@ int main(){
 						renderCopySprites(renderer, &vidaImg, &vidaImgPos, 1);
 						//vida qtd
 						SDL_RenderCopy(renderer,vidaTextura,NULL,&vidaRect);
+						//moeda
+						for(int i = 0;i < 5;i++)
+							SDL_RenderCopy(renderer,coin[i].loadBloco,&sRectCoin[i].loadRect,&dRectCoin[i].loadRect);
+
+						renderCopySprites(renderer, &coinImg, &coinImgPos, 1);
+						SDL_RenderCopy(renderer,coinTextura,NULL,&coinRect);
 
 						//Imprimindo na tela
 						SDL_RenderPresent(renderer);
@@ -659,6 +780,16 @@ int main(){
 	vidaImg.loadBloco = NULL;
 	SDL_DestroyTexture(vidaTextura);
 	vidaTextura = NULL;
+	for(int i = 0;i < 5;i++){
+		SDL_DestroyTexture(coin[i].loadBloco);
+		coin[i].loadBloco = NULL;
+	}
+	SDL_DestroyTexture(coinImg.loadBloco);
+	coinImg.loadBloco = NULL;
+	SDL_DestroyTexture(coinTextura);
+	coinTextura = NULL;
+	
+
 
 	IMG_Quit();
 	SDL_Quit();

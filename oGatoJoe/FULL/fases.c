@@ -602,7 +602,8 @@ int movimentoInimigo(SDL_Rect* dRectDog,SDL_Rect* sRectDog,int* chegou,int vivo)
 
 }
 
-void reiniciar(PosicaoBloco* obstaculosPosicao, PosicaoBloco* caixaBlocoMovel2, SDL_Rect* dRectGatoJoe,Bloco* sinalR,Bloco* racao, PosicaoBloco* racaoPos){
+void reiniciar(PosicaoBloco* obstaculosPosicao, PosicaoBloco* caixaBlocoMovel2, SDL_Rect* dRectGatoJoe,
+	Bloco* sinalR,Bloco* racao, PosicaoBloco* racaoPos1,PosicaoBloco* racaoPos3,PosicaoBloco* coinRect,Bloco* coinB){
 	
 	obstaculosPosicao[3].loadRect.y = 150;
 	caixaBlocoMovel2->loadRect.y = 155;
@@ -618,21 +619,61 @@ void reiniciar(PosicaoBloco* obstaculosPosicao, PosicaoBloco* caixaBlocoMovel2, 
 	PODEANDAR = 0;
 	BLOQUEIA_CAT = 0;
 	GATOMORREU = 0;
+	PONTUACAO = 0;
 
 	sinalR->loadBloco = NULL;
 	sinalR->loadBloco = carregarTextura(renderer,"../img/sinalRed.png");
 
-	racao[0].loadBloco = carregarTextura(renderer,"../img/racao.png");			
-	racaoPos->loadRect.w = 30;
-	racaoPos->loadRect.h = 30;
-	racaoPos->loadRect.x = 620;
-	racaoPos->loadRect.y = 392;			
+	if(racao[0].loadBloco == NULL){
+		racao[0].loadBloco = carregarTextura(renderer,"../img/racao.png");			
+		racaoPos1->loadRect.w = 30;
+		racaoPos1->loadRect.h = 30;
+		racaoPos1->loadRect.x = 610;
+		racaoPos1->loadRect.y = 392;	
+	}
+	if(racao[2].loadBloco == NULL){
+		racao[2].loadBloco = carregarTextura(renderer,"../img/racao.png");			
+		racaoPos3->loadRect.w = 3;
+		racaoPos3->loadRect.h = 30;
+		racaoPos3->loadRect.x = 898;
+		racaoPos3->loadRect.y = 400;	
+	}
 
+
+
+	for(int i = 0; i < 5; i++)
+		coinB[i].loadBloco = carregarTextura(renderer,"../img/coin.png");	
+
+	coinRect[0].loadRect.x = 284;//tam+10, também tem +14
+	coinRect[0].loadRect.y = 472;
+	coinRect[0].loadRect.w = 6;//tam-22(10), também 6
+	coinRect[0].loadRect.h = 32;
+
+	coinRect[1].loadRect.x = 316;
+	coinRect[1].loadRect.y = 472;
+	coinRect[1].loadRect.w = 6;
+	coinRect[1].loadRect.h = 32;
+
+	coinRect[2].loadRect.x = 304;
+	coinRect[2].loadRect.y = 280;
+	coinRect[2].loadRect.w = 6;
+	coinRect[2].loadRect.h = 32;
+
+	coinRect[3].loadRect.x = 644;
+	coinRect[3].loadRect.y = 492;
+	coinRect[3].loadRect.w = 6;
+	coinRect[3].loadRect.h = 32;
+
+	coinRect[4].loadRect.x = 514;
+	coinRect[4].loadRect.y = 80;
+	coinRect[4].loadRect.w = 6;
+	coinRect[4].loadRect.h = 32;
 
 }
 
 void gatoMorreu(SDL_Rect* dRectGatoJoe,SDL_Rect* dRectDog, SDL_Rect a,SDL_Rect b,SDL_Rect* sRectGatoJoe,
-	PosicaoBloco* obstaculosPosicao, PosicaoBloco* caixaBlocoMovel2,Bloco* sinalR,Bloco* racao, PosicaoBloco* racaoPos){
+	PosicaoBloco* obstaculosPosicao, PosicaoBloco* caixaBlocoMovel2,Bloco* sinalR,Bloco* racao,
+	PosicaoBloco* racaoPos1,PosicaoBloco* racaoPos3,PosicaoBloco* coinRect,Bloco* coinB){
 
 
 	if(GATOMORREU == 0){
@@ -645,7 +686,7 @@ void gatoMorreu(SDL_Rect* dRectGatoJoe,SDL_Rect* dRectDog, SDL_Rect a,SDL_Rect b
 			}else{
 				VIDASGATO -= 1;
 				if(VIDASGATO > 0)
-					reiniciar(obstaculosPosicao,caixaBlocoMovel2,dRectGatoJoe,sinalR,racao,racaoPos);
+					reiniciar(obstaculosPosicao,caixaBlocoMovel2,dRectGatoJoe,sinalR,racao,racaoPos1,racaoPos3,coinRect,coinB);
 			}
 			
 
@@ -839,7 +880,7 @@ void iniciarInimigo(Bloco* inimigo,PosicaoBloco* sRect_inimigoPos,PosicaoBloco* 
 
 	sRect_inimigoPos->loadRect.w = 100;
 	sRect_inimigoPos->loadRect.h = 100;
-	sRect_inimigoPos->loadRect.x = 0;//880
+	sRect_inimigoPos->loadRect.x = 100;//880
 	sRect_inimigoPos->loadRect.y = 100;//990
 
 	dRect_inimigoPos->loadRect.w = 100;
@@ -934,6 +975,25 @@ int iniciarTTF(){
 		return 0;
 	}else
 		return 1;
+}
+
+void pegarMoeda(PosicaoBloco* coinRect,Bloco* coinB,SDL_Rect a,PosicaoBloco* b,int max){
+	
+	for(int i = 0; i < max; i++){
+		if(lazyFoo(a,b[i].loadRect)){
+			coinRect[i].loadRect.x = 8000;
+			coinRect[i].loadRect.y = 8000;
+			coinRect[i].loadRect.w = 0;
+			coinRect[i].loadRect.h = 0;
+
+			coinB[i].loadBloco = NULL;
+
+			PONTUACAO++;
+			printf("\n\n\n\n\n\n\n\nTotal pontuacao: %d\n\n\n\n\n\n\n\n\n",PONTUACAO);
+		}
+	}
+	
+	
 }
 
 
