@@ -2,14 +2,14 @@
 
 int main(){
 
-	SDL_Window *window = NULL;
-	SDL_Texture *backgroundTextura = NULL;
+	//SDL_Window *window = NULL;
+	//SDL_Texture *backgroundTextura = NULL;
 	//SDL_Texture *blocos = NULL;
-	SDL_Renderer *renderer = NULL;
+	//SDL_Renderer *renderer = NULL;
 	SDL_Texture *sinal = NULL;
 	SDL_Texture *caixa = NULL;
 	SDL_Texture *gatoJoe = NULL;
-	//SDL_Texture *cao = NULL;
+	
 	Bloco chao[8];
 	PosicaoBloco chaoPosicao[8];
 
@@ -42,332 +42,282 @@ int main(){
 	Bloco leite;
 	PosicaoBloco leitePos;
 
+	Bloco timerImg;
+	PosicaoBloco timerImgPos;
+	SDL_Texture *zeroTexto = NULL;
+	SDL_Texture *minTexto = NULL;
+	SDL_Texture *sepaTexto = NULL;
+	SDL_Texture *segTexto = NULL;
+
+	SDL_Surface *minSurface = NULL;
+	SDL_Surface *sepaSurface = NULL;
+	SDL_Surface *segSurface = NULL;
+	SDL_Surface *zeroSurface = NULL;
+
+	SDL_Rect minRect;
+	SDL_Rect segRect;
+	SDL_Rect sepaRect;
+	SDL_Rect zeroRect;
+
+	SDL_Texture* fase;
+	SDL_Surface* faseSurface;
+	SDL_Rect faseRect;
+
 	//Controlar eventos
-	SDL_Event event;
+	//SDL_Event event;
 
 	
+	if(iniciarSDL()){
+		window = criarJanela();
 
-	if(SDL_Init(SDL_INIT_EVERYTHING) < 0){
-
-		printf("Error ao iniciar SDL %s\n",SDL_GetError());
-
-	}else{
-		//Criando janela
-		window = SDL_CreateWindow("Menu",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGURA_JANELA,ALTURA_JANELA,SDL_WINDOW_SHOWN);
-
-		if(window == NULL){
-
-			printf("Error na janela %s\n",SDL_GetError());
-
-		}else{
-			//Inicializa IMG_Load()
-			if(IMG_Init(IMG_INIT_PNG) < 0){
-
-				printf("Erro ao iniciar IMG_INIT %s\n",IMG_GetError());
-
-			}else{
-				//criando renderer
-				renderer = SDL_CreateRenderer(window,-1,0);
-
-				//criando textura da imagem de fundo
-				backgroundTextura = carregarTextura(renderer,"../img/BG.png");
-				
-				//criar Chão
-				for(int i = 0; i < 8;i++){
-					chao[i].loadBloco = carregarTextura(renderer,"../img/bloco.png");	
-					chaoPosicao[i].loadRect.w = 125;
-					chaoPosicao[i].loadRect.h = 60;
-					
-					if(i == 0)
-						chaoPosicao[0].loadRect.x = 0;
-					else
-						chaoPosicao[i].loadRect.x = chaoPosicao[i - 1].loadRect.x + 125;
-					
-					chaoPosicao[i].loadRect.y = 580;
-				}
-
-				//criar blocos esquerdos
-				for(int i = 0; i < 4;i++){
-					blocosLeft[i].loadBloco = carregarTextura(renderer,"../img/bloco.png");	
-					blocosPosicaoLeft[i].loadRect.w = 60;
-					blocosPosicaoLeft[i].loadRect.h = 60;
-					
-					if(i == 0)
-						blocosPosicaoLeft[0].loadRect.x = 0;
-					else
-						blocosPosicaoLeft[i].loadRect.x = blocosPosicaoLeft[i - 1].loadRect.x + 60;
-					
-					blocosPosicaoLeft[i].loadRect.y = 380;
-				}
-
-				
-
-
-				//criar blocos direitos
-				for(int i = 0; i < 4;i++){
-					blocosRight[i].loadBloco = carregarTextura(renderer,"../img/bloco.png");	
-					blocosPosicaoRight[i].loadRect.w = 60;
-					blocosPosicaoRight[i].loadRect.h = 60;
-					
-					if(i == 0)
-						blocosPosicaoRight[i].loadRect.x = 940;
-					else
-						blocosPosicaoRight[i].loadRect.x = blocosPosicaoRight[i - 1].loadRect.x - 60;
-					
-					blocosPosicaoRight[i].loadRect.y = 180;
-				}
-
-				//obstáculo terrestre
-				obstaculos[0].loadBloco = carregarTextura(renderer,"../img/bloco.png");
-				obstaculosPosicao[0].loadRect.w = 60;
-				obstaculosPosicao[0].loadRect.h = 60;
-				obstaculosPosicao[0].loadRect.x = 500;
-				obstaculosPosicao[0].loadRect.y = 520;
-
-				obstaculos[1].loadBloco = carregarTextura(renderer,"../img/bloco.png");
-				obstaculosPosicao[1].loadRect.w = 60;
-				obstaculosPosicao[1].loadRect.h = 60;
-				obstaculosPosicao[1].loadRect.x = 580;
-				obstaculosPosicao[1].loadRect.y = 415;
-				obstaculos[2].loadBloco = carregarTextura(renderer,"../img/bloco.png");
-				obstaculosPosicao[2].loadRect.w = 60;
-				obstaculosPosicao[2].loadRect.h = 60;
-				obstaculosPosicao[2].loadRect.x = obstaculosPosicao[1].loadRect.x + 60;
-				obstaculosPosicao[2].loadRect.y = 415;
-
-				obstaculos[3].loadBloco = carregarTextura(renderer,"../img/flutua1_1.png");
-				obstaculosPosicao[3].loadRect.w = 150;
-				obstaculosPosicao[3].loadRect.h = 60;
-				obstaculosPosicao[3].loadRect.x = obstaculosPosicao[1].loadRect.x - 145;
-				obstaculosPosicao[3].loadRect.y = 150;//150
-
-				
-
-
-				//Gato Joe, herói do jogo
-				catJoe.loadBloco = carregarTextura(renderer,"../img/gato.png");
-				catPosicao.loadRect.w = 100;
-				catPosicao.loadRect.h = 100;
-				catPosicao.loadRect.x = 0;
-				catPosicao.loadRect.y = 0;
-
-
-				catJoePosicao.loadRect.w = 100;
-				catJoePosicao.loadRect.h = 100;
-				catJoePosicao.loadRect.x = 10;		
-				catJoePosicao.loadRect.y = 492;
-				//GATOMORREU = 1;
-				//ALTURA_JANELA - catPosicao.loadRect.h - 28;
-				//380-72
-
-				sinalR.loadBloco = carregarTextura(renderer,"../img/sinalRed.png");
-				
-				sinalRPos.loadRect.w = 60;
-				sinalRPos.loadRect.h = 60;
-				sinalRPos.loadRect.x = 650;
-				sinalRPos.loadRect.y = 356;
-
-				sinalR2.loadBloco = carregarTextura(renderer,"../img/sinalRed.png");
-				
-				sinalRPos2.loadRect.w = 60;
-				sinalRPos2.loadRect.h = 60;
-				sinalRPos2.loadRect.x = 40;
-				sinalRPos2.loadRect.y = 320;
-
-				racao[0].loadBloco = carregarTextura(renderer,"../img/racao.png");
-				
-				racaoPos[0].loadRect.w = 30;
-				racaoPos[0].loadRect.h = 30;
-				racaoPos[0].loadRect.x = 620;
-				racaoPos[0].loadRect.y = 392;
-
-				racao[1].loadBloco = carregarTextura(renderer,"../img/racao.png");
-				
-				racaoPos[1].loadRect.w = 30;
-				racaoPos[1].loadRect.h = 30;
-				racaoPos[1].loadRect.x = 100;
-				racaoPos[1].loadRect.y = 355;
-
-				racao[2].loadBloco = carregarTextura(renderer,"../img/racao.png");
-				
-				racaoPos[2].loadRect.w = 30;
-				racaoPos[2].loadRect.h = 30;
-				racaoPos[2].loadRect.x = 880;
-				racaoPos[2].loadRect.y = 400;
-
-				
-
-				inimigo.loadBloco = carregarTextura(renderer,"../img/dogOnly.png");
-
-				sRect_inimigoPos.loadRect.w = 100;
-				sRect_inimigoPos.loadRect.h = 100;
-				sRect_inimigoPos.loadRect.x = 0;//880
-				sRect_inimigoPos.loadRect.y = 100;//990
-
-				dRect_inimigoPos.loadRect.w = 100;
-				dRect_inimigoPos.loadRect.h = 100;
-				dRect_inimigoPos.loadRect.x = 895;
-				dRect_inimigoPos.loadRect.y = 492;
-
-				leite.loadBloco = carregarTextura(renderer,"../img/leite.png");
-				leitePos.loadRect.w = 80;
-				leitePos.loadRect.h = 64;
-				leitePos.loadRect.y = 100;
-				leitePos.loadRect.x = 850;
-				
-
-				//int limiteChao = ALTURA_JANELA - catPosicao.loadRect.h - 28;//492
-				//Controla GameLoop
-				int fechar = 0;
-				//parametros botao
-				int x,y;
-				//inicio do GetTicks
-				Uint32 inicioGetTick;
-
-				//Controlar eventos
-				SDL_Event event;
-				
-				float flPreviousTime = 0;
-				float flCurrentTime = SDL_GetTicks();
-
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-
-				const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-				int bloco1X = 536;
-				int bloco1L = 128;
-				int blocoH = 538;
-
-				int bigBloco1 = 480;
-				/*CRIANDO AS CAIXAS DE COLISÃO*/
-				PosicaoBloco caixaBlocoLeft;
-				caixaBlocoLeft.loadRect.x = 0;
-				caixaBlocoLeft.loadRect.y = 385;//380
-				caixaBlocoLeft.loadRect.w = 240;
-				caixaBlocoLeft.loadRect.h = 60;
-
-				PosicaoBloco caixaBlocoChao;
-				caixaBlocoChao.loadRect.x = 510;//500-510
-				caixaBlocoChao.loadRect.y = 525;//520
-				caixaBlocoChao.loadRect.w = 42;//60 - 42
-				caixaBlocoChao.loadRect.h = 60;
-
-			
-
-				PosicaoBloco caixaBlocoRight2;
-				caixaBlocoRight2.loadRect.x = 585;//585
-				caixaBlocoRight2.loadRect.y = 418;//418
-				caixaBlocoRight2.loadRect.w = 100;
-				caixaBlocoRight2.loadRect.h = 50;
-
-				PosicaoBloco caixaBlocoRight;
-				caixaBlocoRight.loadRect.x = 760;
-				caixaBlocoRight.loadRect.y = 180;
-				caixaBlocoRight.loadRect.w = 240;
-				caixaBlocoRight.loadRect.h = 60;
-
-
-				PosicaoBloco caixaBlocoMovel2;
-				caixaBlocoMovel2.loadRect.x = 408;//464
-				caixaBlocoMovel2.loadRect.y = 155;//155
-				caixaBlocoMovel2.loadRect.w = 140;
-				caixaBlocoMovel2.loadRect.h = 60;
-
-				PosicaoBloco caixaBlocoRacao1;
-				caixaBlocoRacao1.loadRect.x = 610;//605
-				caixaBlocoRacao1.loadRect.y = 392;
-				caixaBlocoRacao1.loadRect.w = 30;//1
-				caixaBlocoRacao1.loadRect.h = 30;
-
-				PosicaoBloco caixaBlocoRacao2;
-				caixaBlocoRacao2.loadRect.x = 110;
-				caixaBlocoRacao2.loadRect.y = 355;
-				caixaBlocoRacao2.loadRect.w = 1;
-				caixaBlocoRacao2.loadRect.h = 30;
-
-				PosicaoBloco caixaBlocoRacao3;
-				caixaBlocoRacao3.loadRect.x = 898;
-				caixaBlocoRacao3.loadRect.y = 400;
-				caixaBlocoRacao3.loadRect.w = 3;
-				caixaBlocoRacao3.loadRect.h = 30;
-
-				PosicaoBloco caixaInimigo;
-				caixaInimigo.loadRect.w = 100;
-				caixaInimigo.loadRect.h = 100;
-
-
-				PosicaoBloco caixaLeite;
-				caixaLeite.loadRect.x = 870;
-				caixaLeite.loadRect.y = 100;
-				caixaLeite.loadRect.w = 16;
-				caixaLeite.loadRect.h = 64;
-
-				/*CRIANDO AS CAIXAS DE COLISÃO*/
-				
-				/*
-					do lazy foo
-
-				*/
-				
-				int dogVaiVolta = 0;
-				int vivo = 1;
-				int rotornoVenceu = 0;
-				
-				int c2 = 1;
-				int venceuFase1 = 0;
-				while(fechar != 1){
-
-					printf("I'm here x= %d y= %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
-					//printf("BATEU_BL=%d -- BATEU_BL2=%d -- bateu_bl3=%d -- bateu_bl4=%d\n",BATEU_BL,BATEU_BL2,BATEU_BL3,BATEU_BL4);
-					//printf("gatoup = %d\n",GATOUP);
-					inicioGetTick = SDL_GetTicks();//tempo em milisegundos
-					movimentoInimigo(&dRect_inimigoPos.loadRect,&sRect_inimigoPos.loadRect,&dogVaiVolta,vivo);
-					
-					caixaInimigo.loadRect.x = dRect_inimigoPos.loadRect.x;
-					caixaInimigo.loadRect.y = dRect_inimigoPos.loadRect.y;
-					gatoMorreu(&catJoePosicao.loadRect,&dRect_inimigoPos.loadRect, catJoePosicao.loadRect,dRect_inimigoPos.loadRect,&catPosicao.loadRect);
+		if(window != NULL){
 		
+			if(iniciarIMG()){
+
+				if(iniciarTTF()){//Inicando ttf para usar texto
+
+
+
+					//criando renderer
+					renderer = SDL_CreateRenderer(window,-1,0);
+
+					//criando textura da imagem de fundo
+					backgroundTextura = carregarTextura(renderer,"../img/BG.png");
 					
+					criarChao(chao,chaoPosicao);
+
+					criarBlocosEsquerdos(blocosLeft, blocosPosicaoLeft);
+
+					criarBlocosDireitos(blocosRight, blocosPosicaoRight);
+
+					iniciarObstaculos(obstaculos, obstaculosPosicao);
+					
+					//Gato Joe, herói do jogo
+					iniciarGato(&catJoe,&catPosicao,&catJoePosicao);
+					
+					//GATOMORREU = 1;
+					//ALTURA_JANELA - catPosicao.loadRect.h - 28;
+					//380-72
+					iniciarSinais(&sinalR,&sinalR2,&sinalRPos,&sinalRPos2);
+					
+					iniciarRacao(racao,racaoPos);
+					
+					iniciarInimigo(&inimigo,&sRect_inimigoPos,&dRect_inimigoPos);
+
+					iniciarLeite(&leite,&leitePos);
+
+					timerImg.loadBloco = carregarTextura(renderer,"../img/timer8.png");
+					timerImgPos.loadRect.w = 25;
+					timerImgPos.loadRect.h = 25;
+					timerImgPos.loadRect.x = 800;
+					timerImgPos.loadRect.y = 10;
+
+					//int limiteChao = ALTURA_JANELA - catPosicao.loadRect.h - 28;//492
+
+					//Controla GameLoop
+					int fechar = 0;
+					//parametros botao
+					int x,y;
+					//inicio do GetTicks
+					//Uint32 inicioGetTick;
+					//Controlar eventos
+					//SDL_Event event;
+					
+					SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
+					const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+					/*CRIANDO AS CAIXAS DE COLISÃO*/
+					PosicaoBloco caixaBlocoLeft;
+					caixaBlocoLeft.loadRect.x = 0;
+					caixaBlocoLeft.loadRect.y = 385;//380
+					caixaBlocoLeft.loadRect.w = 240;
+					caixaBlocoLeft.loadRect.h = 60;
+
+					PosicaoBloco caixaBlocoChao;
+					caixaBlocoChao.loadRect.x = 510;//500-510
+					caixaBlocoChao.loadRect.y = 525;//520
+					caixaBlocoChao.loadRect.w = 42;//60 - 42
+					caixaBlocoChao.loadRect.h = 60;
+
+				
+
+					PosicaoBloco caixaBlocoRight2;
+					caixaBlocoRight2.loadRect.x = 585;//585
+					caixaBlocoRight2.loadRect.y = 418;//418
+					caixaBlocoRight2.loadRect.w = 100;
+					caixaBlocoRight2.loadRect.h = 50;
+
+					PosicaoBloco caixaBlocoRight;
+					caixaBlocoRight.loadRect.x = 760;
+					caixaBlocoRight.loadRect.y = 180;
+					caixaBlocoRight.loadRect.w = 240;
+					caixaBlocoRight.loadRect.h = 60;
 
 
+					PosicaoBloco caixaBlocoMovel2;
+					caixaBlocoMovel2.loadRect.x = 408;//464
+					caixaBlocoMovel2.loadRect.y = 155;//155
+					caixaBlocoMovel2.loadRect.w = 140;
+					caixaBlocoMovel2.loadRect.h = 60;
+
+					PosicaoBloco caixaBlocoRacao1;
+					caixaBlocoRacao1.loadRect.x = 610;//605
+					caixaBlocoRacao1.loadRect.y = 392;
+					caixaBlocoRacao1.loadRect.w = 30;//1
+					caixaBlocoRacao1.loadRect.h = 30;
+
+					PosicaoBloco caixaBlocoRacao2;
+					caixaBlocoRacao2.loadRect.x = 110;
+					caixaBlocoRacao2.loadRect.y = 355;
+					caixaBlocoRacao2.loadRect.w = 1;
+					caixaBlocoRacao2.loadRect.h = 30;
+
+					PosicaoBloco caixaBlocoRacao3;
+					caixaBlocoRacao3.loadRect.x = 898;
+					caixaBlocoRacao3.loadRect.y = 400;
+					caixaBlocoRacao3.loadRect.w = 3;
+					caixaBlocoRacao3.loadRect.h = 30;
+
+					PosicaoBloco caixaInimigo;
+					caixaInimigo.loadRect.w = 100;
+					caixaInimigo.loadRect.h = 100;
+
+
+					PosicaoBloco caixaLeite;
+					caixaLeite.loadRect.x = 870;
+					caixaLeite.loadRect.y = 100;
+					caixaLeite.loadRect.w = 16;
+					caixaLeite.loadRect.h = 64;
+
+					/*CRIANDO AS CAIXAS DE COLISÃO*/
+					
+					int dogVaiVolta = 0;
+					int vivo = 1;
+					int rotornoVenceu = 0;
+					
+					//int c2 = 1;
+					int venceuFase1 = 0;
+
+					const Uint8* keyState;
+				
+					int contador = 60;//contador recebe o total de segundos que eu quero que o timer faça; 60 = 1 min, 180 = 3min
+					int c2 = 1;//Auxilia o controle de quando vai haver o decremento de contador. Pra ficar no tempo certo :)
+					int min;
+					int seg;
+					char st[2];
+					char st2[3];
+					char pokemon[3];
+
+					//Carregando fonte
+					TTF_Font *font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",22);
+					TTF_Font *faseFont = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",30);
+					//cor do mouse quando tem hover
+					SDL_Color color = {155,155,255,255};
+
+					//Para exibir em que fase está
+					faseSurface = TTF_RenderUTF8_Solid(faseFont,"Fase 1",color);
+					faseRect.x = 500;
+					faseRect.y = 6;
+					faseRect.w = 40;
+					faseRect.h = 40;
+					fase = SDL_CreateTextureFromSurface(renderer,faseSurface);
+					SDL_QueryTexture(fase,NULL,NULL,&faseRect.w,&faseRect.h);
+					SDL_FreeSurface(faseSurface);
+					faseSurface = NULL;
+
+					while(fechar != 1){
 						
+						/* INÍCIO DO CONTADOR */
+						if(contador < 60){
+							min = 0;
+							seg = contador;
+							
+						}
+						else{
+							min = contador / 60;
+							seg = contador % 60;
+						}
+
+						sprintf(st,"%d",min);
+						minSurface = TTF_RenderUTF8_Solid(font,st,color);
+						minRect.x = 830;
+						minRect.y = 6;
+						minRect.w = 40;
+						minRect.h = 40;
+						minTexto = SDL_CreateTextureFromSurface(renderer,minSurface);
+						SDL_QueryTexture(minTexto,NULL,NULL,&minRect.w,&minRect.h);
+						SDL_FreeSurface(minSurface);
+						minSurface = NULL;
+
+						sepaSurface = TTF_RenderUTF8_Solid(font,":",color);
+						sepaRect.x = 850;
+						sepaRect.y = 6;
+						sepaRect.w = 40;
+						sepaRect.h = 40;
+						sepaTexto = SDL_CreateTextureFromSurface(renderer,sepaSurface);
+						SDL_QueryTexture(sepaTexto,NULL,NULL,&sepaRect.w,&sepaRect.h);
+						SDL_FreeSurface(sepaSurface);
+						sepaSurface = NULL;
+
+						sprintf(pokemon,"%d",seg);
+
+						if((c2 % 60) == 0)
+							contador--;
+						c2++;
+
+						segSurface = TTF_RenderUTF8_Solid(font,pokemon,color);
+						segRect.x = 860;//230
+						segRect.y = 6;//- (jogarSurface->h/2);
+						segRect.w = 40;
+						segRect.h = 40;
+						segTexto = SDL_CreateTextureFromSurface(renderer,segSurface);
+						SDL_QueryTexture(segTexto,NULL,NULL,&segRect.w,&segRect.h);
+						SDL_FreeSurface(segSurface);
+						segSurface = NULL;
+
+						if(seg < 10){
+							//pra inserir o '0' quando os segundos for menor que 10
+							segRect.x = 875;
+							
+							zeroSurface = TTF_RenderUTF8_Solid(font,"0",color);
+							zeroRect.x = 860;
+							zeroRect.y = 6;//- (jogarSurface->h/2);
+							zeroRect.w = 40;
+							zeroRect.h = 40;
+							zeroTexto = SDL_CreateTextureFromSurface(renderer,zeroSurface);
+							SDL_QueryTexture(zeroTexto,NULL,NULL,&zeroRect.w,&zeroRect.h);
+							SDL_FreeSurface(zeroSurface);
+							zeroSurface = NULL;
+						}else{
+							//remove o '0' da tela
+							zeroTexto = NULL;
+							
+						}
+
+						if(contador < 0){
+							printf("\n********** GAME OVER ************** \n");
+							catPosicao.loadRect.y = 400;
+							catPosicao.loadRect.x = 900;
+							fechar = 1;
+						}
+
+						/* FIM DO CONTADOR */
+
+						printf("I'm here x= %d y= %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
+						
+						inicioGetTick = SDL_GetTicks();//tempo em milisegundos
+						
+
+						movimentoInimigo(&dRect_inimigoPos.loadRect,&sRect_inimigoPos.loadRect,&dogVaiVolta,vivo);
+						
+						caixaInimigo.loadRect.x = dRect_inimigoPos.loadRect.x;
+						caixaInimigo.loadRect.y = dRect_inimigoPos.loadRect.y;
+						gatoMorreu(&catJoePosicao.loadRect,&dRect_inimigoPos.loadRect, catJoePosicao.loadRect,dRect_inimigoPos.loadRect,&catPosicao.loadRect);
+			
 						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRacao3.loadRect))
 							printf("Colisão caixaBlocoRight2 %d\n",catJoePosicao.loadRect.x);
-						/*else
-							printf("Not Function caixaBlocoRight2\n");*/
-						//if(lazyFoo(catJoePosicao.loadRect, caixaBlocoChao.loadRect))
-							//printf("I'm here x= %d y= %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
-							//printf("BLABLABLA\n");
-						/*else
-							printf("it's over\n");
 						
-						
-						/*if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft2.loadRect))
-							printf("Colisão caixaBlocoLeft2\n");
-						else
-							printf("Not Function caixaBlocoLeft2\n");
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoLeft.loadRect))
-							printf("Colisão caixaBlocoLeft\n");
-						else
-							printf("Not Function caixaBlocoLeft\n");
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoChao.loadRect))
-							printf("Colisão caixaBlocoChao\n");
-						else
-							printf("Not Function caixaBlocoChao\n");
-						
-						
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoRight.loadRect))
-							printf("Colisão caixaBlocoRight\n");
-						else
-							printf("Not Function caixaBlocoRight\n");
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoMovel1.loadRect))
-							printf("Colisão caixaBlocoMovel1\n");
-						else
-							printf("Not Function caixaBlocoMovel1\n");
-						if(lazyFoo(catJoePosicao.loadRect, caixaBlocoMovel2.loadRect))
-							printf("Colisão caixaBlocoMovel2\n");
-						else
-							printf("Not Function caixaBlocoMovel2\n");*/
 						
 						naoPassaDoLimiteDaJanela(&catJoePosicao.loadRect);
 						
@@ -384,16 +334,7 @@ int main(){
 								caixaBlocoRacao2.loadRect,caixaBlocoRacao3.loadRect,racao,&sinalR,&sinalR2,renderer);
 						}else{
 							if(!BLOQUEIA_CAT){
-								if(catJoePosicao.loadRect.x >= 449 && catJoePosicao.loadRect.x <= 526 && catJoePosicao.loadRect.y < 432){
-									
-									catJoePosicao.loadRect.y += 3;
-									if(catPosicao.loadRect.y == 900)
-										catJoePosicao.loadRect.x -= 1;
-
-									if(catJoePosicao.loadRect.y >= 432)
-										catJoePosicao.loadRect.y = 432;
-									
-								}
+								cairEntreBlocos(&catJoePosicao,&catPosicao);
 							}
 							
 							henry(&catJoePosicao.loadRect);
@@ -479,16 +420,7 @@ int main(){
 										}
 									}
 								}
-
-
-
-								//if(obstaculosPosicao[3].loadRect.y >= 372){
 									
-								//	obstaculosPosicao[3].loadRect.y = 372;
-								//	caixaBlocoMovel2.loadRect.y = 10;
-									//BLOQUEIA_CAT = 1;
-								//}
-								
 							}else{
 								if(obstaculosPosicao[3].loadRect.x == 235)
 									obstaculosPosicao[3].loadRect.y = 409;
@@ -497,8 +429,19 @@ int main(){
 							}
 						}
 
-						
-						
+						//para continuar movimento do gato independentemente da tecla
+						/*keyState = SDL_GetKeyboardState(NULL);
+						if(keyState[SDL_SCANCODE_RIGHT]){
+							moveSpriteCatRight(&catPosicao.loadRect);
+							catJoePosicao.loadRect.x += 1;
+						}
+						else if(keyState[SDL_SCANCODE_LEFT]){
+							moveSpriteCatLeft(&catPosicao.loadRect);
+							catJoePosicao.loadRect.x -= 1;
+						}*/
+
+							
+							
 						while(SDL_PollEvent(&event) != 0){ //Eventos de Teclado e Mouse
 
 							encerrarJogo(event, &fechar);
@@ -555,9 +498,7 @@ int main(){
 										}else
 											pularMaisAlto_Right(&catJoePosicao.loadRect);
 											//catJoePosicao.loadRect.x += 3;
-
-										
-										
+		
 									}
 								
 										
@@ -593,41 +534,59 @@ int main(){
 							}
 
 						}
+
+						
+						
+
+						//Limpando tela
+						SDL_RenderClear(renderer);
+						//background
+						SDL_RenderCopy(renderer,backgroundTextura,NULL,NULL);
+						
+						//Blocos esquerdos
+						renderCopySprites(renderer, blocosLeft, blocosPosicaoLeft, 4);
+						//Blocos direitos
+						renderCopySprites(renderer, blocosRight, blocosPosicaoRight, 4);
+						//Chão
+						renderCopySprites(renderer, chao, chaoPosicao, 8);
+						//obstaculos
+						renderCopySprites(renderer, obstaculos, obstaculosPosicao, 4);
+		
+						//Sinal que muda de vermelho para verde
+						renderCopySprites(renderer, &sinalR, &sinalRPos, 1);
+						renderCopySprites(renderer, &sinalR2, &sinalRPos2, 1);
+
+						//Racao para pegadinhas e atalhos
+						renderCopySprites(renderer, racao, racaoPos, 3);
+
+						//Gato Joe
+						SDL_RenderCopy(renderer,catJoe.loadBloco,&catPosicao.loadRect,&catJoePosicao.loadRect);
+
+						//Inimigo (Cachorro)
+						SDL_RenderCopy(renderer,inimigo.loadBloco,&sRect_inimigoPos.loadRect,&dRect_inimigoPos.loadRect);
+						
+						//Objetivo final, pegar o Leite
+						renderCopySprites(renderer, &leite, &leitePos, 1);
+
+						//Timer Imagem
+						renderCopySprites(renderer, &timerImg, &timerImgPos, 1);			
+						SDL_RenderCopy(renderer,minTexto,NULL,&minRect);
+						SDL_RenderCopy(renderer,segTexto,NULL,&segRect);
+						SDL_RenderCopy(renderer,sepaTexto,NULL,&sepaRect);
+						SDL_RenderCopy(renderer,zeroTexto,NULL,&zeroRect);
+
+						//Indicar a fase
+						SDL_RenderCopy(renderer,fase,NULL,&faseRect);
+						//Imprimindo na tela
+						SDL_RenderPresent(renderer);
+
+						//Frame Rate
+						controlFrameRate(inicioGetTick);
 					
 
-					//Limpando tela
-					SDL_RenderClear(renderer);
-					//background
-					SDL_RenderCopy(renderer,backgroundTextura,NULL,NULL);
-					
-					//Blocos esquerdos
-					renderCopySprites(renderer, blocosLeft, blocosPosicaoLeft, 4);
-					//Blocos direitos
-					renderCopySprites(renderer, blocosRight, blocosPosicaoRight, 4);
-					//Chão
-					renderCopySprites(renderer, chao, chaoPosicao, 8);
-					//obstaculos
-					renderCopySprites(renderer, obstaculos, obstaculosPosicao, 4);
-	
-					renderCopySprites(renderer, &sinalR, &sinalRPos, 1);
-					renderCopySprites(renderer, &sinalR2, &sinalRPos2, 1);
-					renderCopySprites(renderer, racao, racaoPos, 3);
+					}
 
-					//Gato Joe
-					SDL_RenderCopy(renderer,catJoe.loadBloco,&catPosicao.loadRect,&catJoePosicao.loadRect);
-
-					//Iniigo (Cachorro)
-					SDL_RenderCopy(renderer,inimigo.loadBloco,&sRect_inimigoPos.loadRect,&dRect_inimigoPos.loadRect);
-					renderCopySprites(renderer, &leite, &leitePos, 1);
-					
-
-					//Imprimindo na tela
-					SDL_RenderPresent(renderer);
-					//Frame Rate
-					controlFrameRate(inicioGetTick);
-
-
-				}
+				}//else do TTF
 
 			}//else da IMG
 
@@ -637,61 +596,28 @@ int main(){
 
 
 
-
-
 	//encerrando tudo
-	SDL_DestroyWindow(window);
-	window = NULL;
-	
-	SDL_DestroyRenderer(renderer);
-	renderer = NULL;
-	SDL_DestroyTexture(backgroundTextura);
-	backgroundTextura = NULL;
+	destruirWRBT();
 
-	SDL_DestroyTexture(sinalR.loadBloco);
-	sinalR.loadBloco = NULL;
+	destruirFase1(&catJoe,&sinalR,&sinalR2,
+	racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos);
 
-	SDL_DestroyTexture(sinalR2.loadBloco);
-	sinalR2.loadBloco = NULL;
+	SDL_DestroyTexture(timerImg.loadBloco);
+	timerImg.loadBloco = NULL;
+	SDL_DestroyTexture(minTexto);
+	minTexto = NULL;
+	SDL_DestroyTexture(segTexto);
+	segTexto = NULL;
+	SDL_DestroyTexture(sepaTexto);
+	sepaTexto = NULL;
+	SDL_DestroyTexture(zeroTexto);
+	zeroTexto = NULL;
+	SDL_DestroyTexture(fase);
+	fase = NULL;
 
-	SDL_DestroyTexture(racao[0].loadBloco);
-	racao[0].loadBloco = NULL;
-	SDL_DestroyTexture(racao[1].loadBloco);
-	racao[1].loadBloco = NULL;
-	SDL_DestroyTexture(racao[2].loadBloco);
-	racao[2].loadBloco = NULL;
-	
-	SDL_DestroyTexture(inimigo.loadBloco);
-	inimigo.loadBloco = NULL;
-	SDL_DestroyTexture(leite.loadBloco);
-	leite.loadBloco = NULL;
-
-
-	for(int i = 0;i < 8; i++){
-		SDL_DestroyTexture(chao[i].loadBloco);
-		chao[i].loadBloco = NULL;
-	}
-
-	for(int i = 0; i < 4; i++){
-		SDL_DestroyTexture(blocosLeft[i].loadBloco);
-		blocosLeft[i].loadBloco = NULL;
-		SDL_DestroyTexture(blocosRight[i].loadBloco);
-		blocosRight[i].loadBloco = NULL;
-		
-	}
-	
-
-	for(int i = 0; i < 4; i++){
-		SDL_DestroyTexture(obstaculos[i].loadBloco);
-		obstaculos[i].loadBloco = NULL;
-	}
-
-	
-
-	SDL_DestroyTexture(catJoe.loadBloco);
-	
 	IMG_Quit();
 	SDL_Quit();
+	TTF_Quit();
 
 
 	return 0;

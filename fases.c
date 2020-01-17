@@ -641,3 +641,261 @@ int venceu(SDL_Rect* dRectGatoJoe,SDL_Rect* leiteRect,SDL_Rect a,SDL_Rect b,Bloc
 
 
 }
+
+int iniciarSDL(){
+	
+	if(SDL_Init(SDL_INIT_EVERYTHING) < 0){
+
+		printf("Error ao iniciar SDL %s\n",SDL_GetError());
+		return 0;
+
+	}else
+		return 1;
+}
+
+SDL_Window* criarJanela(){
+
+	SDL_Window* janela;
+
+	janela = SDL_CreateWindow("Game - O Gato Joe",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGURA_JANELA,ALTURA_JANELA,SDL_WINDOW_SHOWN);
+	
+	if(janela == NULL){
+		printf("Erro na janela %s\n",SDL_GetError());
+		return NULL;
+	}else
+		return janela;
+}
+
+int iniciarIMG(){
+
+	if(IMG_Init(IMG_INIT_PNG) < 0){
+
+		printf("Erro ao iniciar IMG_INIT %s\n",IMG_GetError());
+		return 0;
+	}else
+		return 1;
+}
+
+//Códigos da Fase 1
+
+void criarChao(Bloco* chao,PosicaoBloco* chaoPosicao){
+	for(int i = 0; i < 8;i++){
+		chao[i].loadBloco = carregarTextura(renderer,"../img/bloco.png");	
+		chaoPosicao[i].loadRect.w = 125;
+		chaoPosicao[i].loadRect.h = 60;
+		
+		if(i == 0)
+			chaoPosicao[0].loadRect.x = 0;
+		else
+			chaoPosicao[i].loadRect.x = chaoPosicao[i - 1].loadRect.x + 125;
+		
+		chaoPosicao[i].loadRect.y = 580;
+	}
+}
+
+void criarBlocosEsquerdos(Bloco* blocosLeft, PosicaoBloco* blocosPosicaoLeft){
+	for(int i = 0; i < 4;i++){
+		blocosLeft[i].loadBloco = carregarTextura(renderer,"../img/bloco.png");	
+		blocosPosicaoLeft[i].loadRect.w = 60;
+		blocosPosicaoLeft[i].loadRect.h = 60;
+		
+		if(i == 0)
+			blocosPosicaoLeft[0].loadRect.x = 0;
+		else
+			blocosPosicaoLeft[i].loadRect.x = blocosPosicaoLeft[i - 1].loadRect.x + 60;
+		
+		blocosPosicaoLeft[i].loadRect.y = 380;
+	}
+}
+
+void criarBlocosDireitos(Bloco* blocosRight, PosicaoBloco* blocosPosicaoRight){
+	for(int i = 0; i < 4;i++){
+		blocosRight[i].loadBloco = carregarTextura(renderer,"../img/bloco.png");	
+		blocosPosicaoRight[i].loadRect.w = 60;
+		blocosPosicaoRight[i].loadRect.h = 60;
+		
+		if(i == 0)
+			blocosPosicaoRight[i].loadRect.x = 940;
+		else
+			blocosPosicaoRight[i].loadRect.x = blocosPosicaoRight[i - 1].loadRect.x - 60;
+		
+		blocosPosicaoRight[i].loadRect.y = 180;
+	}
+}
+
+void iniciarObstaculos(Bloco* obstaculos, PosicaoBloco* obstaculosPosicao){
+	obstaculos[0].loadBloco = carregarTextura(renderer,"../img/bloco.png");
+	obstaculosPosicao[0].loadRect.w = 60;
+	obstaculosPosicao[0].loadRect.h = 60;
+	obstaculosPosicao[0].loadRect.x = 500;
+	obstaculosPosicao[0].loadRect.y = 520;
+
+	obstaculos[1].loadBloco = carregarTextura(renderer,"../img/bloco.png");
+	obstaculosPosicao[1].loadRect.w = 60;
+	obstaculosPosicao[1].loadRect.h = 60;
+	obstaculosPosicao[1].loadRect.x = 580;
+	obstaculosPosicao[1].loadRect.y = 415;
+	obstaculos[2].loadBloco = carregarTextura(renderer,"../img/bloco.png");
+	obstaculosPosicao[2].loadRect.w = 60;
+	obstaculosPosicao[2].loadRect.h = 60;
+	obstaculosPosicao[2].loadRect.x = obstaculosPosicao[1].loadRect.x + 60;
+	obstaculosPosicao[2].loadRect.y = 415;
+
+	obstaculos[3].loadBloco = carregarTextura(renderer,"../img/flutua1_1.png");
+	obstaculosPosicao[3].loadRect.w = 150;
+	obstaculosPosicao[3].loadRect.h = 60;
+	obstaculosPosicao[3].loadRect.x = obstaculosPosicao[1].loadRect.x - 145;
+	obstaculosPosicao[3].loadRect.y = 150;//150
+}
+
+void iniciarGato(Heroi* catJoe, PosicaoHeroi* catPosicao, PosicaoHeroi* catJoePosicao){
+	catJoe->loadBloco = carregarTextura(renderer,"../img/gato.png");
+	catPosicao->loadRect.w = 100;//catPosicao.loadRect.w = 100;
+	catPosicao->loadRect.h = 100;
+	catPosicao->loadRect.x = 0;
+	catPosicao->loadRect.y = 0;
+
+
+	catJoePosicao->loadRect.w = 100;
+	catJoePosicao->loadRect.h = 100;
+	catJoePosicao->loadRect.x = 10;		
+	catJoePosicao->loadRect.y = 492;
+}
+
+void iniciarSinais(Bloco* sinalR,Bloco* sinalR2,PosicaoBloco* sinalRPos,PosicaoBloco* sinalRPos2){
+	sinalR->loadBloco = carregarTextura(renderer,"../img/sinalRed.png");			
+	sinalRPos->loadRect.w = 60;
+	sinalRPos->loadRect.h = 60;
+	sinalRPos->loadRect.x = 650;
+	sinalRPos->loadRect.y = 356;
+
+	sinalR2->loadBloco = carregarTextura(renderer,"../img/sinalRed.png");
+	
+	sinalRPos2->loadRect.w = 60;
+	sinalRPos2->loadRect.h = 60;
+	sinalRPos2->loadRect.x = 40;
+	sinalRPos2->loadRect.y = 320;
+}
+
+void iniciarRacao(Bloco* racao,PosicaoBloco* racaoPos){
+	racao[0].loadBloco = carregarTextura(renderer,"../img/racao.png");			
+	racaoPos[0].loadRect.w = 30;
+	racaoPos[0].loadRect.h = 30;
+	racaoPos[0].loadRect.x = 620;
+	racaoPos[0].loadRect.y = 392;
+
+	racao[1].loadBloco = carregarTextura(renderer,"../img/racao.png");
+	racaoPos[1].loadRect.w = 30;
+	racaoPos[1].loadRect.h = 30;
+	racaoPos[1].loadRect.x = 100;
+	racaoPos[1].loadRect.y = 355;
+
+	racao[2].loadBloco = carregarTextura(renderer,"../img/racao.png");
+	racaoPos[2].loadRect.w = 30;
+	racaoPos[2].loadRect.h = 30;
+	racaoPos[2].loadRect.x = 880;
+	racaoPos[2].loadRect.y = 400;
+}
+
+void iniciarInimigo(Bloco* inimigo,PosicaoBloco* sRect_inimigoPos,PosicaoBloco* dRect_inimigoPos){
+
+	inimigo->loadBloco = carregarTextura(renderer,"../img/dogOnly.png");
+
+	sRect_inimigoPos->loadRect.w = 100;
+	sRect_inimigoPos->loadRect.h = 100;
+	sRect_inimigoPos->loadRect.x = 0;//880
+	sRect_inimigoPos->loadRect.y = 100;//990
+
+	dRect_inimigoPos->loadRect.w = 100;
+	dRect_inimigoPos->loadRect.h = 100;
+	dRect_inimigoPos->loadRect.x = 895;
+	dRect_inimigoPos->loadRect.y = 492;
+}
+
+void iniciarLeite(Bloco* leite,PosicaoBloco* leitePos){
+	leite->loadBloco = carregarTextura(renderer,"../img/leite.png");
+	leitePos->loadRect.w = 80;
+	leitePos->loadRect.h = 64;
+	leitePos->loadRect.y = 100;
+	leitePos->loadRect.x = 850;
+}
+
+void cairEntreBlocos(PosicaoHeroi* catJoePosicao,PosicaoHeroi* catPosicao){
+	if(catJoePosicao->loadRect.x >= 449 && catJoePosicao->loadRect.x <= 526 && catJoePosicao->loadRect.y < 432){
+		catJoePosicao->loadRect.y += 3;
+		if(catPosicao->loadRect.y == 900)
+			catJoePosicao->loadRect.x -= 1;
+
+		if(catJoePosicao->loadRect.y >= 432)
+			catJoePosicao->loadRect.y = 432;
+		
+	}
+}
+
+void destruirWRBT(){
+	
+	SDL_DestroyWindow(window);
+	window = NULL;
+	
+	SDL_DestroyRenderer(renderer);
+	renderer = NULL;
+	
+	SDL_DestroyTexture(backgroundTextura);
+	backgroundTextura = NULL;
+}
+
+void destruirFase1(Heroi* catJoe,Bloco* sinalR,Bloco* sinalR2,
+	Bloco* racao,Bloco* inimigo, Bloco* leite,Bloco* chao,
+	Bloco* blocosLeft,Bloco* blocosRight, Bloco* obstaculos){
+	
+	SDL_DestroyTexture(catJoe->loadBloco);
+	catJoe->loadBloco = NULL;
+
+	SDL_DestroyTexture(sinalR->loadBloco);
+	sinalR->loadBloco = NULL;
+
+	SDL_DestroyTexture(sinalR2->loadBloco);
+	sinalR2->loadBloco = NULL;
+
+	for(int i = 0; i < 3;i++){
+		SDL_DestroyTexture(racao[i].loadBloco);
+		racao[i].loadBloco = NULL;
+	}
+
+	SDL_DestroyTexture(inimigo->loadBloco);
+	inimigo->loadBloco = NULL;
+	
+	SDL_DestroyTexture(leite->loadBloco);
+	leite->loadBloco = NULL;
+
+	for(int i = 0;i < 8; i++){
+		SDL_DestroyTexture(chao[i].loadBloco);
+		chao[i].loadBloco = NULL;
+	}
+
+	for(int i = 0; i < 4; i++){
+		SDL_DestroyTexture(blocosLeft[i].loadBloco);
+		blocosLeft[i].loadBloco = NULL;
+		SDL_DestroyTexture(blocosRight[i].loadBloco);
+		blocosRight[i].loadBloco = NULL;
+		
+	}
+	
+
+	for(int i = 0; i < 4; i++){
+		SDL_DestroyTexture(obstaculos[i].loadBloco);
+		obstaculos[i].loadBloco = NULL;
+	}
+
+
+}
+//FIM DOS CÓDIGOS PARA A FASE 1
+
+int iniciarTTF(){
+	//Inicando ttf para usar texto
+	if(TTF_Init() < 0){
+		printf("Erro no TTF %s\n",TTF_GetError());
+		return 0;
+	}else
+		return 1;
+}
