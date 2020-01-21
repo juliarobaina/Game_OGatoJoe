@@ -20,7 +20,7 @@ int gameOver(){
 
 
 	//Musica de fundo
-	m3 = Mix_LoadMUS("../music/gameOver2.mp3");
+	m3 = Mix_LoadMUS("../music/gameOver.mp3");
 	//Efeito sonoro botao
 	botao = Mix_LoadWAV( "../music/beep.wav" );
 
