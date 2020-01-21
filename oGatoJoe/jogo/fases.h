@@ -60,20 +60,37 @@ int PODEANDAR = 0;
 int BLOQUEIA_CAT = 0;
 
 int GATOMORREU = 0;
+int VIDASGATO = 3;
+int PONTUACAO = 0;
 //isso e para bidu e teste3.c
-//SDL_Window *window = NULL;
-//SDL_Texture *backgroundTextura = NULL;
-//SDL_Renderer *renderer = NULL;
+SDL_Window *window = NULL;
+SDL_Texture *backgroundTextura = NULL;
+SDL_Renderer *renderer = NULL;
 //isso e para bidu e teste3.c
 //inicio do GetTicks
-//Uint32 inicioGetTick;
+Uint32 inicioGetTick;
 //isso e para teste2.c
 //int FIM_FASE1 = 0;
 //int FIM_FASE2 = 0;
 //isso e para bidu e teste3.c
 
-//SDL_Event event;
+SDL_Event event;
 //e acabou aqui bidu.c e teste3.c
+SDL_Color color = {00,36,220,255};
+SDL_Texture *som = NULL;
+SDL_Texture *notSom = NULL;
+Mix_Music *musica = NULL;
+Mix_Music *m2 = NULL;
+Mix_Music *m3 = NULL;
+Mix_Chunk *botao = NULL;
+Mix_Chunk *coinSound = NULL;
+Mix_Chunk *moverSound = NULL;
+
+
+Uint8 fadingAlpha;
+SDL_Texture* fundoPreto;
+
+
 
 	SDL_Texture *carregarTextura(SDL_Renderer *render,char *pathImage);
 	void controlFrameRate(Uint32 inicioGetTick);
