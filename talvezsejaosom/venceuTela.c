@@ -1,5 +1,5 @@
 
-int venceuTela(int* reboot){
+int venceuTela(/*int* reboot*/){
 
 	SDL_Surface *surfaceFont = NULL;
 	
@@ -20,24 +20,25 @@ int venceuTela(int* reboot){
 
 
 	//Musica de fundo
-	//musica = Mix_LoadMUS("../music/violao1-2.mp3");
+	m2 = Mix_LoadMUS("../music/violao1-2.mp3");
 	//Efeito sonoro botao
 	botao = Mix_LoadWAV( "../music/beep.wav" );
 
 
-				//criando textura da imagem de fundo
-				backgroundTextura = carregarTextura(renderer,"../img/venceu.png");
+	//criando textura da imagem de fundo
+	if(backgroundTextura != NULL){
+		SDL_DestroyTexture(backgroundTextura);
+		backgroundTextura = NULL;
+		backgroundTextura = carregarTextura(renderer,"../img/venceu.png");
+	}else
+		backgroundTextura = carregarTextura(renderer,"../img/venceu.png");
 
 				
-				int fechar = 0;
-				//inicio do GetTicks
-				Uint32 inicioGetTick;
-				float flPreviousTime = 0;
-				float flCurrentTime = SDL_GetTicks();
+	int fechar = 0;
+	
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
-				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-
-				const Uint8 *state = SDL_GetKeyboardState(NULL);
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 				//Inicando ttf para usar texto
 			/*if(TTF_Init() < 0){
@@ -74,7 +75,7 @@ int venceuTela(int* reboot){
 			
 			SDL_Rect jogarnovamenteRect;
 			
-			jogarnovamenteRect.x = (LARGURA_JANELA/2) - (jogarnovamenteSurface->w/2);
+			jogarnovamenteRect.x = (LARGURA_JANELA/2) - (jogarnovamenteSurface->w/2) - 70;
 			jogarnovamenteRect.y = (ALTURA_JANELA/2) + (voltarSurface->h/2) + voltarSurface->w + 60;//- (voltar->h/2);
 			jogarnovamenteRect.w = jogarnovamenteSurface->w - 60;
 			jogarnovamenteRect.h = jogarnovamenteSurface->h;
@@ -88,7 +89,7 @@ int venceuTela(int* reboot){
 			pataRect.w = 25;
 			pataRect.h = 25;
 			pataRect.x = (LARGURA_JANELA/12) - (voltarSurface->w/12) - 40;
-			pataRect.y = (ALTURA_JANELA + 7) - (voltarSurface->w/2 + voltarSurface->h/2);
+			pataRect.y = (ALTURA_JANELA - 16) - (voltarSurface->w/2 + voltarSurface->h/2);
 
 
 			SDL_FreeSurface(voltarSurface);
@@ -96,12 +97,30 @@ int venceuTela(int* reboot){
 
 			//Para música
 			//som
-			som = carregarTextura(renderer,"../img/som4.png");
+			//som = carregarTextura(renderer,"../img/som4.png");
 			SDL_Rect somRect;
 			somRect.w = 30;
 			somRect.h = 25;
 			somRect.x = LARGURA_JANELA - 100;
 			somRect.y = ALTURA_JANELA/12;
+			if(som != NULL && !Mix_PausedMusic()){
+				SDL_DestroyTexture(som);
+				som = NULL;
+				som = carregarTextura(renderer,"../img/som4.png");
+				Mix_PlayMusic(m2,-1);	
+				printf("Sem 3\n");
+			}else if(notSom != NULL && Mix_PausedMusic()){
+				printf("Sem 4\n");
+				SDL_DestroyTexture(notSom);
+				notSom = NULL;
+				notSom = carregarTextura(renderer,"../img/semsom1.png");
+			}else if(!Mix_PausedMusic()){
+				printf("Sem 2\n");
+				SDL_DestroyTexture(som);
+				som = NULL;
+				som = carregarTextura(renderer,"../img/som4.png");
+				Mix_PlayMusic(m2,-1);
+			}
 
 			TTF_Font *font2 = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",25);
 			totalSurface = TTF_RenderUTF8_Solid(font2,"Total de Moedas: ",color);
@@ -134,7 +153,7 @@ int venceuTela(int* reboot){
 
 
 			//Tocando música de fundo
-			Mix_PlayMusic(musica,-1);
+			//Mix_PlayMusic(musica,-1);
 
 				while(fechar != 1){
 
@@ -168,7 +187,7 @@ int venceuTela(int* reboot){
 									voltarSurface = TTF_RenderUTF8_Solid(font,"Menu",color2);
 									voltarTexto = SDL_CreateTextureFromSurface(renderer,voltarSurface);
 									pataRect.x = (LARGURA_JANELA/12) - (voltarSurface->w/12) - 40;
-									pataRect.y = (ALTURA_JANELA + 7) - (voltarSurface->w/2 + voltarSurface->h/2);
+									pataRect.y = (ALTURA_JANELA - 16) - (voltarSurface->w/2 + voltarSurface->h/2);
 
 									
 							}else{
@@ -185,8 +204,8 @@ int venceuTela(int* reboot){
 									SDL_DestroyTexture(jogarnovamenteTexto);
 									jogarnovamenteSurface = TTF_RenderUTF8_Solid(font,"Jogar Novamente",color2);
 									jogarnovamenteTexto = SDL_CreateTextureFromSurface(renderer,jogarnovamenteSurface);
-									pataRect.x = 10 + voltarSurface->w + ((LARGURA_JANELA/2) - (jogarnovamenteSurface->w));
-									pataRect.y = (ALTURA_JANELA + 7) - (voltarSurface->w/2 + voltarSurface->h/2);
+									pataRect.x = jogarnovamenteSurface->w/2 - voltarSurface->w + ((LARGURA_JANELA/2) - (jogarnovamenteSurface->w));
+									pataRect.y = (ALTURA_JANELA - 16) - (voltarSurface->w/2 + voltarSurface->h/2);
 
 									
 							}else{
@@ -206,8 +225,9 @@ int venceuTela(int* reboot){
 
 								if(x >= voltarRect.x && x <= voltarRect.x+voltarRect.w && y >= voltarRect.y && y <= voltarRect.y+voltarRect.h){
 									printf("Clicou menu\n");
-									Mix_PlayChannel( -1,botao, 0 );
-									backgroundTextura = carregarTextura(renderer,"../img/BG.png");
+									//Mix_PlayChannel( -1,botao, 0 );
+									SDL_DestroyTexture(backgroundTextura);
+									backgroundTextura = NULL;
 									SDL_DestroyTexture(patadegato);
 									patadegato = NULL;
 									SDL_DestroyTexture(voltarTexto);
@@ -218,16 +238,25 @@ int venceuTela(int* reboot){
 									totalTexto = NULL;
 									SDL_DestroyTexture(pontosTexto);
 									pontosTexto = NULL;
+									//Mix_FreeMusic(m3);
+									//m3 = NULL;
+									if(som == NULL){
+										Mix_FreeChunk(botao);
+										botao = NULL;
+									}else
+										Mix_PlayChannel( -1,botao, 0 );
+
+									PONTUACAO = 0;
 									fechar = 1;
-									return 1;//vai pro menu, mas primeiro dá uma passadinha na fase1
+									return 0;//vai pro menu
 								}
 
 								if(x >= jogarnovamenteRect.x && x <= jogarnovamenteRect.x+jogarnovamenteRect.w && y >= jogarnovamenteRect.y && y <= jogarnovamenteRect.y+jogarnovamenteRect.h){
 									printf("Clicou jogar novamente\n");
-									Mix_PlayChannel( -1,botao, 0 );
+									//Mix_PlayChannel( -1,botao, 0 );
 									
-
-									backgroundTextura = carregarTextura(renderer,"../img/BG.png");
+									SDL_DestroyTexture(backgroundTextura);
+									backgroundTextura = NULL;									
 									SDL_DestroyTexture(patadegato);
 									patadegato = NULL;
 									SDL_DestroyTexture(voltarTexto);
@@ -239,9 +268,15 @@ int venceuTela(int* reboot){
 									SDL_DestroyTexture(pontosTexto);
 									pontosTexto = NULL;
 									printf("CLIQUEI EM SAIR DO GAMEOVER\n");
-									*reboot = 1;
+									//*reboot = 1;
+									if(som == NULL){
+										Mix_FreeChunk(botao);
+										botao = NULL;
+									}else
+										Mix_PlayChannel( -1,botao, 0 );
+									PONTUACAO = 0;
 									fechar = 1;
-									return 0;
+									return 2;
 									//jogar = 1;
 									//return 1;
 								}
@@ -254,17 +289,21 @@ int venceuTela(int* reboot){
 										SDL_DestroyTexture(som);
 										som = NULL;
 										notSom = carregarTextura(renderer,"../img/semsom1.png");
+
+										Mix_FreeChunk(botao);
+										botao = NULL;
 									}else{
 										som = carregarTextura(renderer,"../img/som4.png");
 										SDL_DestroyTexture(notSom);
 										notSom = NULL;
+										botao = Mix_LoadWAV("../music/beep.wav");
 									}
 									
 									
 									//It's Work
 									if( Mix_PlayingMusic() == 0 ){
 									   //Play the music
-									   Mix_PlayMusic(musica, -1 );
+									   Mix_PlayMusic(m2, -1 );
 									}
 									//If music is being played
 									else{

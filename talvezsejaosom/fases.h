@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
+#include <time.h>
 
 #define LARGURA_JANELA 1000
 #define ALTURA_JANELA 620
@@ -60,7 +60,7 @@ int PODEANDAR = 0;
 int BLOQUEIA_CAT = 0;
 
 int GATOMORREU = 0;
-int VIDASGATO = 1;
+int VIDASGATO = 3;
 int PONTUACAO = 0;
 //isso e para bidu e teste3.c
 SDL_Window *window = NULL;
@@ -82,10 +82,11 @@ SDL_Texture *notSom = NULL;
 Mix_Music *musica = NULL;
 Mix_Music *m2 = NULL;
 Mix_Music *m3 = NULL;
+Mix_Music *m4Historia = NULL;
 Mix_Chunk *botao = NULL;
 Mix_Chunk *coinSound = NULL;
 Mix_Chunk *moverSound = NULL;
-int TOCA = 1;
+
 
 Uint8 fadingAlpha;
 SDL_Texture* fundoPreto;

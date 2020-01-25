@@ -30,14 +30,17 @@ void pausado(){
 				
 
 	//criando textura da imagem de fundo
-	backgroundTextura = carregarTextura(renderer,"../img/pause.png");
+	if(backgroundTextura != NULL){
+		SDL_DestroyTexture(backgroundTextura);
+		backgroundTextura = NULL;
+		backgroundTextura = carregarTextura(renderer,"../img/pause.png");
+	}else
+		backgroundTextura = carregarTextura(renderer,"../img/pause.png");
 
 		
 	int fechar = 0;
 	//inicio do GetTicks
-	Uint32 inicioGetTick;
-	float flPreviousTime = 0;
-	float flCurrentTime = SDL_GetTicks();
+	//Uint32 inicioGetTick;
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
@@ -109,18 +112,23 @@ void pausado(){
 		somRect.y = ALTURA_JANELA/12;
 	//}
 	if(som != NULL && !Mix_PausedMusic()){
-		som = carregarTextura(renderer,"../img/som4.png");	
-		printf("Sem 3\n");
-		//Mix_PlayMusic(musica,-1);
-	}
-	else if(notSom != NULL && Mix_PausedMusic())
-		notSom = carregarTextura(renderer,"../img/semsom1.png");
-	else if(!Mix_PausedMusic()){
-		printf("Sem 2\n");
+		SDL_DestroyTexture(som);
+		som = NULL;
 		som = carregarTextura(renderer,"../img/som4.png");
-		//Mix_PlayMusic(musica,-1);
+		Mix_PlayMusic(m3,-1);	
+		printf("Sem 3\n");
+	}else if(notSom != NULL && Mix_PausedMusic()){
+		printf("Sem 4\n");
+		SDL_DestroyTexture(notSom);
+		notSom = NULL;
+		notSom = carregarTextura(renderer,"../img/semsom1.png");
+	}else if(!Mix_PausedMusic()){
+		printf("Sem 2\n");
+		SDL_DestroyTexture(som);
+		som = NULL;
+		som = carregarTextura(renderer,"../img/som4.png");
+		Mix_PlayMusic(m3,-1);
 	}
-	
 	
 
 	//Tocando música de fundo
@@ -201,12 +209,13 @@ void pausado(){
 								SDL_DestroyTexture(som);
 								som = NULL;
 								notSom = carregarTextura(renderer,"../img/semsom1.png");
-								//TOCA = 0;
+								Mix_FreeChunk(botao);
+								botao = NULL;
 							}else{
 								som = carregarTextura(renderer,"../img/som4.png");
 								SDL_DestroyTexture(notSom);
 								notSom = NULL;
-								//TOCA = 1;
+								botao = Mix_LoadWAV("../music/beep.wav");
 							}
 							
 							
@@ -233,49 +242,55 @@ void pausado(){
 							//printf("Clicou retomar\n");
 
 							//return 0;
-							Mix_PlayChannel( -1,botao, 0 );
+							//Mix_PlayChannel( -1,botao, 0 );
 							SDL_DestroyTexture(patadegato);
 							patadegato = NULL;
 							SDL_DestroyTexture(retomarTexto);
 							retomarTexto = NULL;
 							SDL_DestroyTexture(reiniciarTexto);
 							reiniciarTexto = NULL;
-							SDL_DestroyTexture(retomarTexto);
-							retomarTexto = NULL;
 							if(som == NULL){
 								Mix_FreeChunk(botao);
 								botao = NULL;
+							}else
+								Mix_PlayChannel( -1,botao, 0 );
+
+							if(backgroundTextura != NULL){
+								SDL_DestroyTexture(backgroundTextura);
+								backgroundTextura = NULL;
+								backgroundTextura = carregarTextura(renderer,"../img/BG.png");
+							}else{
+								backgroundTextura = carregarTextura(renderer,"../img/BG.png");
 							}
-							backgroundTextura = carregarTextura(renderer,"../img/BG.png");
+
 							PAUSADO = 1;//o jogo vai voltar ao normal (despausar,rsrs)
 							fechar = 1;							
-							
+							//return 2;
 						}
 
 						if(x >= reiniciarRect.x && x <= reiniciarRect.x+reiniciarRect.w && y >= reiniciarRect.y && y <= reiniciarRect.y+reiniciarRect.h){
-							//printf("Clicou reiniciar\n");
-							Mix_PlayChannel( -1,botao, 0 );
-
+							//printf("Clicou reiniciar\n");//Vai pro menu
+							//Mix_PlayChannel( -1,botao, 0 );
+							//SDL_DestroyTexture(backgroundTextura);
+							//backgroundTextura = NULL;
 							SDL_DestroyTexture(patadegato);
 							patadegato = NULL;
 							SDL_DestroyTexture(retomarTexto);
 							retomarTexto = NULL;
 							SDL_DestroyTexture(reiniciarTexto);
 							reiniciarTexto = NULL;
-							SDL_DestroyTexture(retomarTexto);
-							retomarTexto = NULL;
 							Mix_FreeMusic(musica);
 							musica = NULL;
 							if(som == NULL){
 								Mix_FreeChunk(botao);
 								botao = NULL;
-							}
+							}else
+								Mix_PlayChannel( -1,botao, 0 );
 							
-							backgroundTextura = carregarTextura(renderer,"../img/BG.png");
 							PAUSADO = 0;
+							PONTUACAO = 0;
 							fechar = 1;
-							
-							//return 0;
+							//return 2;
 						}	
 						
 					
@@ -318,7 +333,6 @@ void pausado(){
 	retomarTexto = NULL;
 	SDL_DestroyTexture(reiniciarTexto);
 	reiniciarTexto = NULL;
-	SDL_DestroyTexture(retomarTexto);
-	retomarTexto = NULL;
+
 
 }
