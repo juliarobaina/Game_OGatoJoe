@@ -2,26 +2,15 @@
 //#include "gameOver.c"
 
 
-int fase1(){
+int fase2(){
 
 	SDL_Texture *sinal = NULL;
 	SDL_Texture *caixa = NULL;
-	SDL_Texture *gatoJoe = NULL;
 	
-	Bloco chao[8];
-	for(int i = 0;i < 8; i++)
+	Bloco chao[4];
+	for(int i = 0;i < 4; i++)
 		chao[i].loadBloco = NULL;
-	PosicaoBloco chaoPosicao[8];
-
-	Bloco blocosLeft[4];
-	for(int i = 0;i < 4; i++)
-		blocosLeft[i].loadBloco = NULL;
-	PosicaoBloco blocosPosicaoLeft[4];
-
-	Bloco blocosRight[4];
-	for(int i = 0;i < 4; i++)
-		blocosRight[i].loadBloco = NULL;
-	PosicaoBloco blocosPosicaoRight[4];
+	PosicaoBloco chaoPosicao[4];
 
 	Bloco obstaculos[10];
 	for(int i = 0;i < 10; i++)
@@ -38,20 +27,18 @@ int fase1(){
 	PosicaoBloco dRect_inimigoPos;
 	PosicaoBloco sRect_inimigoPos;
 
+	Bloco inimigo2;
+	inimigo2.loadBloco = NULL;
+	PosicaoBloco dRect_inimigoPos2;
+	PosicaoBloco sRect_inimigoPos2;
+
 	Bloco sinalR;
 	sinalR.loadBloco = NULL;
 	PosicaoBloco sinalRPos;
-	Bloco sinalV;
-	sinalV.loadBloco = NULL;
-	
-	Bloco sinalR2;
-	sinalR2.loadBloco = NULL;
-	PosicaoBloco sinalRPos2;
 
-	Bloco racao[3];
-	for(int i = 0;i < 3; i++)
-		racao[i].loadBloco = NULL;
-	PosicaoBloco racaoPos[3];
+	Bloco racao;
+	racao.loadBloco = NULL;
+	PosicaoBloco racaoPos;
 
 	Bloco leite;
 	leite.loadBloco = NULL;
@@ -89,6 +76,7 @@ int fase1(){
 	Bloco coin[5];
 	for(int i = 0;i < 5; i++)
 		coin[i].loadBloco = NULL;
+
 	PosicaoBloco dRectCoin[5];
 	PosicaoBloco sRectCoin[5];
 	Bloco coinImg;
@@ -97,6 +85,11 @@ int fase1(){
 	SDL_Texture *coinTextura = NULL;
 	SDL_Surface *coinSurface = NULL;
 	SDL_Rect coinRect;
+
+	Bloco blocosLeftT[2];
+	for(int i = 0;i < 2; i++)
+		blocosLeftT[i].loadBloco = NULL;
+	PosicaoBloco blocosPosicaoLeftT[2];
 
 	SDL_Rect somRect;//posição do ícone de som
 
@@ -116,38 +109,37 @@ int fase1(){
 		backgroundTextura = carregarTextura(renderer,"../img/BG.png");
 	
 
-	criarChao(chao,chaoPosicao);
+	criarChao2(chao,chaoPosicao);
 	printf("ATE AQUI\n");
-	criarBlocosEsquerdos(blocosLeft, blocosPosicaoLeft);
-
-	criarBlocosDireitos(blocosRight, blocosPosicaoRight);
-
-	iniciarObstaculos(obstaculos, obstaculosPosicao);
+	criarBlocosT(blocosLeftT, blocosPosicaoLeftT);
+	
+	iniciarObstaculos2(obstaculos, obstaculosPosicao);
 	
 	//Gato Joe, herói do jogo
-	iniciarGato(&catJoe,&catPosicao,&catJoePosicao);
+	iniciarGato2(&catJoe,&catPosicao,&catJoePosicao);
 
-	iniciarSinais(&sinalR,&sinalR2,&sinalRPos,&sinalRPos2);
+	iniciarSinais2(&sinalR,&sinalRPos);
 	
-	iniciarRacao(racao,racaoPos);
-	
-	iniciarInimigo(&inimigo,&sRect_inimigoPos,&dRect_inimigoPos);
+	iniciarRacao2(&racao,&racaoPos);
 
-	iniciarLeite(&leite,&leitePos);
+	srand(time(NULL));
+	int aleatorio = rand() % 2;
+	
+	iniciarInimigo2_1(&inimigo,&sRect_inimigoPos,&dRect_inimigoPos);
+	iniciarInimigo2_2(&inimigo2,&sRect_inimigoPos2,&dRect_inimigoPos2,aleatorio);
+
+	iniciarLeite2(&leite,&leitePos);
 	
 	iniciarTimer(&timerImg,&timerImgPos);
 
-	iniciarCoins(coin,dRectCoin,sRectCoin);
+	iniciarCoins2(coin,dRectCoin,sRectCoin);
 
-	//Para música
-	//som
-	//if(TOCA){
-		//som = carregarTextura(renderer,"../img/som4.png");
-		somRect.w = 30;
-		somRect.h = 25;
-		somRect.x = LARGURA_JANELA - 75;
-		somRect.y = 14;
-	//}
+	
+	somRect.w = 30;
+	somRect.h = 25;
+	somRect.x = LARGURA_JANELA - 75;
+	somRect.y = 14;
+
 	if(som != NULL && !Mix_PausedMusic()){
 		SDL_DestroyTexture(som);
 		som = NULL;
@@ -181,72 +173,83 @@ int fase1(){
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 	/*CRIANDO AS CAIXAS DE COLISÃO*/
-	PosicaoBloco caixaBlocoLeft;
-	caixaBlocoLeft.loadRect.x = 0;
-	caixaBlocoLeft.loadRect.y = 385;//380
-	caixaBlocoLeft.loadRect.w = 240;
-	caixaBlocoLeft.loadRect.h = 60;
+	PosicaoBloco caixaBloco1;
+	caixaBloco1.loadRect.x = 286;
+	caixaBloco1.loadRect.y = 440;//385
+	caixaBloco1.loadRect.w = 35;
+	caixaBloco1.loadRect.h = 150;
 
-	PosicaoBloco caixaBlocoChao;
-	caixaBlocoChao.loadRect.x = 510;//500-510
-	caixaBlocoChao.loadRect.y = 525;//520
-	caixaBlocoChao.loadRect.w = 42;//60 - 42
-	caixaBlocoChao.loadRect.h = 60;
+	PosicaoBloco caixaBloco2;
+	caixaBloco2.loadRect.x = 378;
+	caixaBloco2.loadRect.y = 400;//380
+	caixaBloco2.loadRect.w = 57;
+	caixaBloco2.loadRect.h = 150;
+
+	PosicaoBloco caixaBloco3;
+	caixaBloco3.loadRect.x = 500;
+	caixaBloco3.loadRect.y = 390;//380
+	caixaBloco3.loadRect.w = 35;
+	caixaBloco3.loadRect.h = 150;
+
+	PosicaoBloco caixaBloco4;
+	caixaBloco4.loadRect.x = 600;
+	caixaBloco4.loadRect.y = 400;//380
+	caixaBloco4.loadRect.w = 55;
+	caixaBloco4.loadRect.h = 50;
+
+	PosicaoBloco caixaBloco5;
+	caixaBloco5.loadRect.x = 0;
+	caixaBloco5.loadRect.y = 400;//380
+	caixaBloco5.loadRect.w = 200;
+	caixaBloco5.loadRect.h = 150;
+
+	PosicaoBloco caixaBloco6;
+	caixaBloco6.loadRect.x = 732;
+	caixaBloco6.loadRect.y = 150;//380
+	caixaBloco6.loadRect.w = 40;
+	caixaBloco6.loadRect.h = 60;
+
 
 	PosicaoBloco caixaBlocoRight2;
-	caixaBlocoRight2.loadRect.x = 585;//585
+	caixaBlocoRight2.loadRect.x = 560;//585
 	caixaBlocoRight2.loadRect.y = 418;//418
-	caixaBlocoRight2.loadRect.w = 100;
+	caixaBlocoRight2.loadRect.w = 140;
 	caixaBlocoRight2.loadRect.h = 50;
 
-	PosicaoBloco caixaBlocoRight;
-	caixaBlocoRight.loadRect.x = 760;
-	caixaBlocoRight.loadRect.y = 180;
-	caixaBlocoRight.loadRect.w = 240;
-	caixaBlocoRight.loadRect.h = 60;
-
 	PosicaoBloco caixaBlocoMovel2;
-	caixaBlocoMovel2.loadRect.x = 408;//464
-	caixaBlocoMovel2.loadRect.y = 155;//155
+	caixaBlocoMovel2.loadRect.x = 800;//464
+	caixaBlocoMovel2.loadRect.y = 400;//155
 	caixaBlocoMovel2.loadRect.w = 140;
 	caixaBlocoMovel2.loadRect.h = 60;
 
 	PosicaoBloco caixaBlocoRacao1;
-	caixaBlocoRacao1.loadRect.x = 610;//605
-	caixaBlocoRacao1.loadRect.y = 392;
-	caixaBlocoRacao1.loadRect.w = 30;//1
+	caixaBlocoRacao1.loadRect.x = 580;//605
+	caixaBlocoRacao1.loadRect.y = 396;
+	caixaBlocoRacao1.loadRect.w = 34;//1
 	caixaBlocoRacao1.loadRect.h = 30;
 
-	PosicaoBloco caixaBlocoRacao2;
-	caixaBlocoRacao2.loadRect.x = 110;
-	caixaBlocoRacao2.loadRect.y = 355;
-	caixaBlocoRacao2.loadRect.w = 1;
-	caixaBlocoRacao2.loadRect.h = 30;
-
-	PosicaoBloco caixaBlocoRacao3;
-	caixaBlocoRacao3.loadRect.x = 898;
-	caixaBlocoRacao3.loadRect.y = 400;
-	caixaBlocoRacao3.loadRect.w = 3;
-	caixaBlocoRacao3.loadRect.h = 30;
-
 	PosicaoBloco caixaInimigo;
-	caixaInimigo.loadRect.w = 100;
-	caixaInimigo.loadRect.h = 100;
+	caixaInimigo.loadRect.w = 10;
+	caixaInimigo.loadRect.h = 10;
+
+	PosicaoBloco caixaInimigo2;
+	caixaInimigo2.loadRect.w = 0;
+	caixaInimigo2.loadRect.h = 20;
 
 	PosicaoBloco caixaLeite;
-	caixaLeite.loadRect.x = 870;
-	caixaLeite.loadRect.y = 100;
+	caixaLeite.loadRect.x = 728;
+	caixaLeite.loadRect.y = 80;
 	caixaLeite.loadRect.w = 16;
 	caixaLeite.loadRect.h = 64;
 
 	PosicaoBloco caixaCoin[5];
-	caixaCoin[0].loadRect.x = 284;//tam+10, também tem +14
-	caixaCoin[0].loadRect.y = 472;
+	caixaCoin[0].loadRect.x = 534;//tam+10, também tem +14
+	caixaCoin[0].loadRect.y = 280;
 	caixaCoin[0].loadRect.w = 6;//tam-22(10), também 6
 	caixaCoin[0].loadRect.h = 32;
 
-	caixaCoin[1].loadRect.x = 316;
-	caixaCoin[1].loadRect.y = 472;
+	caixaCoin[1].loadRect.x = 744;
+	caixaCoin[1].loadRect.y = 482;
 	caixaCoin[1].loadRect.w = 6;
 	caixaCoin[1].loadRect.h = 32;
 
@@ -255,23 +258,23 @@ int fase1(){
 	caixaCoin[2].loadRect.w = 6;
 	caixaCoin[2].loadRect.h = 32;
 
-	caixaCoin[3].loadRect.x = 644;
-	caixaCoin[3].loadRect.y = 492;
+	caixaCoin[3].loadRect.x = 744;
+	caixaCoin[3].loadRect.y = 452;
 	caixaCoin[3].loadRect.w = 6;
 	caixaCoin[3].loadRect.h = 32;
 
-	caixaCoin[4].loadRect.x = 514;
-	caixaCoin[4].loadRect.y = 80;
+	caixaCoin[4].loadRect.x = 744;
+	caixaCoin[4].loadRect.y = 422;
 	caixaCoin[4].loadRect.w = 6;
 	caixaCoin[4].loadRect.h = 32;
 
 	/*CRIANDO AS CAIXAS DE COLISÃO*/
 	
 	int dogVaiVolta = 0;
+	int dogVaiVolta2 = 0;
 	int vivo = 1;
-	int rotornoVenceu = 0;
 
-	int venceuFase1 = 0;
+	int venceuFase2 = 0;
 
 	const Uint8* keyState;
 
@@ -288,7 +291,7 @@ int fase1(){
 	TTF_Font *faseFont = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",30);
 
 	//Para exibir em que fase está
-	faseSurface = TTF_RenderUTF8_Solid(faseFont,"Fase 1",color);
+	faseSurface = TTF_RenderUTF8_Solid(faseFont,"Fase 2",color);
 	faseRect.x = 500 - 40;
 	faseRect.y = 6;
 	faseRect.w = 40;
@@ -321,7 +324,30 @@ int fase1(){
 	int frameTime = 0;
 	//fundoPreto = carregarTextura(renderer,"../img/fundoPreto.png");
 	PAUSADO = 1;
+
 	while(fechar != 1){
+
+		printf("Vidas %d\n",VIDASGATO);
+
+		printf("x = %d, y = %d\n",catJoePosicao.loadRect.x,catJoePosicao.loadRect.y);
+		printf("VIDASGATO %d\n",VIDASGATO );
+		if(lazyFoo(catJoePosicao.loadRect,caixaBloco4.loadRect)){
+			printf("DEU LAZYFOO 4\n");
+		}if(lazyFoo(catJoePosicao.loadRect,caixaBloco3.loadRect)){
+			printf("DEU LAZYFOO 3\n");
+		}if(lazyFoo(catJoePosicao.loadRect,caixaBloco2.loadRect)){
+			printf("DEU LAZYFOO 2\n");
+		}if(lazyFoo(catJoePosicao.loadRect,caixaBloco1.loadRect)){
+			printf("DEU LAZYFOO 1\n");
+		}if(lazyFoo(catJoePosicao.loadRect,caixaBlocoMovel2.loadRect)){
+			printf("DEU LAZYFOO movel\n");
+		}if(lazyFoo(catJoePosicao.loadRect,caixaBloco6.loadRect)){
+			printf("DEU LAZYFOO 6\n");
+			
+		}if(lazyFoo(catJoePosicao.loadRect,caixaBlocoRacao1.loadRect)){
+			printf("DEU LAZYFOO Racao\n");
+			
+		}
 
 		inicioGetTick = SDL_GetTicks();//tempo em milisegundos
 		if(PAUSADO){
@@ -417,10 +443,10 @@ int fase1(){
 					//catPosicao.loadRect.x = 900;
 					Mix_FreeMusic(musica);
 					musica = NULL;
-					destruirFase1(&catJoe,&sinalR,&sinalR2,
-					racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
+					destruirFase2(&catJoe,&sinalR,
+					&racao,&inimigo,&leite,chao,blocosLeftT,obstaculos,
 					&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-					&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
+					&vidaImg,vidaTextura,coin,&coinImg,coinTextura,&inimigo2);
 					return 6;
 					/*
 						PAUSADO = 1;
@@ -440,173 +466,88 @@ int fase1(){
 					}
 				}
 
-				pegarMoeda(caixaCoin,coin,catJoePosicao.loadRect,caixaCoin,5);
+				pegarMoeda2(caixaCoin,coin,catJoePosicao.loadRect,caixaCoin,5);
 				
 				
 				
-				movimentoInimigo(&dRect_inimigoPos.loadRect,&sRect_inimigoPos.loadRect,&dogVaiVolta,vivo);
+				movimentoInimigo3(&dRect_inimigoPos.loadRect,&sRect_inimigoPos.loadRect,&dogVaiVolta,vivo);
+				movimentoInimigo2(&dRect_inimigoPos2.loadRect,&sRect_inimigoPos2.loadRect,&dogVaiVolta2,vivo,aleatorio);
 				
 				caixaInimigo.loadRect.x = dRect_inimigoPos.loadRect.x;
 				caixaInimigo.loadRect.y = dRect_inimigoPos.loadRect.y;
 
-				gatoMorreu(&catJoePosicao.loadRect,&dRect_inimigoPos.loadRect, catJoePosicao.loadRect,dRect_inimigoPos.loadRect,
-					&catPosicao.loadRect,obstaculosPosicao,&caixaBlocoMovel2,&sinalR,racao,&caixaBlocoRacao1,&caixaBlocoRacao3,caixaCoin,
-					coin,&sinalV);
+				caixaInimigo2.loadRect.x = dRect_inimigoPos2.loadRect.x;
+				caixaInimigo2.loadRect.y = dRect_inimigoPos2.loadRect.y;
+
+				gatoMorreu2(&catJoePosicao.loadRect,&dRect_inimigoPos.loadRect, catJoePosicao.loadRect,dRect_inimigoPos.loadRect,
+					&catPosicao.loadRect,obstaculosPosicao,&caixaBlocoMovel2,&sinalR,&racao,&caixaBlocoRacao1,caixaCoin,
+					coin,dRect_inimigoPos2.loadRect);
 
 
-				naoPassaDoLimiteDaJanela(&catJoePosicao.loadRect);
+				naoPassaDoLimiteDaJanela2(&catJoePosicao.loadRect);
 				
 				if(GATOUP){
-					snow(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
-					emma(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
 					
-					cair(&catJoePosicao.loadRect);
-					arrow(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
-					felicity(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
-					turtle(&catJoePosicao.loadRect);
-					neal(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,&caixaBlocoRacao2.loadRect,
-						&caixaBlocoRacao3.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,
-						caixaBlocoRacao2.loadRect,caixaBlocoRacao3.loadRect,racao,&sinalR,&sinalR2,&sinalV,renderer);
+					cair2(&catJoePosicao.loadRect);
+					
+					lua(&catJoePosicao.loadRect);
+					
+					neal2(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,
+						&racao,&sinalR,renderer);
+					flamenco(&catJoePosicao.loadRect);
+					espanhol(&catJoePosicao.loadRect);
+					rasgueado(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
+					cavaquinho(&catJoePosicao.loadRect);
+					palheta(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect,
+									caixaBlocoMovel2.loadRect,caixaBloco6.loadRect);
+					escaleta(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
+					bumbo(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco6.loadRect);
+
+					
 				}else{
-					if(!BLOQUEIA_CAT){
-						cairEntreBlocos(&catJoePosicao,&catPosicao);
-					}
 					
-					henry(&catJoePosicao.loadRect);
+					henry2(&catJoePosicao.loadRect);
 
-					neal(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,&caixaBlocoRacao2.loadRect,
-						&caixaBlocoRacao3.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,
-						caixaBlocoRacao2.loadRect,caixaBlocoRacao3.loadRect,racao,&sinalR,&sinalR2,&sinalV,renderer);
-
-					venceuFase1 = venceu(&catJoePosicao.loadRect,&caixaLeite.loadRect,catJoePosicao.loadRect,caixaLeite.loadRect,&leite);
-					if(venceuFase1 == 6){//venceu = 6 é ganhou o jogo
+					neal2(&catJoePosicao.loadRect,&caixaBlocoRacao1.loadRect,catJoePosicao.loadRect,caixaBlocoRacao1.loadRect,
+						&racao,&sinalR,renderer);
+					venceuFase2 = venceu(&catJoePosicao.loadRect,&caixaLeite.loadRect,catJoePosicao.loadRect,caixaLeite.loadRect,&leite);
+					if(venceuFase2 == 6){//venceu = 6 é ganhou o jogo
 						Mix_FreeMusic(musica);
-						musica = NULL;//Vai para a fase 2
-						destruirFase1(&catJoe,&sinalR,&sinalR2,
-							racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
+						musica = NULL;
+						destruirFase2(&catJoe,&sinalR,
+							&racao,&inimigo,&leite,chao,blocosLeftT,obstaculos,
 							&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-							&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
-						return 8;
-						//fechar = venceuTela(&reboot);//vai pra tela de venceu, valor de reboot é dado em venceuTela
-
-						//if(fechar){//se 1, o usuário quer ir para o menu
-							//encerrando tudo
-							/*destruirFase1(&catJoe,&sinalR,&sinalR2,
-							racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
-							&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-							&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
-
-							return 0;//Volta pro menu
-						}*/
-						
-					
-						/*if(reboot){//se 1 reinicia o jogo
-							printf("REINICIANDO...");
-							destruirFase1(&catJoe,&sinalR,&sinalR2,
-	racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
-	&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-	&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
-							criarChao(chao,chaoPosicao);
-
-					criarBlocosEsquerdos(blocosLeft, blocosPosicaoLeft);
-
-					criarBlocosDireitos(blocosRight, blocosPosicaoRight);
-							iniciarObstaculos(obstaculos, obstaculosPosicao);					
-							//Gato Joe, herói do jogo
-							iniciarGato(&catJoe,&catPosicao,&catJoePosicao);
-						
-							iniciarSinais(&sinalR,&sinalR2,&sinalRPos,&sinalRPos2);
-							
-							iniciarRacao(racao,racaoPos);
-							
-							iniciarInimigo(&inimigo,&sRect_inimigoPos,&dRect_inimigoPos);
-
-							iniciarLeite(&leite,&leitePos);
-
-							reiniciar2(coin,dRectCoin,sRectCoin,&caixaBlocoLeft,&caixaBlocoChao,&caixaBlocoRight2,
-								&caixaBlocoRight,&caixaBlocoMovel2,&caixaBlocoRacao1,&caixaBlocoRacao2,
-								&caixaBlocoRacao3,&caixaInimigo,&caixaLeite,caixaCoin,&contador,&c2,&min,&seg);
-							PAUSADO = 1;
-						
-						}*/
+							&vidaImg,vidaTextura,coin,&coinImg,coinTextura,&inimigo2);
+						return 7;
 					}
+						
 				}
-
 				if(PODEDESCER){
-
-					if(obstaculosPosicao[3].loadRect.y >= 409){
-						obstaculosPosicao[3].loadRect.y = 409;
-						caixaBlocoMovel2.loadRect.y = 407;
-						if(catJoePosicao.loadRect.x >= 526 && catJoePosicao.loadRect.x <= 668){
-							BLOQUEIA_CAT = 0;
-
-						}
+					printf("Valor do bloco M %d\n",caixaBlocoMovel2.loadRect.y);
+					if(lazyFoo(catJoePosicao.loadRect,caixaBlocoMovel2.loadRect) && catJoePosicao.loadRect.y < caixaBlocoMovel2.loadRect.y
+						&& catJoePosicao.loadRect.x > 760){
 						
-						
-					}
-					regina(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
-
-					if(PODEANDAR){
-						if(obstaculosPosicao[3].loadRect.x <= 435 && obstaculosPosicao[3].loadRect.y == 409){
-							obstaculosPosicao[3].loadRect.x -= 2;
-							catJoePosicao.loadRect.x -= 2;
-							if(obstaculosPosicao[3].loadRect.x <= 235){
-								obstaculosPosicao[3].loadRect.x = 235;
-								caixaBlocoMovel2.loadRect.x = 180;
-								PODEANDAR = 0;
-								BLOQUEIA_CAT = 0;
-
-							
-							}
-						}
-						BATEU_BL2 = 0;
-						BATEU_BL3 = 0;
-
-					}
-
-					if(racao[1].loadBloco == NULL){
-						
-						if(catJoePosicao.loadRect.x >= 197 && catJoePosicao.loadRect.x <= 323){
-							
-							if(catJoePosicao.loadRect.y >= 327){
-								catJoePosicao.loadRect.y = 327;
+						if(catJoePosicao.loadRect.y > 60){
+							if(catJoePosicao.loadRect.y == 336){
 								BLOQUEIA_CAT = 1;
-
-							}else if(BLOQUEIA_CAT == 0){
-								catJoePosicao.loadRect.y += 3;
+								BATEU_BL3 = 1;
 							}
+							
+							if(BLOQUEIA_CAT){
+								obstaculosPosicao[4].loadRect.y -= 3;
+								caixaBlocoMovel2.loadRect.y -= 3;
+								catJoePosicao.loadRect.y -= 3;
+							}
+							
+						}else{
+							BLOQUEIA_CAT = 0;
 						}
 						
-						if(BLOQUEIA_CAT){
-
-							if(obstaculosPosicao[3].loadRect.y > 175){
-								
-								obstaculosPosicao[3].loadRect.y -= 2;
-								catJoePosicao.loadRect.y -= 2;
-								if(obstaculosPosicao[3].loadRect.y <= 175){
-									obstaculosPosicao[3].loadRect.y = 175;
-									catJoePosicao.loadRect.y = 90;
-								}
-
-							}else if(obstaculosPosicao[3].loadRect.y == 175){
-
-								obstaculosPosicao[3].loadRect.x += 2;
-								catJoePosicao.loadRect.x += 2;
-								if(obstaculosPosicao[3].loadRect.x >= 616){
-									obstaculosPosicao[3].loadRect.x = 616;
-									BLOQUEIA_CAT = 0;
-								}
-							}
-						}
-							
-					}else{
-						if(obstaculosPosicao[3].loadRect.x == 235)
-							obstaculosPosicao[3].loadRect.y = 409;
-						else
-							obstaculosPosicao[3].loadRect.y += 3;
+						
 					}
 				}
-			
+
+				
 				while(SDL_PollEvent(&event) != 0){ //Eventos de Teclado e Mouse
 					
 					//encerrarJogo(event, &fechar);
@@ -627,13 +568,17 @@ int fase1(){
 							}else{
 								GATOUP = 1;
 
-								emma(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
-								snow(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
 								
-								cair(&catJoePosicao.loadRect);
-								arrow(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
-								felicity(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
-								turtle(&catJoePosicao.loadRect);
+								lua(&catJoePosicao.loadRect);
+							
+								flamenco(&catJoePosicao.loadRect);
+								espanhol(&catJoePosicao.loadRect);
+								rasgueado(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
+								cavaquinho(&catJoePosicao.loadRect);
+								palheta(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect,
+									caixaBlocoMovel2.loadRect,caixaBloco6.loadRect);
+								escaleta(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
+								bumbo(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco6.loadRect);
 
 							}
 							
@@ -644,25 +589,22 @@ int fase1(){
 							if(GATOMORREU){
 
 							}else{
-								zangado(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
-
-								thor(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
-
-
-								soneca_Right(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
-
+							
 								moveSpriteCatRight(&catPosicao.loadRect);											
-
-								if(lazyFoo(catJoePosicao.loadRect,caixaBlocoChao.loadRect))
-									catJoePosicao.loadRect.y = 432;
-
-
-								august(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect,racao);
+								colisaoBlocoBaixoR(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco1.loadRect);
+								colisaoBlocoBaixoR(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco3.loadRect);
+								//AQUI
+								colisaoBlocoBaixo3R(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco2.loadRect);
+								colisaoBlocoBaixo3R(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco4.loadRect);
+								colisaoBlocoBaixo4R(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
+								colisaoBlocoBaixo5R(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco6.loadRect);
+								
 								
 								if(BLOQUEIA_CAT){
 
 								}else
-									pularMaisAlto_Right(&catJoePosicao.loadRect);
+									pularMaisAlto_Right2(&catJoePosicao.loadRect);
+						
 									
 							}
 						
@@ -675,21 +617,26 @@ int fase1(){
 							if(GATOMORREU){
 
 							}else{
-								zangado(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoRight2.loadRect);
-							
-								soneca(&catJoePosicao.loadRect,&catPosicao.loadRect,catJoePosicao.loadRect,caixaBlocoChao.loadRect);
 								
-								august_left(&catJoePosicao.loadRect,racao);
 
 								moveSpriteCatLeft(&catPosicao.loadRect);
+								colisaoBlocoBaixo2E(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco5.loadRect);
+								colisaoBlocoBaixo3E(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco2.loadRect);
 								
+								
+								colisaoBlocoBaixoE(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco1.loadRect);
+								colisaoBlocoBaixoE(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco3.loadRect);
+								colisaoBlocoBaixo3E(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco4.loadRect);
+								colisaoBlocoBaixo4E(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoMovel2.loadRect);
+								colisaoBlocoBaixo5E(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBloco6.loadRect);
+
 								if(BLOQUEIA_CAT){
 
 								}else
 
-									pularMaisAlto_Left(&catJoePosicao.loadRect);
+									pularMaisAlto_Left2(&catJoePosicao.loadRect);
 
-								wonderWoman(&catJoePosicao.loadRect,catJoePosicao.loadRect,caixaBlocoLeft.loadRect);
+								
 							}
 							
 							
@@ -705,22 +652,22 @@ int fase1(){
 								//encerrando tudo
 								Mix_FreeMusic(musica);
 								musica =  NULL;
-								destruirFase1(&catJoe,&sinalR,&sinalR2,
-								racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
+								destruirFase2(&catJoe,&sinalR,
+								&racao,&inimigo,&leite,chao,blocosLeftT,obstaculos,
 								&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-								&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
-								//fechar = 1;
+								&vidaImg,vidaTextura,coin,&coinImg,coinTextura,&inimigo2);
+								
 								return 1;// pra fechar o menu, terminar o programa
 
 							}else if(PAUSADO == 0){//usuário quer voltar para o menu
 								//encerrando tudo
 								Mix_FreeMusic(musica);
 								musica =  NULL;
-								destruirFase1(&catJoe,&sinalR,&sinalR2,
-								racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
+								destruirFase2(&catJoe,&sinalR,
+								&racao,&inimigo,&leite,chao,blocosLeftT,obstaculos,
 								&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-								&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
-								//fechar = 1;
+								&vidaImg,vidaTextura,coin,&coinImg,coinTextura,&inimigo2);
+							
 								return 0;//faz voltar pro menu
 							}
 							
@@ -778,35 +725,25 @@ int fase1(){
 				SDL_RenderClear(renderer);
 				//background
 				SDL_RenderCopy(renderer,backgroundTextura,NULL,NULL);
-				
-				//Blocos esquerdos
-				renderCopySprites(renderer, blocosLeft, blocosPosicaoLeft, 4);
-				//Blocos direitos
-				renderCopySprites(renderer, blocosRight, blocosPosicaoRight, 4);
+			
 				//Chão
-				renderCopySprites(renderer, chao, chaoPosicao, 8);
+				renderCopySprites(renderer, chao, chaoPosicao, 4);
 				//obstaculos
-				renderCopySprites(renderer, obstaculos, obstaculosPosicao, 4);
+				renderCopySprites(renderer, obstaculos, obstaculosPosicao, 6);
 				
 				//Sinal que muda de vermelho para verde
 				if(sinalR.loadBloco != NULL)
 					renderCopySprites(renderer, &sinalR, &sinalRPos, 1);
-				if(sinalV.loadBloco != NULL)
-					renderCopySprites(renderer, &sinalV, &sinalRPos, 1);
-				if(sinalR2.loadBloco != NULL)
-					renderCopySprites(renderer, &sinalR2, &sinalRPos2, 1);
 				
 				//Racao para pegadinhas e atalhos
-				renderCopySprites(renderer, racao, racaoPos, 3);
+				renderCopySprites(renderer, &racao, &racaoPos, 1);
+				renderCopySprites(renderer, blocosLeftT, blocosPosicaoLeftT, 2);
+
+				//Objetivo final, pegar o Leite
+				renderCopySprites(renderer, &leite, &leitePos, 1);
 
 				//Gato Joe
 				SDL_RenderCopy(renderer,catJoe.loadBloco,&catPosicao.loadRect,&catJoePosicao.loadRect);
-
-				//Inimigo (Cachorro)
-				SDL_RenderCopy(renderer,inimigo.loadBloco,&sRect_inimigoPos.loadRect,&dRect_inimigoPos.loadRect);
-				
-				//Objetivo final, pegar o Leite
-				renderCopySprites(renderer, &leite, &leitePos, 1);
 
 				//Timer Imagem
 				renderCopySprites(renderer, &timerImg, &timerImgPos, 1);			
@@ -828,11 +765,18 @@ int fase1(){
 				renderCopySprites(renderer, &coinImg, &coinImgPos, 1);
 				SDL_RenderCopy(renderer,coinTextura,NULL,&coinRect);
 
+				//Inimigo (Cachorro)
+				SDL_RenderCopy(renderer,inimigo.loadBloco,&sRect_inimigoPos.loadRect,&dRect_inimigoPos.loadRect);
+				SDL_RenderCopy(renderer,inimigo2.loadBloco,&sRect_inimigoPos2.loadRect,&dRect_inimigoPos2.loadRect);
+
+
 				//Som
 				SDL_RenderCopy(renderer,som,NULL,&somRect);
 				//Not som
 				SDL_RenderCopy(renderer,notSom,NULL,&somRect);						
 				
+				
+
 				//Imprimindo na tela
 				SDL_RenderPresent(renderer);
 
@@ -840,13 +784,14 @@ int fase1(){
 				controlFrameRate(inicioGetTick);
 				
 			}else{//Else do vidasgato
-				printf("*********** GAME OVER ***********\n");
+				printf("*********** GAME OVER *********** do sem vidas\n");
 				Mix_FreeMusic(musica);
 				musica = NULL;
-				destruirFase1(&catJoe,&sinalR,&sinalR2,
-					racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
+				
+				destruirFase2(&catJoe,&sinalR,
+					&racao,&inimigo,&leite,chao,blocosLeftT,obstaculos,
 					&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-					&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
+					&vidaImg,vidaTextura,coin,&coinImg,coinTextura,&inimigo2);
 				return 6;
 
 				/*
@@ -863,12 +808,10 @@ int fase1(){
 
 	//encerrando tudo
 
-	destruirFase1(&catJoe,&sinalR,&sinalR2,
-	racao,&inimigo,&leite,chao,blocosLeft,blocosRight,obstaculos,
+	destruirFase2(&catJoe,&sinalR,
+	&racao,&inimigo,&leite,chao,blocosLeftT,obstaculos,
 	&timerImg,minTexto,segTexto,sepaTexto,zeroTexto,fase,
-	&vidaImg,vidaTextura,coin,&coinImg,coinTextura);
+	&vidaImg,vidaTextura,coin,&coinImg,coinTextura,&inimigo2);
 	PONTUACAO = 0;
-	SDL_DestroyTexture(sinalV.loadBloco);
-	sinalV.loadBloco = NULL;
 
 }

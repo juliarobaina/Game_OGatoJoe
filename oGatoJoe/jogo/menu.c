@@ -40,10 +40,10 @@ int menu(){
 		som = NULL;
 		som = carregarTextura(renderer,"../img/som4.png");	
 		printf("Sem 3\n");
-		if( Mix_PausedMusic() == 1 ){
+		//if( Mix_PausedMusic() == 1 ){
 	      //Resume the music
-	      Mix_ResumeMusic();
-	   }
+	      //Mix_ResumeMusic();
+	  // }
 		if(Mix_PlayingMusic() == 0)
 			Mix_PlayMusic(m2,-1);
 		
@@ -371,7 +371,7 @@ int menu(){
 							Mix_FreeMusic(m2);
 							m2 = NULL;
 							
-							return 2;
+							return 9;
 						}
 						if(x >= sairRect.x && x <= sairRect.x+jogarRect.w && y >= sairRect.y && y <= sairRect.y+sairRect.h){
 							Mix_PlayChannel( -1,botao, 0 );
@@ -433,10 +433,31 @@ int menu(){
 							sairTexto = NULL;
 							SDL_DestroyTexture(backgroundTextura);
 							backgroundTextura = NULL;
+
 							//Mix_FreeMusic(m2);
 
 							fechar = 1;
 							return 4;
+						}if(x >= comoJogarRect.x && x <= comoJogarRect.x+comoJogarRect.w && y >= comoJogarRect.y && y <= comoJogarRect.y+comoJogarRect.h){
+							Mix_PlayChannel( -1,botao, 0 );
+							patadegato = NULL;
+							SDL_DestroyTexture(logo);
+							logo = NULL;
+							SDL_DestroyTexture(jogarTexto);
+							jogarTexto = NULL;
+							SDL_DestroyTexture(creditoTexto);
+							creditoTexto = NULL;
+							SDL_DestroyTexture(comoJogarTexto);
+							comoJogarTexto = NULL;
+							SDL_DestroyTexture(rankingTexto);
+							rankingTexto = NULL;
+							SDL_DestroyTexture(sairTexto);
+							sairTexto = NULL;
+							SDL_DestroyTexture(backgroundTextura);
+							backgroundTextura = NULL;
+
+							fechar = 1;
+							return 3;
 						}
 					
 					break;

@@ -1,9 +1,15 @@
 #include "fases.c"
+#include "pause.c"
+#include "venceuTela.c"
 #include "fase1.c"
 #include "menu.c"
 #include "gameOver.c"
 #include "creditos.c"
 #include "ranking.c"
+#include "comoJogar.c"
+#include "fase2.c"
+#include "historia.c"
+
 
 int main(){
 
@@ -17,7 +23,8 @@ int main(){
 			if(iniciarIMG()){
 
 				if(iniciarTTF()){//Inicando ttf para usar texto
-
+					font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",40);
+					
 					if(iniciarMusica()){
 
 						//criar tela de renderizção, onde os objetos vão ser desenhados
@@ -38,7 +45,7 @@ int main(){
 
 							}else if(corre == 3){
 								//tela de como jogar
-								//corre = comoJogar();
+								corre = comoJogar();
 							}else if(corre == 4){//Tela de ranking, quem coletou mais moedas
 								corre = ranking();
 							}
@@ -48,6 +55,10 @@ int main(){
 								corre = gameOver();
 							}else if(corre == 7){
 								corre = venceuTela();
+							}else if(corre == 8){
+								corre = fase2();
+							}else if(corre == 9){
+								corre = historia();
 							}else if(corre == 1){
 
 								SDL_Delay(120);

@@ -1,41 +1,42 @@
-int ranking(){
+int comoJogar(){
+
 	SDL_Surface *surfaceFont = NULL;
 	SDL_Texture *voltarTexto = NULL;
 	SDL_Texture *patadegato = NULL;
-	
-	SDL_Texture *jogTexto[] = { NULL,NULL,NULL };
-	SDL_Surface *jogSurface[] = { NULL,NULL,NULL };
-	SDL_Rect jogRect[3];
-	SDL_Texture *jogPontosTexto[] = { NULL,NULL,NULL };
-	SDL_Surface *jogPontosSurface[] = { NULL,NULL,NULL };
-	SDL_Rect jogPontosRect[3];
+
 
 	//parametros botao
 	int x,y;
 
 	//Musica de fundo
 	m2 = Mix_LoadMUS("../music/violao1-2.mp3");
+	//Mix_PauseMusic ();
+	//Mix_HaltMusic();
+
+	//musica = Mix_LoadMUS("../music/openM.mp3");
+	//Mix_PlayMusic(musica,-1);
+	
 	//Efeito sonoro botao
 	botao = Mix_LoadWAV( "../music/beep.wav" );
-			
-	//criando textura da imagem de fundo			
+
+				
+	//criando textura da imagem de fundo
 	if(backgroundTextura != NULL){
 		SDL_DestroyTexture(backgroundTextura);
 		backgroundTextura = NULL;
-		backgroundTextura = carregarTextura(renderer,"../img/ranking.png");
+		backgroundTextura = carregarTextura(renderer,"../img/comoJogar.png");
 	}else
-		backgroundTextura = carregarTextura(renderer,"../img/ranking.png");
+		backgroundTextura = carregarTextura(renderer,"../img/comoJogar.png");
 
-				
+			
 
 	int fechar = 0;
-				
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 
-	
+
 			//Carregando fonte
 			//TTF_Font *font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",40);
 			//Cor da fonte
@@ -99,13 +100,10 @@ int ranking(){
 			}
 
 			//Tocando música de fundo
-			//Mix_PlayMusic(musica,-1); //Isso faz a música começar novamente se ela já estiver tocando(Umas das utilidades).
-
-			int okLerArquivo = lerArquivo(jogTexto,jogSurface,jogRect,jogPontosTexto,jogPontosSurface,jogPontosRect);
-			printf("resposta %d\n",okLerArquivo);
-				//exit(1);
+			//Mix_ResumeMusic ();
+			
 				while(fechar != 1){
-
+					
 					inicioGetTick = SDL_GetTicks();//tempo em milisegundos
 
 					while(SDL_PollEvent(&event) != 0){ //Eventos de Teclado e Mouse
@@ -163,8 +161,8 @@ int ranking(){
 									}else
 										Mix_PlayChannel( -1,botao, 0 );
 									
-									fechar = 1;
 
+									fechar = 1;
 									return 0;
 								}
 
@@ -212,8 +210,6 @@ int ranking(){
 						}
 					}
 
-					
-
 					//Limpando tela
 					SDL_RenderClear(renderer);
 					//background
@@ -222,25 +218,10 @@ int ranking(){
 					SDL_RenderCopy(renderer,patadegato,NULL,&pataRect);
 					//voltar
 					SDL_RenderCopy(renderer,voltarTexto,NULL,&voltarRect);
-
-					if(okLerArquivo){
-						for(int i = 0;i < 3;i++){
-							if(jogTexto[i] == NULL && jogPontosTexto[i] == NULL){
-
-							}else{
-								SDL_RenderCopy(renderer,jogTexto[i],NULL,&jogRect[i]);
-								SDL_RenderCopy(renderer,jogPontosTexto[i],NULL,&jogPontosRect[i]);	
-							}
-							
-						}
-					}
-					
 					//Som
-					if(som != NULL)
-						SDL_RenderCopy(renderer,som,NULL,&somRect);
+					SDL_RenderCopy(renderer,som,NULL,&somRect);
 					//Not som
-					if(notSom != NULL)
-						SDL_RenderCopy(renderer,notSom,NULL,&somRect);
+					SDL_RenderCopy(renderer,notSom,NULL,&somRect);
 					//Imprimindo na tela
 					SDL_RenderPresent(renderer);
 					//Frame Rate
@@ -255,18 +236,5 @@ int ranking(){
 	patadegato = NULL;
 	SDL_DestroyTexture(voltarTexto);
 	voltarTexto = NULL;
-	for(int i = 0;i < 3;i++){
-		if(jogTexto[i] == NULL && jogPontosTexto[i] == NULL){
 
-		}else{
-			SDL_DestroyTexture(jogTexto[i]);
-			jogTexto[i] = NULL;
-			SDL_DestroyTexture(jogPontosTexto[i]);
-			jogPontosTexto[i] = NULL;
-		}
-		
-	}
-	
-		
-	
 }

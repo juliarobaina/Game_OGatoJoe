@@ -38,7 +38,7 @@ int creditos(){
 
 
 			//Carregando fonte
-			TTF_Font *font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",40);
+			//TTF_Font *font = TTF_OpenFont("../Merienda/Merienda-Regular.ttf",40);
 			//Cor da fonte
 			SDL_Color color = {0xFF,0xA5,0x00,0xFF};//aceita hexadecimal desse modo ou rgba  ex{155,155,255,255}
 			//cor do mouse quando tem hover

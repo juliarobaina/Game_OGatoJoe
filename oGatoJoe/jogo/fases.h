@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
+#include <time.h>
 
 #define LARGURA_JANELA 1000
 #define ALTURA_JANELA 620
@@ -82,13 +82,16 @@ SDL_Texture *notSom = NULL;
 Mix_Music *musica = NULL;
 Mix_Music *m2 = NULL;
 Mix_Music *m3 = NULL;
+Mix_Music *m4Historia = NULL;
+Mix_Music *m5 = NULL;
 Mix_Chunk *botao = NULL;
 Mix_Chunk *coinSound = NULL;
 Mix_Chunk *moverSound = NULL;
 
 
-Uint8 fadingAlpha;
-SDL_Texture* fundoPreto;
+//Carregando fonte
+TTF_Font *font;
+
 
 
 
